@@ -17,8 +17,9 @@ const MainBanner = () => {
       modules={[Navigation, Pagination, Autoplay]}
       autoplay
       navigation
+      
       pagination={{ clickable: true }}
-      spaceBetween={50}
+      spaceBetween={0}
       slidesPerView={1}
     >
       {MainBannerData.map((slideContent, index) => (
