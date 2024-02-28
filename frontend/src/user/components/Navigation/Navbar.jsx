@@ -4,7 +4,7 @@ import { FiSearch } from "react-icons/fi";
 
 const Navbar = () => {
   return (
-    <div className=" relative bg-white">
+    <div className=" sticky top-0 bg-white z-10">
       {/* top navbar */}
       <div className=" w-full h-[2.5rem] bg-[#141414] flex justify-center items-center">
         <p className=" font-medium text-lg text-white">
