@@ -1,5 +1,4 @@
 import React from "react";
-import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { MainBannerData } from "../../../data/mainBannerData";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,7 +22,7 @@ const MainBanner = () => {
       slidesPerView={1}
     >
       {MainBannerData.map((slideContent, index) => (
-        <SwiperSlide key={slideContent} virtualIndex={index}>
+        <SwiperSlide key={index} virtualIndex={index}>
           <img src={slideContent.image} alt="" className=" w-full h-full object-cover" />
         </SwiperSlide>
       ))}
