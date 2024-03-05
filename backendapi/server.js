@@ -1,8 +1,32 @@
 const app = require("./app");
 const dotenv = require("dotenv");
+const { connectDB } = require("./config/db");
 
+// Handling Uncaught Exception
+process.on("uncaughtException", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log(`Shutting down the server due to Uncaught Exception`);
+  process.exit(1);
+});
+
+//config
 dotenv.config();
 
-app.listen(process.env.PORT, () => {
-    console.log(`Clothing store server is working at ${PORT}`)
-})
+//db connection
+connectDB();
+
+const server = app.listen(process.env.PORT, () => {
+  console.log(`Clothing store server is working at ${process.env.PORT}`);
+});
+
+
+
+// unhandled promise Rejection
+process.on("unhandledRejection", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log(`Unhandled promise Rejection shutting the server`);
+
+  server.close(() => {
+    process.exit(1);
+  });
+});
