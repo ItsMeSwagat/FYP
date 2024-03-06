@@ -1,15 +1,25 @@
 const express = require("express");
-
 const app = express();
+const cookieParser = require("cookie-parser")
 
 const errorMiddleware = require("./middleware/error");
 
 app.use(express.json());
+app.use(cookieParser());
+
+const authRouters = require("./routes/authRoute");
+app.use("/api/v1/auth", authRouters);
 
 const productRouters = require("./routes/productRoute");
 app.use("/api/v1", productRouters);
 
 const adminProductRouters = require("./routes/adminProductRoute");
 app.use("/api/v1/admin", adminProductRouters);
+
+
+
+
+
+app.use(errorMiddleware);
 
 module.exports = app
