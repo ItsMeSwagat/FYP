@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const productSchema = mongoose.Schema({
+const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -31,11 +31,20 @@ const productSchema = mongoose.Schema({
       },
     },
   ],
+  color: {
+    type: String,
+  },
+  sizes: [
+    {
+      name: { type: String },
+      stock: { type: Number },
+    },
+  ],
   category: {
     type: String,
     required: true,
   },
-  Stock: {
+  stock: {
     type: Number,
     required: [true, "Please Enter product Stock"],
     maxLength: [4, "Stock cannot exceed 4 characters"],
@@ -47,11 +56,6 @@ const productSchema = mongoose.Schema({
   },
   reviews: [
     {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        ref: "User",
-        required: true,
-      },
       name: {
         type: String,
         required: true,
@@ -66,9 +70,8 @@ const productSchema = mongoose.Schema({
       },
     },
   ],
-
   user: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
