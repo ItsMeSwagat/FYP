@@ -16,7 +16,6 @@ const authenticateUser = catchAsyncErrors(async (req, res, next) => {
   const decodedData = jwt.verify(usertoken, process.env.JWT_SECRET);
 
   const user = await User.findById(decodedData.id);
-  console.log("User:", user);
   req.user = user;
 
   next();
