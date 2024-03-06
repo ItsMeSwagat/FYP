@@ -1,55 +1,57 @@
+const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const Product = require("../models/productModel");
+const ErrorHandler = require("../utils/errorHandler");
 
 //admin create product
-exports.createProduct = async(req, res) => {
-    const product = await Product.create(req.body);
+const createProduct = catchAsyncErrors(async (req, res) => {
+  req.body.user = req.user.id;
 
-    res.status(201).json({
-        success: true,
-        product
-    })
-}
+  const product = await Product.create(req.body);
 
+  res.status(201).json({
+    success: true,
+    product,
+  });
+});
 
 //admin update product
-exports.updateProduct = async( req, res) => {
-    let product = Product.findById(req.params.id);
+const updateProduct = catchAsyncErrors(async (req, res) => {
+  let product = Product.findById(req.params.id);
 
-    if(!product) {
-        return res.status(500).json({
-            success: false,
-            message: "Product not found"
-        })
-    }
+  if (!product) {
+    return next(new ErrorHandler("Product not found", 404));
+  }
 
-    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false,
-    })
+  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
 
-    res.status(200).json({
-        success: true,
-        product
-    })
-}
-
+  res.status(200).json({
+    success: true,
+    product,
+  });
+});
 
 //admin delete product
-exports.deleteProduct = async(req, res) => {
-    const product = await Product.findById(req.params.id);
+const deleteProduct = catchAsyncErrors(async (req, res, next) => {
+  const product = await Product.findById(req.params.id);
 
-    if(!product) {
-        return res.status(500).json({
-            success: false,
-            message: "Product not found"
-        })
-    }
+  if (!product) {
+    return next(new ErrorHandler("Product not found", 404));
+  }
 
-    await product.remove();
+  await product.remove();
 
-    res.status(200).json({
-        success: true,
-        message: "Product Deleted Successfully"
-    })
-}
+  res.status(200).json({
+    success: true,
+    message: "Product Deleted Successfully",
+  });
+});
+
+module.exports = {
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
