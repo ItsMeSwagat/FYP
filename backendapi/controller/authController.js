@@ -5,6 +5,8 @@ const sendToken = require("../utils/userToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 
+
+//REGISTER USER
 const registerUser = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password } = req.body;
 
@@ -21,6 +23,7 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 201, res);
 });
 
+//LOGIN USER
 const loginUser = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -34,9 +37,9 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
 
-  const isPasswordMatched = await user.comparePassword(password);
+  const PasswordMatched = await user.comparePassword(password);
 
-  if (!isPasswordMatched) {
+  if (!PasswordMatched) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
 
@@ -56,6 +59,7 @@ const logoutUser = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+//FORGOT PASSWORD EMAIL VERIFICATION
 const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
@@ -94,6 +98,7 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+//RESET PASSWORD
 const resetPassword = catchAsyncErrors(async (req, res, next) => {
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -132,5 +137,5 @@ module.exports = {
   loginUser,
   logoutUser,
   forgotPassword,
-  resetPassword
+  resetPassword,
 };
