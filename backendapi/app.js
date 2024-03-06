@@ -10,6 +10,12 @@ app.use(cookieParser());
 const authRouters = require("./routes/authRoute");
 app.use("/api/v1/auth", authRouters);
 
+const userRouters = require("./routes/userRoute");
+app.use("/api/v1/user", userRouters)
+
+const adminUserRouters = require("./routes/adminUserRoute");
+app.use("/api/v1/admin", adminUserRouters)
+
 const productRouters = require("./routes/productRoute");
 app.use("/api/v1", productRouters);
 
