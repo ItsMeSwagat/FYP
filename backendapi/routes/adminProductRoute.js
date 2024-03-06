@@ -1,11 +1,11 @@
 const express = require("express");
 const adminProductController = require("../controller/adminProductController");
-const { route } = require("./productRoute");
+const { authenticateUser, adminAuthenticate } = require("../middleware/authenticate");
 const router = express.Router();
 
 
-router.get("/product/new", adminProductController.createProduct);
-router.put("/product/:id", adminProductController.updateProduct);
-router.delete("/product/:id", adminProductController.deleteProduct);
+router.post("/product/new", authenticateUser, adminAuthenticate("admin"), adminProductController.createProduct);
+router.put("/product/:id", authenticateUser, adminAuthenticate("admin"), adminProductController.updateProduct);
+router.delete("/product/:id", authenticateUser, adminAuthenticate("admin"), adminProductController.deleteProduct);
 
-module.exports = router
+module.exports = router;
