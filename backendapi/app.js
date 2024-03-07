@@ -19,6 +19,9 @@ app.use("/api/v1/admin", adminUserRouters)
 const productRouters = require("./routes/productRoute");
 app.use("/api/v1", productRouters);
 
+const reviewRouters = require("./routes/reviewRoute");
+app.use("/api/v1", reviewRouters);
+
 const adminProductRouters = require("./routes/adminProductRoute");
 app.use("/api/v1/admin", adminProductRouters);
 
