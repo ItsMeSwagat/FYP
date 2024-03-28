@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mui/icons-material": "^5.15.12",
+    "@mui/material": "^5.15.12",
     "@redux-devtools/core": "^4.0.0",
     "@reduxjs/toolkit": "^2.2.1",
     "@testing-library/jest-dom": "^5.17.0",
@@ -15,6 +17,8 @@
     "react-fast-marquee": "^1.6.4",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.0.1",
+    "react-js-pagination": "^3.0.3",
+    "react-material-ui-carousel": "^3.4.2",
     "react-rating-stars-component": "^2.2.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.1",
@@ -53,5 +57,5 @@
   "devDependencies": {
     "tailwindcss": "^3.4.1"
   },
-  "proxy": "http://localhost:8181"
+  "proxy": "http://localhost:6161"
 }
