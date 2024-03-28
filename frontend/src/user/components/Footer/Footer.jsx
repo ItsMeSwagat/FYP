@@ -6,9 +6,9 @@ const Footer = () => {
   return (
     <footer className=" relative">
       {/* footer section */}
-      <div className=" bg-[#141414] text-white w-full h-[25rem] flex justify-between items-center px-[8rem]">
+      <div className=" bg-[#141414] text-white w-full h-[25rem] flex justify-between items-center lg:px-[4rem]  xl:px-[8rem]">
         <div className=" w-[30%] flex flex-col gap-3">
-          <h1 className=" text-5xl font-bold">
+          <h1 className=" lg:text-4xl xl:text-5xl font-bold">
             JASs <span className=" text-[#EDDB8D]">Sarees</span>
           </h1>
           <p className=" pb-5">
