@@ -1,5 +1,6 @@
 const app = require("./app");
 const dotenv = require("dotenv");
+const cloudinary = require("cloudinary");
 const { connectDB } = require("./config/db");
 
 // Handling Uncaught Exception
@@ -14,6 +15,12 @@ dotenv.config();
 
 //db connection
 connectDB();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
+})
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`Clothing store server is working at ${process.env.PORT}`);

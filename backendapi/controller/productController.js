@@ -1,9 +1,32 @@
 const Product = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const Features = require("../utils/Features");
+
+// Get All Product
+const getAllProducts = catchAsyncErrors(async (req, res, next) => {
+  const resultPerPage = 8;
+  const productsCount = await Product.countDocuments();
+
+  const apiFeature = new Features(Product.find(), req.query).search().filter();
+
+  const filteredQuery = apiFeature.query.clone();
+  const filteredProductsCount = await filteredQuery.countDocuments();
+
+  apiFeature.pagination(resultPerPage);
+  const products = await apiFeature.query;
+
+  res.status(200).json({
+    success: true,
+    products,
+    productsCount,
+    resultPerPage,
+    filteredProductsCount,
+  });
+});
 
 // get all products
-exports.getAllProducts = catchAsyncErrors(async (req, res) => {
+const getAdminProducts = catchAsyncErrors(async (req, res) => {
   const products = await Product.find();
 
   res.status(200).json({
@@ -13,7 +36,7 @@ exports.getAllProducts = catchAsyncErrors(async (req, res) => {
 });
 
 //get product details
-exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
+const getProductDetails = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
 
   if (!product) {
@@ -25,3 +48,8 @@ exports.getProductDetails = catchAsyncErrors(async (req, res, next) => {
     product,
   });
 });
+
+module.exports = {
+  getAllProducts,
+  getProductDetails,
+};

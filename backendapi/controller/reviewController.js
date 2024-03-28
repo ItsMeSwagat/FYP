@@ -50,7 +50,7 @@ const createReview = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-//GET ALL PRODUCTS
+//GET ALL REVIEWS
 const getAllReviews = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.query.id);
 
