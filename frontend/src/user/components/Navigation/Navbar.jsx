@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -7,11 +7,22 @@ import Search from "../Search/Search";
 import { useSelector } from "react-redux";
 import { MdAccountBox } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
+import ProfileDropdown from "../Dropdown/ProfileDropdown";
 
 const Navbar = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
 
-  return (
+  const [openProfile, setOpenProfile] = useState(false);
+
+  const handleProfileClick = () => {
+    setOpenProfile((prev) => !prev);
+  };
+
+  const handleCloseDropdown = () => {
+    setOpenProfile(false);
+  };
+
+  return ( 
     <Fragment>
       {/* top navbar */}
       <div className=" w-full h-[2.5rem] bg-[#141414] flex justify-center items-center">
@@ -38,10 +49,10 @@ const Navbar = () => {
         {!isAuthenticated ? (
           <div className=" md:hidden lg:flex items-center">
             <div className=" flex gap-4">
-              <Link className=" bg-[#EDDB8D] px-5 py-[1.5] rounded-[5px] font-medium flex items-center">
+              <Link to={`/login`} className=" bg-[#EDDB8D] px-5 py-[1.5] rounded-[5px] font-medium flex items-center">
                 Sign In
               </Link>
-              <Link className=" bg-black text-white font-medium px-3 py-1.5 rounded-[5px]">
+              <Link to={`/signup`} className=" bg-black text-white font-medium px-3 py-1.5 rounded-[5px]">
                 Create an Account
               </Link>
             </div>
@@ -50,7 +61,7 @@ const Navbar = () => {
           <div className=" md:hidden lg:flex items-center">
             <div className=" flex gap-4">
               <Link
-                to={`/account`}
+                onClick={handleProfileClick}
                 className=" bg-[#EDDB8D] px-2 py-[1.5] rounded-[5px] font-medium flex items-center hover:bg-black hover:text-[#eddb8e]"
               >
                 <MdAccountBox size={20} className="" />
@@ -74,6 +85,12 @@ const Navbar = () => {
           0
         </p>
       </div>
+
+      {
+        openProfile && (
+          <ProfileDropdown setOpenProfile={setOpenProfile} />
+        )
+      }
     </Fragment>
   );
 };
