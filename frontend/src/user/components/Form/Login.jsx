@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, loadUser, login } from "../../../actions/userAction";
+import { clearErrors, login } from "../../../actions/userAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader/Loader";
-
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -28,8 +27,8 @@ const Login = () => {
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
-      
-    } else if (isAuthenticated) {
+    }
+    if (isAuthenticated) {
       navigate("/");
     }
   }, [dispatch, error, navigate, isAuthenticated]);
@@ -42,12 +41,17 @@ const Login = () => {
         <Fragment>
           <ToastContainer />
           <div className=" fixed w-full h-screen top-0 left-0 flex justify-center items-center backdrop-blur-md">
-            <div className=" relative w-[25rem] h-[32rem] flex flex-col bg-[#Eddb8D] rounded-[10px] px-[1rem] py-[2rem] border-2 border-[#141414] shadow-2xl ">
-              <h1 className=" text-3xl font-bold">WELCOME BACK</h1>
+            <div className=" relative w-[25rem] h-[32rem] flex flex-col bg-[#fff] rounded-[8px] px-[1rem] py-[2rem] border-2 shadow-xl ">
+              <h1 className=" text-3xl font-bold">
+                WELCOME <span className=" text-[#eddb8e]">BACK</span>
+              </h1>
               <h2 className="text-3xl font-bold">LOGIN</h2>
               <p className=" font-medium pb-4 text-sm">
                 Don't have an account ?{" "}
-                <Link to={`/signup`} className=" font-semibold underline ">
+                <Link
+                  to={`/signup`}
+                  className=" font-semibold underline hover:text-[#eddb8e] "
+                >
                   Sign Up
                 </Link>
               </p>
@@ -76,11 +80,16 @@ const Login = () => {
                     className=" w-full h-11 rounded-[10px] border-2 border-[#141414] pl-2 outline-none"
                   />
                 </div>
-                <Link className=" font-medium pb-2">Forget Password?</Link>
+                <Link
+                  to={`/password/forgot`}
+                  className=" font-medium pb-2 hover:text-[#eddb8e]"
+                >
+                  Forget Password?
+                </Link>
                 <input
                   type="submit"
-                  value="Login"
-                  className=" bg-[#141414] text-white font-semibold text-xl py-1.5 rounded-[10px] hover:bg-white hover:text-black"
+                  value="Login Now"
+                  className=" bg-[#141414] text-white font-semibold text-xl py-1.5 rounded-[10px] hover:bg-[#eddb8e] hover:text-black"
                 />
               </form>
               <div className="flex items-center justify-center space-x-4 pb-4">

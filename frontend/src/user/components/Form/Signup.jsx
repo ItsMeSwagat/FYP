@@ -3,7 +3,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, loadUser, register } from "../../../actions/userAction";
+import { clearErrors, register } from "../../../actions/userAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader/Loader";
@@ -12,12 +12,11 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState();
-  const [avatarPreview, setAvatarPreview] = useState("/profileimg.png")
+  const [avatarPreview, setAvatarPreview] = useState("/profileimg.png");
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
-
 
   useEffect(() => {
     if (error) {
@@ -75,13 +74,17 @@ const Signup = () => {
         <Fragment>
           <ToastContainer />
           <div className=" fixed top-0 left-0 w-full h-full flex justify-center items-center bg-transparent backdrop-blur-md">
-            <div className=" relative w-[25rem] h-[40rem] flex flex-col bg-[#Eddb8D] rounded-[10px] px-[1rem] py-[1rem] border-2 border-[#141414] shadow-2xl ">
-              
+            <div className=" relative w-[26rem] h-[40rem] flex flex-col bg-[#fff] rounded-[8px] px-[1rem] py-[1rem] border-2 shadow-xl ">
               <h1 className=" text-3xl font-bold">HELLO,</h1>
-              <h2 className="text-3xl font-bold">SIGN UP</h2>
+              <h2 className="text-3xl font-bold">
+                <span className=" text-[#eddb8e]">SIGN</span> UP
+              </h2>
               <p className=" font-medium pb-4 text-sm">
                 Already have an account ?{" "}
-                <Link to={`/login`} className=" font-semibold underline ">
+                <Link
+                  to={`/login`}
+                  className=" font-semibold underline hover:text-[#eddb8e] "
+                >
                   Login now
                 </Link>
               </p>
@@ -127,7 +130,7 @@ const Signup = () => {
                   />
                 </div>
                 <div className=" flex items-center gap-4 py-2">
-                  <div className=" w-[3.5rem] h-[3rem] rounded-full overflow-hidden">
+                  <div className=" w-[3rem] h-[3rem] rounded-full overflow-hidden flex-shrink-0">
                     <img
                       src={avatarPreview}
                       alt="Avatar Preview"
@@ -139,14 +142,14 @@ const Signup = () => {
                     name="avatar"
                     accept="image/*"
                     onChange={registerDataChange}
-                    className=" file:w-full file:h-[2.5rem] rounded-[10px] file:bg-[#141414] file:text-white file:border-none file:cursor-pointer"
+                    className=" file:w-full file:h-[2.5rem] rounded-[10px] file:bg-[#141414] file:text-white file:border-none file:cursor-pointer file:hover:bg-[#eddb8e] file:hover:text-black font-medium"
                   />
                 </div>
                 <Link className=" font-medium pb-2">Forget Password?</Link>
                 <input
                   type="submit"
-                  value="Register"
-                  className=" bg-[#141414] text-white font-semibold text-xl py-1.5 rounded-[10px] hover:bg-white hover:text-black"
+                  value="Register Now"
+                  className=" bg-[#141414] text-white font-semibold text-xl py-1.5 rounded-[10px] hover:bg-[#eddb8e] hover:text-black cursor-pointer"
                 />
               </form>
               <div className="flex items-center justify-center space-x-3 pb-4">
