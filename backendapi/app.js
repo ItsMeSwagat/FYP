@@ -9,7 +9,9 @@ const errorMiddleware = require("./middleware/error");
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(expressFileUpload());
+app.use(expressFileUpload({
+    limits: {fileSize: 100 * 1024 * 1024} //100Mb file size
+}));
 
 const authRouters = require("./routes/authRoute");
 app.use("/api/v1/auth", authRouters);
