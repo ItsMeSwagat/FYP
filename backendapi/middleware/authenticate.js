@@ -10,7 +10,7 @@ const authenticateUser = catchAsyncErrors(async (req, res, next) => {
   const usertoken = req.cookies.usertoken;
 
   if (!usertoken) {
-    return next(new ErrorHandler("Please login to access", 401));
+    return next(new ErrorHandler("Please login", 401));
   }
 
   const decodedData = jwt.verify(usertoken, process.env.JWT_SECRET);
