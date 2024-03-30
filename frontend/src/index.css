@@ -5,6 +5,9 @@
 *{
   font-family: poppins;
 }
+body{
+  background-color: #f5f5f5;
+}
 ::-webkit-scrollbar{
   width: 10px;
 }
@@ -14,4 +17,22 @@
 ::-webkit-scrollbar-thumb{
   background-color: #EDDB8D;
   border-radius: 10px;
+}
+
+
+
+
+/* profile dropdown */
+.dropdownProfile::before{
+  content: '';
+  position: absolute;
+  top: -1rem;
+  right: 2rem;
+  width: 2rem;
+  height: 2rem;
+  transform: rotate(45deg);
+  background-color: white;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  z-index: -10;
 }
