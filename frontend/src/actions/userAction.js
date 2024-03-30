@@ -12,7 +12,6 @@ import {
   LOGOUT_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
-import { API_BASE_URL } from "../config/apiConfig";
 
 import axios from "axios";
 
@@ -58,7 +57,7 @@ export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/user/me`);
+    const { data } = await axios.get(`/api/v1/user/customer`);
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -67,9 +66,9 @@ export const loadUser = () => async (dispatch) => {
 };
 
 // Logout User
-export const logout = () => async (dispatch) => {
+export const Logout = () => async (dispatch) => {
   try {
-    await axios.get(`${API_BASE_URL}/auth/logout`);
+    await axios.get(`/api/v1/auth/logout`);
 
     dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
