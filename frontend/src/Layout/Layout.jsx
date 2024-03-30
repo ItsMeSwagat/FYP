@@ -1,19 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Navbar from "../user/components/Navigation/Navbar";
 import Footer from "../user/components/Footer/Footer";
-import { Outlet } from "react-router-dom";
-import store from "../store";
-import { loadUser } from "../actions/userAction";
+import {  Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
+
 
 export default function Layout() {
-  useEffect(() => {
-    store.dispatch(loadUser());
-  }, []);
-
   return (
     <>
+      <ToastContainer />
       <Navbar />
-      <Outlet />
+      <Outlet/>
       <Footer />
     </>
   );
