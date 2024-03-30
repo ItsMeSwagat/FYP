@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { productReducer, productDetailsReducer } from "./reducers/productReducer";
 import { userReducer } from "./reducers/userReducer";
 import {profileReducer} from "./reducers/profileReducer"
+import {forgotPasswordReducer} from './reducers/forgotPasswordReducer'
 import {thunk} from "redux-thunk";
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   productDetails: productDetailsReducer,
   user: userReducer,
   profile: profileReducer,
+  forgotPassword: forgotPasswordReducer,
 });
 
 
