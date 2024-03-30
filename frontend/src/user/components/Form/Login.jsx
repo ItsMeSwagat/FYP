@@ -15,10 +15,6 @@ const Login = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  useEffect(() => {
-    dispatch(loadUser());
-  }, [dispatch]);
-
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
   );
@@ -32,7 +28,7 @@ const Login = () => {
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
-      navigate("/login");
+      
     } else if (isAuthenticated) {
       navigate("/");
     }

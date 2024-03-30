@@ -12,11 +12,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState();
-  const [avatarPreview, setAvatarPreview] = useState("/profileimg.png");
-
-  useEffect(() => {
-    dispatch(loadUser());
-  }, [dispatch]);
+  const [avatarPreview, setAvatarPreview] = useState("/profileimg.png")
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
