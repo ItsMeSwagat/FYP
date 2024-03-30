@@ -1,11 +1,18 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = ({ isAuthenticated, children }) => {
+const verifyCookies = () => {
+  const cookies = document.cookie;
+  return cookies.includes("userToken="); 
+};
 
-  return(
-    isAuthenticated ? <Outlet /> : <Navigate to={`/login`} />
-  )
+const ProtectedRoute = ({ isAuthenticated }) => {
+
+  const hasToken = verifyCookies();
+
+  const allowAccess = isAuthenticated || hasToken;
+
+  return allowAccess ? <Outlet /> : <Navigate to={`/login`} />;
 };
 
 export default ProtectedRoute;
