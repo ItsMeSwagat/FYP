@@ -76,17 +76,21 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   await user.save();
 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/auth/password/reset/${resetToken}`;
+  // const resetPasswordUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/auth/password/reset/${resetToken}`;
 
-  const message = `Please Click on the link to reset your Password: \n\n ${resetPasswordUrl} \n\n If your have not requested this mail then, Please ignore it`;
+  const resetPasswordUrl = `${process.env.BASE_URL}/password/reset/${resetToken}`;
+
+  const message = `Please Click Below to reset your Password: \n\n If your have not requested this mail then, Please ignore it`;
+  const url = `${resetPasswordUrl}`
 
   try {
     await sendEmail({
       email: user.email,
       subject: `Jass Sarees Reset password`,
       message,
+      url,
     });
 
     res.status(200).json({
