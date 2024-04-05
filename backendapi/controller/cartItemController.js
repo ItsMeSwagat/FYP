@@ -12,8 +12,7 @@ const updateCartItem = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Invalid quantity provided", 400));
   }
 
-  const item = await CartItem.findById(cartItemId);
-  console.log(item);
+  const item = await CartItem.findById(cartItemId).populate("product");
 
   if (!item) {
     return next(new ErrorHandler("CartItem not Found", 401));
@@ -28,8 +27,8 @@ const updateCartItem = catchAsyncErrors(async (req, res, next) => {
     item.quantity = cartItemData.quantity;
 
     if (item.product) {
-      item.price = item.quantity * item.price;
-      item.discountedPrice = item.quantity * item.discountedPrice;
+      item.price = item.quantity * item.product.price;
+      item.discountedPrice = item.quantity * item.product.discountedPrice;
     } else {
       return next(
         new ErrorHandler("Product information missing or invalid", 400)
@@ -37,7 +36,7 @@ const updateCartItem = catchAsyncErrors(async (req, res, next) => {
     }
 
     const updatedCartItem = await item.save();
-    return res.status(200).json(updatedCartItem);
+    return res.status(200).json({updatedCartItem});
   }
 });
 

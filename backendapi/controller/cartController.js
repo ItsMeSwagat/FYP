@@ -78,14 +78,20 @@ const addItemToCart = catchAsyncErrors(async (req, res, next) => {
   const id = req.user._id;
 
   const cart = await Cart.findOne({ user: id });
+
+  if (!cart) {
+    return next(new ErrorHandler("Cart not Found", 400));
+  }
   const product = await Product.findById(req.body.productId);
+  if (!product) {
+    return next(new ErrorHandler("Product not Found", 400));
+  }
 
   const isPresent = await CartItem.findOne({
     cart: cart._id,
     product: product._id,
     userId: id,
   });
-
 
   if (!isPresent) {
     const cartItem = new CartItem({
