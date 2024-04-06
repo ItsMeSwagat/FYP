@@ -14,9 +14,12 @@ import ChangePassword from "./user/components/Account/ChangePassword";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { loadUser } from "./actions/userAction";
-import store from "./store";
+import { store } from "./store";
 import ForgotPassword from "./user/components/Account/ForgotPassword";
 import ResetPassword from "./user/components/Account/ResetPassword";
+import ErrorPage from "./route/ErrorPage";
+import Cart from "./user/components/Cart/Cart";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -31,26 +34,29 @@ function App() {
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/password/forgot" element={<ForgotPassword/>} />
-          <Route path="/password/reset/:resettoken" element={<ResetPassword/>} />
+          <Route path="/password/forgot" element={<ForgotPassword />} />
+          <Route
+            path="/password/reset/:resettoken"
+            element={<ResetPassword />}
+          />
         </Route>
 
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+        <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
+          <Route path="" element={<Home />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/products/:keyword" element={<Products />} />
           <Route path="/search" element={<Search />} />
-          
+          <Route path="/cart" element={<Cart />} />
 
           <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
             <Route path="/account" element={<Account />} />
             <Route path="/customer/update" element={<EditProfile />} />
             <Route path="/password/update" element={<ChangePassword />} />
-            
           </Route>
         </Route>
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }

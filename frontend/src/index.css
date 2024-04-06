@@ -19,7 +19,9 @@ body{
   border-radius: 10px;
 }
 
-
+button{
+  cursor: pointer;
+}
 
 
 /* profile dropdown */

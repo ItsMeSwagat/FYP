@@ -1,18 +1,20 @@
-import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../../actions/userAction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader/Loader";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const redirect = location.search ? location.search.split("=")[1] : "/account"
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -29,9 +31,9 @@ const Login = () => {
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
-      navigate("/");
+      navigate(redirect);
     }
-  }, [dispatch, error, navigate, isAuthenticated]);
+  }, [dispatch, error, navigate, isAuthenticated, redirect]);
 
   return (
     <>
@@ -39,7 +41,6 @@ const Login = () => {
         <Loader />
       ) : (
         <Fragment>
-          <ToastContainer />
           <div className=" fixed w-full h-screen top-0 left-0 flex justify-center items-center backdrop-blur-md">
             <div className=" relative w-[25rem] h-[32rem] flex flex-col bg-[#fff] rounded-[8px] px-[1rem] py-[2rem] border-2 shadow-xl ">
               <h1 className=" text-3xl font-bold">

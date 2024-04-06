@@ -86,13 +86,15 @@ const Home = () => {
           </div>
 
           {/* Featured products */}
-          <div className=" bg-white mb-[2rem] py-[1rem] rounded-[15px] px-4">
+          <div className=" w-full bg-white mb-[2rem] py-[1rem] rounded-[15px] px-4">
             <h1 className=" text-3xl font-semibold pl-4">Just For You</h1>
-            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-5 py-4">
-              {products &&
-                products.map((product) => (
-                  <Product key={product._id} product={product} />
-                ))}
+            <div className=" flex justify-center items-center">
+              <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 py-4">
+                {products &&
+                  products.map((product) => (
+                    <Product key={product._id} product={product} />
+                  ))}
+              </div>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import Search from "../Search/Search";
 import { useSelector } from "react-redux";
@@ -10,7 +10,9 @@ import { FaHeart } from "react-icons/fa";
 import ProfileDropdown from "../Dropdown/ProfileDropdown";
 
 const Navbar = () => {
+  const location = useLocation();
   const { isAuthenticated } = useSelector((state) => state.user);
+  const { cart } = useSelector((state) => state.cart);
 
   const [openProfile, setOpenProfile] = useState(false);
 
@@ -18,11 +20,10 @@ const Navbar = () => {
     setOpenProfile((prev) => !prev);
   };
 
-  const handleCloseDropdown = () => {
-    setOpenProfile(false);
-  };
 
-  return ( 
+  const isCartPage = location.pathname === "/cart";
+
+  return (
     <Fragment>
       {/* top navbar */}
       <div className=" w-full h-[2.5rem] bg-[#141414] flex justify-center items-center">
@@ -49,10 +50,16 @@ const Navbar = () => {
         {!isAuthenticated ? (
           <div className=" md:hidden lg:flex items-center">
             <div className=" flex gap-4">
-              <Link to={`/login`} className=" bg-[#EDDB8D] px-5 py-[1.5] rounded-[5px] font-medium flex items-center">
+              <Link
+                to={`/login`}
+                className=" bg-[#EDDB8D] px-5 py-[1.5] rounded-[5px] font-medium flex items-center"
+              >
                 Sign In
               </Link>
-              <Link to={`/signup`} className=" bg-black text-white font-medium px-3 py-1.5 rounded-[5px]">
+              <Link
+                to={`/signup`}
+                className=" bg-black text-white font-medium px-3 py-1.5 rounded-[5px]"
+              >
                 Create an Account
               </Link>
             </div>
@@ -78,19 +85,18 @@ const Navbar = () => {
           <IoMenu className=" size-8" />
         </div>
       </div>
-
-      <div className=" z-50 fixed bottom-5 right-5 bg-[#141414] rounded-full w-[4rem] h-[4rem] flex justify-center items-center">
-        <FaCartShopping size={30} color="#EDDB8D" />
-        <p className=" bg-[#EDDB8D] w-[2rem] h-[2rem] rounded-full fixed bottom-2.5 right-[3.5rem] flex justify-center items-center">
-          0
-        </p>
-      </div>
-
-      {
-        openProfile && (
-          <ProfileDropdown setOpenProfile={setOpenProfile} />
-        )
-      }
+      {!isCartPage && (
+        <Link
+          to={`/cart`}
+          className=" z-50 fixed bottom-5 right-5 bg-[#141414] rounded-full w-[3.5rem] h-[3.5rem] flex justify-center items-center"
+        >
+          <FaCartShopping size={25} color="#EDDB8D" />
+          <p className=" bg-[#EDDB8D] w-[2rem] h-[2rem] rounded-full fixed bottom-2.5 right-[3.5rem] flex justify-center items-center">
+            {cart.cart?.cartItems.length}
+          </p>
+        </Link>
+      )}
+      {openProfile && <ProfileDropdown setOpenProfile={setOpenProfile} />}
     </Fragment>
   );
 };

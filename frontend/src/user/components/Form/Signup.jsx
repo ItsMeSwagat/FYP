@@ -4,7 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, register } from "../../../actions/userAction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader/Loader";
 
@@ -72,7 +72,6 @@ const Signup = () => {
         <Loader />
       ) : (
         <Fragment>
-          <ToastContainer />
           <div className=" fixed top-0 left-0 w-full h-full flex justify-center items-center bg-transparent backdrop-blur-md">
             <div className=" relative w-[26rem] h-[40rem] flex flex-col bg-[#fff] rounded-[8px] px-[1rem] py-[1rem] border-2 shadow-xl ">
               <h1 className=" text-3xl font-bold">HELLO,</h1>

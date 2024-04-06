@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { updateProfile, clearErrors } from "../../../actions/profileAction";
 import { loadUser } from "../../../actions/userAction";
 import { UPDATE_PROFILE_RESET } from "../../../constants/userConstants";
@@ -71,7 +71,6 @@ const EditProfile = () => {
         <Loader />
       ) : (
         <div className=" min-h-[60vh] px-[8rem] py-[2rem] flex justify-center items-center">
-          <ToastContainer />
           <form
             encType="multipart/form-data"
             onSubmit={updateProfileSubmit}

@@ -2,25 +2,24 @@ import React, { Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import { ToastContainer } from "react-toastify";
 
 const Account = () => {
   const { isAuthenticated, user, loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
   useEffect(() => {
-
-    if(!isAuthenticated){
-      navigate("/login")
+    if (!loading) {
+      if (!isAuthenticated) {
+        navigate("/login")
+      }
     }
-
-  }, [isAuthenticated, navigate, user]);
+  }, [isAuthenticated, navigate, user, loading]);
   return (
     <Fragment>
       {loading ? (
         <Loader />
       ) : (
         <div className="px-[8rem] w-full min-h-[60vh] flex flex-col justify-center items-center">
-          <ToastContainer />
           {/* Manage Account */}
           <div className=" flex gap-4 w-full py-4">
             <div className=" relative w-full h-[10rem] flex items-center justify-between bg-white rounded-md p-4 border-2">

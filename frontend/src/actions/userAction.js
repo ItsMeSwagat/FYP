@@ -71,6 +71,11 @@ export const Logout = () => async (dispatch) => {
     await axios.get(`/api/v1/auth/logout`);
 
     dispatch({ type: LOGOUT_SUCCESS });
+
+    // Clear authentication token cookie
+    document.cookie = "usertoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    window.location.reload();
   } catch (error) {
     dispatch({ type: LOGOUT_FAIL, payload: error.response.data.message });
   }

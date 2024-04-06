@@ -40,6 +40,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
+  address: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -76,9 +79,9 @@ userSchema.methods.getResetPasswordToken = function () {
     .update(resetToken)
     .digest("hex");
 
-    this.resetPasswordExpire = Date.now() + 10 *60*1000;
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
-    return resetToken;
+  return resetToken;
 };
 
 const User = mongoose.model("User", userSchema);

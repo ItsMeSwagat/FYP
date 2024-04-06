@@ -15,6 +15,15 @@ const productSchema = new mongoose.Schema({
     required: true,
     maxLength: 10,
   },
+  discountedPrice: {
+    type: Number,
+    required: true,
+    maxLength: 10,
+  },
+  discountPercent: {
+    type: Number,
+    required: true,
+  },
   ratings: {
     type: Number,
     default: 0,
@@ -65,16 +74,18 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      images: [{
-        public_id: {
-          type: String,
-          required: true,
+      images: [
+        {
+          public_id: {
+            type: String,
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          },
         },
-        url: {
-          type: String,
-          required: true,
-        },
-      }],
+      ],
       rating: {
         type: Number,
         required: true,
@@ -96,4 +107,5 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Product", productSchema);
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

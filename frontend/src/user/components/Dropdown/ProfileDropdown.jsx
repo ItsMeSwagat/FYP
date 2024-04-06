@@ -4,16 +4,18 @@ import { BiSolidShoppingBagAlt } from "react-icons/bi";
 import { FaHeart } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Logout } from "../../../actions/userAction";
 
 const ProfileDropdown = ({ setOpenProfile }) => {
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function logout() {
     dispatch(Logout());
+    navigate("/login")
   }
 
   const handleCloseDropdown = () => {
