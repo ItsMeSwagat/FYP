@@ -5,6 +5,7 @@ const sendToken = require("../utils/userToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary");
+const cartController = require("./cartController");
 
 //REGISTER USER
 const registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -24,6 +25,8 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
       url: cloud.secure_url,
     },
   });
+
+   await cartController.createCart(user);
 
   sendToken(user, 201, res);
 });
@@ -53,10 +56,14 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
 
 // Logout User
 const logoutUser = catchAsyncErrors(async (req, res, next) => {
-  res.cookie("usertoken", "", {
-    maxAge: new Date(0),
-    httpOnly: true,
-  });
+  // res.cookie("usertoken", "", {
+  //   maxAge: new Date(0),
+  //   httpOnly: true,
+  // });
+
+  res.clearCookie("usertoken");
+
+  req.user = null;
 
   res.status(200).json({
     success: true,
