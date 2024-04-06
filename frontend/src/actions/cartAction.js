@@ -12,6 +12,9 @@ import {
   REMOVE_CART_REQUEST,
   REMOVE_CART_SUCCESS,
   REMOVE_CART_FAIL,
+  APPLY_VOUCHER_REQUEST,
+  APPLY_VOUCHER_SUCCESS,
+  APPLY_VOUCHER_FAIL,
   CLEAR_ERRORS,
 } from "../constants/cartConstants";
 
@@ -80,6 +83,30 @@ export const getUserCart = () => async (dispatch) => {
     dispatch({
       type: GET_USER_CART_FAIL,
       payload: error.response.data.message,
+    });
+  }
+};
+
+export const applyVoucher = (voucherCode) => async (dispatch) => {
+  try {
+    dispatch({ type: APPLY_VOUCHER_REQUEST });
+
+    const config = { headers: { "Content-Type": "application/json" } };
+
+    const { data } = await axios.post(
+      "/api/v1/cart/applyvoucher",
+      { voucherCode },
+      config
+    );
+
+    dispatch({ type: APPLY_VOUCHER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: APPLY_VOUCHER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

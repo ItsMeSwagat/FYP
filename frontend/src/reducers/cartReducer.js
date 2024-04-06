@@ -12,6 +12,7 @@ import {
   REMOVE_CART_SUCCESS,
   REMOVE_CART_FAIL,
   CLEAR_ERRORS,
+  SAVE_SHIPPING_DETAILS,
 } from "../constants/cartConstants";
 
 const initialState = {
@@ -74,6 +75,12 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      };
+
+    case SAVE_SHIPPING_DETAILS:
+      return {
+        ...state,
+        shippingInfo: action.payload,
       };
 
     case CLEAR_ERRORS:
