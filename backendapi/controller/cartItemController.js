@@ -2,6 +2,8 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const CartItem = require("../models/cartItemModel");
 const User = require("../models/userModel");
 const ErrorHandler = require("../utils/errorHandler");
+const Voucher = require("../models/voucherModel");
+const Cart = require("../models/cartModel");
 
 const updateCartItem = catchAsyncErrors(async (req, res, next) => {
   const userId = req.user._id;
@@ -24,6 +26,9 @@ const updateCartItem = catchAsyncErrors(async (req, res, next) => {
   }
 
   if (user._id.toString() === item.userId.toString()) {
+    const prevQuantity = item.quantity;
+    const newQuantity = cartItemData.quantity;
+
     item.quantity = cartItemData.quantity;
 
     if (item.product) {
@@ -36,7 +41,36 @@ const updateCartItem = catchAsyncErrors(async (req, res, next) => {
     }
 
     const updatedCartItem = await item.save();
-    return res.status(200).json({updatedCartItem});
+
+    // Update cart details
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      return next(new ErrorHandler("Cart not found", 404));
+    }
+
+    const priceDiff = (newQuantity - prevQuantity) * item.product.price;
+    const discountedPriceDiff =
+      (newQuantity - prevQuantity) * item.product.discountedPrice;
+
+    cart.totalPrice += priceDiff;
+    cart.totalDiscountedPrice += discountedPriceDiff;
+    cart.discount = cart.totalPrice - cart.totalDiscountedPrice;
+
+    if (cart.voucher) {
+      let voucherDiscount = 0;
+      const voucher = await Voucher.findOne({ name: cart.voucher });
+      if (voucher) {
+        if (voucher.discountType === "percentage") {
+          voucherDiscount = (voucher.discount / 100) * cart.totalPrice;
+        } else if (voucher.discountType === "fixed") {
+          voucherDiscount = voucher.discount;
+        }
+      }
+      cart.voucherDiscount = voucherDiscount;
+    }
+
+    await cart.save();
+    return res.status(200).json({ updatedCartItem });
   }
 });
 

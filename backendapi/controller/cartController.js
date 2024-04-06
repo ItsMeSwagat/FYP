@@ -4,53 +4,16 @@ const User = require("../models/userModel");
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const CartItem = require("../models/cartItemModel");
-
-// const saveCart = catchAsyncErrors(async (req, res, next) => {
-//   const { cartItems } = req.body;
-//   const userID = req.user._id;
-
-//   let cart = await Cart.findOne({ user: userID });
-
-//   if (!cart) {
-//     cart = new Cart({
-//       user: userID,
-//       cartItems: cartItems,
-//     });
-//   } else {
-//     cart.cartItems = cartItems;
-//   }
-
-//   await cart.save();
-
-//   res.status(200).json({ success: true });
-// });
-
-// const getUserCart = catchAsyncErrors(async (req, res, next) => {
-//   const userID = req.user._id;
-
-//   const cart = await Cart.findOne({ user: userID }).populate(
-//     "cartItems.product",
-//     "name price images"
-//   );
-
-//   if (!cart) {
-//     return res
-//       .status(200)
-//       .json({ cartItems: [] });
-//   }
-
-//   res.status(200).json({ success: true, cartItems: cart.cartItems });
-// });
-
-// module.exports = {
-//   saveCart,
-//   getUserCart,
-// };
+const Voucher = require("../models/voucherModel");
 
 const findUserCart = catchAsyncErrors(async (req, res, next) => {
   const id = req.user._id;
 
   let cart = await Cart.findOne({ user: id });
+
+  if (!cart) {
+    return next(new ErrorHandler("Cart not found", 404));
+  }
 
   let cartItems = await CartItem.find({ cart: cart._id }).populate("product");
 
@@ -66,10 +29,26 @@ const findUserCart = catchAsyncErrors(async (req, res, next) => {
     totalItem += cartItem.quantity;
   }
 
+  cart.discount = totalPrice - totalDiscountedPrice;
+
+  if (cart.voucher) {
+    const voucher = await Voucher.findOne({ name: cart.voucher });
+    if (voucher) {
+      let voucherDiscount = 0;
+      if (voucher.discountType === "percentage") {
+        voucherDiscount = (voucher.discount / 100) * totalPrice;
+      } else if (voucher.discountType === "fixed") {
+        voucherDiscount = voucher.discount;
+      }
+      cart.voucherDiscount = voucherDiscount;
+      totalDiscountedPrice -= voucherDiscount;
+    }
+  }
+
   cart.totalPrice = totalPrice;
   cart.totalDiscountedPrice = totalDiscountedPrice;
   cart.totalItem = totalItem;
-  cart.discount = totalPrice - totalDiscountedPrice;
+  
 
   return res.status(200).json({ cart });
 });
@@ -106,6 +85,7 @@ const addItemToCart = catchAsyncErrors(async (req, res, next) => {
 
     const newCartItem = await cartItem.save();
     cart.cartItems.push(newCartItem);
+
     await cart.save();
 
     return res.status(200).json({ success: true });
@@ -118,8 +98,52 @@ const createCart = catchAsyncErrors(async (user) => {
   return createdCart;
 });
 
+const applyVoucher = catchAsyncErrors(async (req, res, next) => {
+  const { voucherCode } = req.body;
+  const userId = req.user._id;
+
+  let cart = await Cart.findOne({ user: userId });
+
+  if (!cart) {
+    return next(new ErrorHandler("Cart not found", 404));
+  }
+
+  if (cart.voucher) {
+    return next(new ErrorHandler("Voucher already applied to the cart", 400));
+  }
+
+  const voucher = await Voucher.findOne({ name: voucherCode.toUpperCase() });
+
+  if (!voucher) {
+    return next(new ErrorHandler("Invalid voucher code", 400));
+  }
+
+  let discount = 0;
+
+  if (voucher.expiry < new Date()) {
+    return next(new ErrorHandler("Voucher has expired", 400));
+  }
+
+  let totalPrice = cart.totalPrice;
+
+  if (voucher.discountType === "percentage") {
+    discount = (voucher.discount / 100) * totalPrice;
+  } else if (voucher.discountType === "fixed") {
+    discount = voucher.discount;
+  }
+
+  cart.voucher = voucherCode;
+  cart.totalDiscountedPrice = totalPrice - discount;
+  cart.voucherDiscount = discount;
+
+  await cart.save();
+
+  res.status(200).json({ cart });
+});
+
 module.exports = {
   findUserCart,
   addItemToCart,
   createCart,
+  applyVoucher,
 };
