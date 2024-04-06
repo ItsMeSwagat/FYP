@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useReducer, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { clearErrors, getProduct } from "../../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
