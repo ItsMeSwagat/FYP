@@ -9,7 +9,6 @@ const CartItemCard = ({ item, dispatch }) => {
       data: { quantity: item.quantity + qty },
       cartItemId: item?._id,
     };
-    console.log(data);
     dispatch(updateCartItem(data));
   };
 
