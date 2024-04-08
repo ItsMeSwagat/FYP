@@ -11,7 +11,7 @@ import { thunk } from "redux-thunk";
 import { cartReducer } from "./reducers/cartReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { applyVoucherReducer } from "./reducers/applyVoucherReducer";
+import { voucherReducer } from "./reducers/applyVoucherReducer";
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   forgotPassword: forgotPasswordReducer,
   cart: cartReducer,
-  applyVoucher: applyVoucherReducer,
+  voucher: voucherReducer,
 });
 
 const persistConfig = {
@@ -29,11 +29,28 @@ const persistConfig = {
   whitelist: ["user"],
 };
 
+let initialState = {
+  user: {
+    loading: false,
+    isAuthenticated: false,
+  },
+  cart: {
+    cart: {},
+    loading: false,
+    error: null,
+    cartItems: [],
+    shippingDetails: localStorage.getItem("shippingDetails")
+      ? JSON.parse(localStorage.getItem("shippingDetails"))
+      : {},
+  },
+};
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+  preloadedState: initialState,
 });
 
 const persistor = persistStore(store);
