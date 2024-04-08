@@ -20,6 +20,7 @@ const initialState = {
   loading: false,
   error: null,
   cartItems: [],
+  shippingDetails: {}
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -31,7 +32,7 @@ export const cartReducer = (state = initialState, action) => {
     case ADD_TO_CART_SUCCESS:
       return {
         ...state,
-        cartItems: [...state.cartItems, action.payload.cartItems],
+        success: action.payload.success,
         loading: false,
       };
 
@@ -80,7 +81,7 @@ export const cartReducer = (state = initialState, action) => {
     case SAVE_SHIPPING_DETAILS:
       return {
         ...state,
-        shippingInfo: action.payload,
+        shippingDetails: action.payload,
       };
 
     case CLEAR_ERRORS:

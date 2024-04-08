@@ -12,24 +12,18 @@ import {
   REMOVE_CART_REQUEST,
   REMOVE_CART_SUCCESS,
   REMOVE_CART_FAIL,
-  APPLY_VOUCHER_REQUEST,
-  APPLY_VOUCHER_SUCCESS,
-  APPLY_VOUCHER_FAIL,
   CLEAR_ERRORS,
+  SAVE_SHIPPING_DETAILS,
 } from "../constants/cartConstants";
 
-export const addToCart = (data) => async (dispatch) => {
+export const addToCart = (reqData) => async (dispatch) => {
   dispatch({ type: ADD_TO_CART_REQUEST });
 
   try {
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data: responseData } = await axios.put(
-      "/api/v1/cart/add",
-      data,
-      config
-    );
-    dispatch({ type: ADD_TO_CART_SUCCESS, payload: responseData });
+    const { data } = await axios.put("/api/v1/cart/add", reqData, config);
+    dispatch({ type: ADD_TO_CART_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: ADD_TO_CART_FAIL,
@@ -87,28 +81,13 @@ export const getUserCart = () => async (dispatch) => {
   }
 };
 
-export const applyVoucher = (voucherCode) => async (dispatch) => {
-  try {
-    dispatch({ type: APPLY_VOUCHER_REQUEST });
+export const saveShippingDetails = (data) => async (dispatch) => {
+  dispatch({
+    type: SAVE_SHIPPING_DETAILS,
+    payload: data,
+  });
 
-    const config = { headers: { "Content-Type": "application/json" } };
-
-    const { data } = await axios.post(
-      "/api/v1/cart/applyvoucher",
-      { voucherCode },
-      config
-    );
-
-    dispatch({ type: APPLY_VOUCHER_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: APPLY_VOUCHER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
+  localStorage.setItem("shippingDetails", JSON.stringify(data));
 };
 
 export const clearErrors = () => async (dispatch) => {
