@@ -14,7 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const redirect = location.search ? location.search.split("=")[1] : "/account"
+
+  const redirect = location.state?.redirect;
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -31,7 +32,11 @@ const Login = () => {
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
-      navigate(redirect);
+      if (redirect) {
+        navigate(redirect);
+      } else {
+        navigate("/account");
+      }
     }
   }, [dispatch, error, navigate, isAuthenticated, redirect]);
 
