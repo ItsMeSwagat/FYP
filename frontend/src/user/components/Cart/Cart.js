@@ -2,48 +2,64 @@ import React, { Fragment, useEffect, useState } from "react";
 import CartItemCard from "./CartItemCard";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getUserCart,
-  clearErrors,
+  clearVoucherErrors,
   applyVoucher,
-} from "../../../actions/cartAction";
+  removeVoucher,
+} from "../../../actions/voucherAction";
 import { FaCartArrowDown } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../Loader/Loader";
+import { getUserCart, clearErrors } from "../../../actions/cartAction";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { cart, loading, error } = useSelector((store) => store);
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const { cart, loading, voucher } = useSelector((store) => store);
+
+  const { error: cartError } = useSelector((state) => state.cart);
+  const { error: voucherError } = useSelector((state) => state.voucher);
   const [voucherCode, setVoucherCode] = useState("");
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    dispatch(getUserCart());
+    if (cartError) {
+      toast.error(cartError);
       dispatch(clearErrors());
     }
-    if (!isAuthenticated) {
-      navigate("/login");
+    if (voucherError) {
+      toast.error(voucherError);
+      dispatch(clearVoucherErrors());
     }
-    dispatch(getUserCart());
-  }, [dispatch, error, isAuthenticated, cart.update, cart.delete, navigate]);
+  }, [
+    dispatch,
+    cart.update,
+    cart.delete,
+    voucher.removed,
+    voucher.applied,
+    navigate,
+    voucherError,
+    cartError,
+  ]);
 
   if (!cart || !cart.cart || loading) {
     return <Loader />;
   }
 
   const handleCheckout = () => {
-    navigate("/login?redirect=shipping");
+    const redirectToShipping = "/shipping";
+
+    navigate("/login", {
+      state: { redirect: redirectToShipping },
+    });
   };
 
   const handleApplyVoucher = () => {
-    if (applyVoucher.error) {
-      toast.error("Invalid Voucher Code");
-      dispatch(clearErrors());
-    } else {
-      dispatch(applyVoucher(voucherCode));
-    }
+    dispatch(applyVoucher(voucherCode));
+  };
+
+  const handleRemoveVoucher = () => {
+    dispatch(removeVoucher(cart.cart.cart?.voucher));
   };
 
   return (
@@ -92,21 +108,34 @@ const Cart = () => {
             ))}
 
           <div className="flex gap-5 justify-end mt-5">
-            <div className=" w-[15rem] flex flex-col gap-3">
-              <input
-                type="text"
-                value={voucherCode}
-                placeholder="Enter Voucher"
-                onChange={(e) => setVoucherCode(e.target.value)}
-                className=" uppercase px-2 py-2 outline-none border-2 rounded-md"
-              />
-              <button
-                className=" bg-[#141414] text-white py-2 hover:bg-[#eddb8e] hover:text-black font-medium rounded-md"
-                onClick={handleApplyVoucher}
-              >
-                Apply Voucher
-              </button>
-            </div>
+            {cart.cart.cart?.voucher ? (
+              <div className=" w-[15rem] flex flex-col gap-3">
+                <p>Voucher: {cart.cart.cart?.voucher}</p>
+                <button
+                  className=" bg-[#141414] text-white py-2 hover:bg-[#eddb8e] hover:text-black font-medium rounded-md"
+                  onClick={handleRemoveVoucher}
+                >
+                  Remove Voucher
+                </button>
+              </div>
+            ) : (
+              <div className=" w-[15rem] flex flex-col gap-3">
+                <input
+                  type="text"
+                  value={voucherCode}
+                  placeholder="Enter Voucher"
+                  onChange={(e) => setVoucherCode(e.target.value)}
+                  className=" uppercase px-2 py-2 outline-none border-2 rounded-md"
+                />
+                <button
+                  className=" bg-[#141414] text-white py-2 hover:bg-[#eddb8e] hover:text-black font-medium rounded-md"
+                  onClick={handleApplyVoucher}
+                  disabled={!voucherCode}
+                >
+                  Apply Voucher
+                </button>
+              </div>
+            )}
             <div className=" bg-white w-[20rem] min-h-[5rem] flex flex-col gap-5 justify-around p-4 rounded-md border-2">
               <div className=" flex justify-between">
                 <p>Subtotal Total:</p>
@@ -116,10 +145,14 @@ const Cart = () => {
                 <p>Discount:</p>
                 <p className=" text-green-400">-Rs{cart.cart.cart?.discount}</p>
               </div>
-              <div className=" flex justify-between">
-                <p>Voucher Discount:</p>
-                <p className=" text-green-400">-Rs{cart.cart.cart?.voucherDiscount}</p>
-              </div>
+              {cart.cart.cart?.voucherDiscount && (
+                <div className="flex justify-between">
+                  <p>Voucher Discount:</p>
+                  <p className="text-green-400">
+                    -Rs{cart.cart.cart?.voucherDiscount}
+                  </p>
+                </div>
+              )}
               <div className=" flex justify-between">
                 <p>Grand Total:</p>
                 <p>Rs {cart.cart.cart?.totalDiscountedPrice} </p>
