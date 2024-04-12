@@ -12,6 +12,7 @@ import { cartReducer } from "./reducers/cartReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { voucherReducer } from "./reducers/applyVoucherReducer";
+import { createOrderReducer, userOrdersReducer } from "./reducers/orderReducer";
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -21,6 +22,8 @@ const rootReducer = combineReducers({
   forgotPassword: forgotPasswordReducer,
   cart: cartReducer,
   voucher: voucherReducer,
+  newOrder: createOrderReducer,
+  userOrder: userOrdersReducer,
 });
 
 const persistConfig = {
