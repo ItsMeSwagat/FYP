@@ -19,7 +19,11 @@ import ForgotPassword from "./user/components/Account/ForgotPassword";
 import ResetPassword from "./user/components/Account/ResetPassword";
 import ErrorPage from "./route/ErrorPage";
 import Cart from "./user/components/Cart/Cart";
-import { ToastContainer } from "react-toastify";
+import ShippingDetails from "./user/components/Checkout/ShippingDetails";
+import ConfirmOrder from "./user/components/Checkout/ConfirmOrder";
+import Payment from "./user/components/Checkout/Payment";
+import Success from "./user/components/Checkout/Success";
+import UserOrder from './user/components/Order/UserOrder'
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -31,7 +35,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<AuthLayout />}>
+        <Route element={<AuthLayout />} errorElement={<ErrorPage />}>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/password/forgot" element={<ForgotPassword />} />
@@ -47,16 +51,23 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/products/:keyword" element={<Products />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/cart" element={<Cart />} />
 
-          <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+          <Route
+            element={<ProtectedRoute isAuthenticated={isAuthenticated} />}
+            errorElement={<ErrorPage />}
+          >
             <Route path="/account" element={<Account />} />
             <Route path="/customer/update" element={<EditProfile />} />
             <Route path="/password/update" element={<ChangePassword />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/shipping" element={<ShippingDetails />} />
+            <Route path="/confirmorder" element={<ConfirmOrder />} />
+            <Route path="/payment/process" element={<Payment />} />
+            <Route path="/payment/success" element={<Success />} />
+            <Route path="/orders/user" element={<UserOrder />} />
           </Route>
         </Route>
       </Routes>
-      <ToastContainer />
     </BrowserRouter>
   );
 }
