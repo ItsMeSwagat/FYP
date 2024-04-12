@@ -41,7 +41,11 @@ export const register = (userData) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const { data } = await axios.post(`/api/v1/auth/register`, userData, config);
+    const { data } = await axios.post(
+      `/api/v1/auth/register`,
+      userData,
+      config
+    );
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -73,16 +77,14 @@ export const Logout = () => async (dispatch) => {
     dispatch({ type: LOGOUT_SUCCESS });
 
     // Clear authentication token cookie
-    document.cookie = "usertoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "usertoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
     window.location.reload();
   } catch (error) {
     dispatch({ type: LOGOUT_FAIL, payload: error.response.data.message });
   }
 };
-
-
-
 
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });

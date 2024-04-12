@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
-import { FiSearch } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import Search from "../Search/Search";
@@ -20,8 +19,16 @@ const Navbar = () => {
     setOpenProfile((prev) => !prev);
   };
 
+  const hideCartButtonPages = [
+    "/cart",
+    "/checkout",
+    "/shipping",
+    "confirmorder",
+    "/payment/process",
+    "/success",
+  ];
 
-  const isCartPage = location.pathname === "/cart";
+  const ShowCartButton = !hideCartButtonPages.includes(location.pathname);
 
   return (
     <Fragment>
@@ -85,7 +92,7 @@ const Navbar = () => {
           <IoMenu className=" size-8" />
         </div>
       </div>
-      {!isCartPage && (
+      {ShowCartButton && (
         <Link
           to={`/cart`}
           className=" z-50 fixed bottom-5 right-5 bg-[#141414] rounded-full w-[3.5rem] h-[3.5rem] flex justify-center items-center"

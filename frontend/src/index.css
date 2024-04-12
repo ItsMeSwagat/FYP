@@ -2,31 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   font-family: poppins;
 }
-body{
+body {
   background-color: #f5f5f5;
 }
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 10px;
 }
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background-color: white;
 }
-::-webkit-scrollbar-thumb{
-  background-color: #EDDB8D;
+::-webkit-scrollbar-thumb {
+  background-color: #eddb8d;
   border-radius: 10px;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
-
 /* profile dropdown */
-.dropdownProfile::before{
-  content: '';
+.dropdownProfile::before {
+  content: "";
   position: absolute;
   top: -1rem;
   right: 2rem;
@@ -39,3 +38,22 @@ button{
   z-index: -10;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.MuiStepper-horizontal .MuiStepConnector-line {
+  display: none !important;
+}
+
+.MuiStepConnector-root {
+  height: 1px;
+  background-color: #141414;
+}
+
+.MuiStepConnector-active,
+.MuiStepConnector-completed {
+  background-color: #eddb8d;
+}

@@ -27,7 +27,7 @@ const Account = () => {
               <div className=" w-[8rem] h-[8rem] rounded-full overflow-hidden">
                 <img
                   src={user.avatar.url}
-                  alt="userimg"
+                  alt="img"
                   className=" object-cover object-center"
                 />
               </div>
