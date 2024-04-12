@@ -48,7 +48,6 @@ const findUserCart = catchAsyncErrors(async (req, res, next) => {
   cart.totalPrice = totalPrice;
   cart.totalDiscountedPrice = totalDiscountedPrice;
   cart.totalItem = totalItem;
-  
 
   return res.status(200).json({ cart });
 });
@@ -109,13 +108,13 @@ const applyVoucher = catchAsyncErrors(async (req, res, next) => {
   }
 
   if (cart.voucher) {
-    return next(new ErrorHandler("Voucher already applied to the cart", 400));
+    return next(new ErrorHandler("Voucher already applied to the cart", 404));
   }
 
   const voucher = await Voucher.findOne({ name: voucherCode.toUpperCase() });
 
   if (!voucher) {
-    return next(new ErrorHandler("Invalid voucher code", 400));
+    return next(new ErrorHandler("Invalid voucher code", 404));
   }
 
   let discount = 0;
@@ -141,9 +140,33 @@ const applyVoucher = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ cart });
 });
 
+const removeVoucher = catchAsyncErrors(async (req, res, next) => {
+  const userId = req.user._id;
+
+  let cart = await Cart.findOne({ user: userId });
+
+  if (!cart) {
+    return next(new ErrorHandler("Cart not found", 404));
+  }
+
+  if (!cart.voucher) {
+    return next(new ErrorHandler("No voucher applied to the cart", 400));
+  }
+
+  cart.voucher = undefined;
+  cart.voucherDiscount = 0;
+
+  cart.totalDiscountedPrice = cart.totalPrice - cart.discount;
+
+  await cart.save();
+
+  res.status(200).json({ success: true, cart });
+});
+
 module.exports = {
   findUserCart,
   addItemToCart,
   createCart,
   applyVoucher,
+  removeVoucher,
 };

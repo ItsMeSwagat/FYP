@@ -145,7 +145,7 @@ const Cart = () => {
                 <p>Discount:</p>
                 <p className=" text-green-400">-Rs{cart.cart.cart?.discount}</p>
               </div>
-              {cart.cart.cart?.voucherDiscount && (
+              {cart.cart.cart?.voucherDiscount !== 0 && (
                 <div className="flex justify-between">
                   <p>Voucher Discount:</p>
                   <p className="text-green-400">
