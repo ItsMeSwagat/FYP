@@ -38,6 +38,15 @@ app.use("/api/v1/cart", cartRouters);
 const cartItemRouter = require("./routes/cartItemRoute");
 app.use("/api/v1/cart_items", cartItemRouter);
 
+const orderRouter = require("./routes/orderRoute");
+app.use("/api/v1/order", orderRouter);
+
+const adminOrderRouter = require("./routes/adminOrderRoute");
+app.use("/api/v1/admin", adminOrderRouter);
+
+const khaltiRouter = require("./routes/khaltiRoute");
+app.use("/api/v1/khalti", khaltiRouter);
+
 app.use(errorMiddleware);
 
 module.exports = app;
