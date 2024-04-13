@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import CheckoutProcess from "./CheckoutProcess";
-import { clearErrors, initiatePayment } from "../../../actions/paymentAction";
 import { toast } from "react-toastify";
 import Loader from "../Loader/Loader";
-import { createOrder } from "../../../actions/orderAction";
+import { clearErrors, createOrder } from "../../../actions/orderAction";
 
 const Payment = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { cart, shippingDetails } = useSelector((state) => ({
     cart: state.cart.cart,
     shippingDetails: state.cart.shippingDetails,
   }));
 
-  const { loading, error } = useSelector((state) => state.payment);
-
+  const { loading, error } = useSelector((state) => state.newOrder);
   const orderData = JSON.parse(sessionStorage.getItem("orderData"));
 
   const { subtotal, shippingCharge, OrderTotal } = orderData;
@@ -26,7 +22,7 @@ const Payment = () => {
       shippingDetails,
       orderItems: cart.cart?.cartItems,
       totalPrice: orderData.subtotal,
-      shippingCharge: orderData.shippingCharge,
+      shippingPrice: orderData.shippingCharge,
       totalOrderPrice: orderData.OrderTotal,
     };
     dispatch(createOrder(order));
@@ -37,7 +33,8 @@ const Payment = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-  }, [error, dispatch]);
+  }, [dispatch, error]);
+
   return (
     <>
       {loading ? (
