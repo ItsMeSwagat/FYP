@@ -13,6 +13,9 @@ import {
   REMOVE_CART_FAIL,
   CLEAR_ERRORS,
   SAVE_SHIPPING_DETAILS,
+  CLEAR_CART_REQUEST,
+  CLEAR_CART_FAIL,
+  CLEAR_CART_SUCCESS,
 } from "../constants/cartConstants";
 
 const initialState = {
@@ -20,7 +23,7 @@ const initialState = {
   loading: false,
   error: null,
   cartItems: [],
-  shippingDetails: {}
+  shippingDetails: {},
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -50,6 +53,7 @@ export const cartReducer = (state = initialState, action) => {
 
     case REMOVE_CART_REQUEST:
     case UPDATE_CART_REQUEST:
+    case CLEAR_CART_REQUEST:
       return {
         ...state,
         loading: true,
@@ -70,8 +74,17 @@ export const cartReducer = (state = initialState, action) => {
         loading: false,
       };
 
+    case CLEAR_CART_SUCCESS:
+      return {
+        ...state,
+        cart: {},
+        cartItems: [],
+        loading: false,
+      };
+
     case REMOVE_CART_FAIL:
     case UPDATE_CART_FAIL:
+    case CLEAR_CART_FAIL:
       return {
         ...state,
         error: action.payload,

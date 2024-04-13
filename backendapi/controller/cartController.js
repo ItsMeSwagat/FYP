@@ -91,6 +91,30 @@ const addItemToCart = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+const clearCart = catchAsyncErrors(async (req, res, next) => {
+  const userId = req.user._id;
+
+  let cart = await Cart.findOne({ user: userId });
+
+  if (!cart) {
+    return next(new ErrorHandler("Cart not found", 404));
+  }
+
+  await CartItem.deleteMany({ cart: cart._id });
+
+  cart.cartItems = [];
+  cart.totalPrice = 0;
+  cart.totalDiscountedPrice = 0;
+  cart.totalItem = 0;
+  cart.discount = 0;
+  cart.voucher = undefined;
+  cart.voucherDiscount = 0;
+
+  await cart.save();
+
+  res.status(200).json({ success: true, cart });
+});
+
 const createCart = catchAsyncErrors(async (user) => {
   const cart = new Cart({ user });
   const createdCart = await cart.save();
@@ -169,4 +193,5 @@ module.exports = {
   createCart,
   applyVoucher,
   removeVoucher,
+  clearCart
 };

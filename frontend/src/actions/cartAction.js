@@ -14,6 +14,9 @@ import {
   REMOVE_CART_FAIL,
   CLEAR_ERRORS,
   SAVE_SHIPPING_DETAILS,
+  CLEAR_CART_REQUEST,
+  CLEAR_CART_SUCCESS,
+  CLEAR_CART_FAIL,
 } from "../constants/cartConstants";
 
 export const addToCart = (reqData) => async (dispatch) => {
@@ -76,6 +79,21 @@ export const getUserCart = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_USER_CART_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const clearCart = () => async (dispatch) => {
+  try {
+    dispatch({ type: CLEAR_CART_REQUEST });
+
+    await axios.delete("/api/v1/cart/clear");
+
+    dispatch({ type: CLEAR_CART_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: CLEAR_CART_FAIL,
       payload: error.response.data.message,
     });
   }
