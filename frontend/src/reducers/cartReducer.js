@@ -41,7 +41,12 @@ export const cartReducer = (state = initialState, action) => {
 
     case ADD_TO_CART_FAIL:
     case GET_USER_CART_FAIL:
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        success: false,
+        error: action.payload,
+      };
 
     case GET_USER_CART_SUCCESS:
       return {
