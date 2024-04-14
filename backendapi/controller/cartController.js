@@ -71,6 +71,10 @@ const addItemToCart = catchAsyncErrors(async (req, res, next) => {
     userId: id,
   });
 
+  if (isPresent) {
+    return next(new ErrorHandler("Product is already in Cart", 404));
+  }
+
   if (!isPresent) {
     const cartItem = new CartItem({
       product: product._id,
@@ -193,5 +197,5 @@ module.exports = {
   createCart,
   applyVoucher,
   removeVoucher,
-  clearCart
+  clearCart,
 };
