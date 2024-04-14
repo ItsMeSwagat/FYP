@@ -23,22 +23,6 @@ const getAllOrders = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-const getSingleOrder = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.params.id).populate(
-    "user",
-    "name email"
-  );
-
-  if (!order) {
-    return next(new ErrorHandler("Order not found with this Id", 404));
-  }
-
-  res.status(200).json({
-    success: true,
-    order,
-  });
-});
-
 const updateOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
@@ -97,7 +81,6 @@ async function updateStock(id, quantity, sizeName) {
 
 module.exports = {
   getAllOrders,
-  getSingleOrder,
   updateOrder,
   deleteOrder,
 };
