@@ -3,10 +3,11 @@ import Carousel from "react-material-ui-carousel";
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, getProductDetails } from "../../../actions/productAction";
 import { useParams, useNavigate } from "react-router-dom";
-import ReactStars from "react-rating-stars-component";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../Loader/Loader";
 import { addToCart } from "../../../actions/cartAction";
+import ReviewCard from "./ReviewCard";
+import { Rating } from "@mui/material";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -17,17 +18,15 @@ const ProductDetails = () => {
     (state) => state.productDetails
   );
 
-  const {isAuthenticated} = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.user);
+  const { error: cartError, success } = useSelector((state) => state.cart);
 
   const options = {
-    edit: false,
-    color: "#141414",
-    activeColor: "#Eddb8d",
-    size: window.innerWidth < 600 ? 20 : 25,
+    size: "large",
     value: product.ratings,
-    isHalf: true,
+    precision: 0.5,
+    readOnly: true,
   };
-
 
   const [selectedSize, setSelectedSize] = useState("");
 
@@ -36,12 +35,11 @@ const ProductDetails = () => {
   };
 
   const AddCart = () => {
-    if(!isAuthenticated) {
-      navigate('/login')
+    if (!isAuthenticated) {
+      navigate("/login");
     }
     const data = { productId: id, size: selectedSize };
     dispatch(addToCart(data));
-    toast.success("Product Added to Cart");
   };
 
   useEffect(() => {
@@ -53,10 +51,18 @@ const ProductDetails = () => {
   }, [dispatch, id, error]);
 
   useEffect(() => {
+    if (cartError) {
+      toast.error(cartError);
+      dispatch(clearErrors());
+    }
+    if (success) {
+      toast.success("Product Added to Cart");
+      dispatch(clearErrors());
+    }
     if (product.sizes && product.sizes.length > 0) {
       setSelectedSize(product.sizes[0].name);
     }
-  }, [product]);
+  }, [product, dispatch, cartError, success]);
 
   return (
     <Fragment>
@@ -66,7 +72,7 @@ const ProductDetails = () => {
         <Fragment>
           <ToastContainer />
           <div className=" min-h-[80vh] mx-[8rem] my-[1rem]">
-            <div className=" bg-white w-full flex">
+            <div className=" bg-white w-full flex border-2 rounded-md">
               <div className=" w-[50%] flex flex-col justify-center items-center">
                 <Carousel className=" w-[80%] m-4">
                   {product.images &&
@@ -122,7 +128,7 @@ const ProductDetails = () => {
 
                 {/* ratings */}
                 <div className=" py-1 border-b-2">
-                  <ReactStars {...options} />
+                  <Rating {...options} />
                   <p>({product.numOfReviews} Reviews)</p>
                 </div>
 
@@ -163,12 +169,19 @@ const ProductDetails = () => {
                       product.sizes.map((size, index) => (
                         <button
                           key={size.name}
-                          className={` px-3 py-1 rounded-[10px] flex items-center justify-center cursor-pointer font-medium ${
+                          className={`px-3 py-1 rounded-[10px] flex items-center justify-center cursor-pointer font-medium ${
                             selectedSize === size.name
                               ? "bg-[#eddb8e] text-black"
+                              : size.stock < 1
+                              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                               : "bg-gray-200 text-gray-700"
                           }`}
-                          onClick={() => handleSizeChange(size.name)}
+                          onClick={() => {
+                            if (size.stock > 0) {
+                              handleSizeChange(size.name);
+                            }
+                          }}
+                          disabled={size.stock < 1}
                         >
                           {size.name}
                         </button>
@@ -181,6 +194,20 @@ const ProductDetails = () => {
                   <p className=" font-normal">{product.description}</p>
                 </div>
               </div>
+            </div>
+
+            {/* Reviews */}
+            <div className=" my-[2rem]">
+              {product.reviews && product.reviews[0] ? (
+                <div className=" flex overflow-x-auto">
+                  {product.reviews &&
+                    product.reviews.map((review) => (
+                      <ReviewCard key={review._id} review={review} />
+                    ))}
+                </div>
+              ) : (
+                <p className="noReviews">No Reviews Yet</p>
+              )}
             </div>
           </div>
         </Fragment>

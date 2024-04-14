@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ReactStars from "react-rating-stars-component";
 import { FaShoppingCart } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { addToCart } from "../../../actions/cartAction";
 import { useDispatch, useSelector } from "react-redux";
+import { Rating } from "@mui/material";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -17,12 +17,10 @@ const ProductCard = ({ product }) => {
       : product.name;
 
   const options = {
-    edit: false,
-    color: "#141414",
-    activeColor: "#Eddb8d",
-    size: window.innerWidth < 600 ? 20 : 25,
+    size: "small",
     value: product.ratings,
-    isHalf: true,
+    precision: 0.5,
+    readOnly: true,
   };
 
   const AddCart = (e) => {
@@ -54,10 +52,10 @@ const ProductCard = ({ product }) => {
         alt={product.name}
         className=" w-full h-[65%] object-cover object-top"
       />
-      <div className=" h-[35%] w-full flex flex-col items-center py-2 border-t-2 border-black">
+      <div className=" h-[35%] w-full flex flex-col gap-1 items-center py-2 border-t-2 border-black">
         <p className=" font-medium">{trimmedName}</p>
         <div className=" flex items-center">
-          <ReactStars {...options} />{" "}
+          <Rating {...options} />{" "}
           <span className=" text-sm"> ({product.numOfReviews} Reviews)</span>
         </div>
         <p className=" font-medium">Rs{product.price}</p>
