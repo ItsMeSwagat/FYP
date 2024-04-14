@@ -1,18 +1,26 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 const verifyCookies = () => {
   const cookies = document.cookie;
-  return cookies.includes("usertoken="); 
+  return cookies.includes("usertoken=");
 };
 
-const ProtectedRoute = ({ isAuthenticated }) => {
+export const ProtectedRoute = ({ isAdmin }) => {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
 
   const hasToken = verifyCookies();
 
-  const allowAccess = isAuthenticated && hasToken;
+  const allowAccess = hasToken;
+
+  if (user && user.role === "admin") {
+    <Navigate to={`/admin/dashboard`} />;
+  }
+
+  if (isAdmin === true && user && user.role !== "admin") {
+    return <Navigate to="/" />;
+  }
 
   return allowAccess ? <Outlet /> : <Navigate to={`/login`} />;
 };
-
-export default ProtectedRoute;

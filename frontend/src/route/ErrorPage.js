@@ -1,9 +1,7 @@
 import React from "react";
-import { Link, useRouteError } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ErrorPage = () => {
-  const error = useRouteError();
-  console.error(error);
   return (
     <div className=" w-full h-screen flex flex-col justify-center items-center gap-5">
       <h1 className=" text-[5rem] font-semibold">
@@ -12,7 +10,12 @@ const ErrorPage = () => {
       <p className=" text-[3rem] font-medium">
         Sorry, 404 ERROR PAGE NOT FOUND.
       </p>
-      <Link to={"/"} className=" bg-[#141414] px-8 py-3 text-2xl font-medium hover:bg-[#eddb8e] text-white hover:text-black">GO BACK</Link>
+      <Link
+        to={"/"}
+        className=" bg-[#141414] px-8 py-3 text-2xl font-medium hover:bg-[#eddb8e] text-white hover:text-black"
+      >
+        GO BACK
+      </Link>
     </div>
   );
 };
