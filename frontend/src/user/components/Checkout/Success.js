@@ -1,24 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CheckoutProcess from "./CheckoutProcess";
 import { useDispatch, useSelector } from "react-redux";
 import { FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { clearCart } from "../../../actions/cartAction";
 
 const Success = () => {
   const dispatch = useDispatch();
-  const { cart, shippingDetails } = useSelector((state) => ({
-    cart: state.cart.cart,
-    shippingDetails: state.cart.shippingDetails,
-  }));
-  const orderData = JSON.parse(sessionStorage.getItem("orderData"));
-
-  const order = {
-    shippingDetails,
-    orderItems: cart.cart?.cartItems,
-    totalPrice: orderData.subtotal,
-    shippingCharge: orderData.shippingCharge,
-    totalOrderPrice: orderData.OrderTotal,
-  };
+  useEffect(() => {
+    dispatch(clearCart());
+  }, [dispatch]);
 
   return (
     <>
