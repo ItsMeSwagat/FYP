@@ -26,11 +26,13 @@ export const addToCart = (reqData) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.put("/api/v1/cart/add", reqData, config);
-    dispatch({ type: ADD_TO_CART_SUCCESS, payload: data });
+
+    console.log(data.success);
+    dispatch({ type: ADD_TO_CART_SUCCESS, payload: data.success });
   } catch (error) {
     dispatch({
       type: ADD_TO_CART_FAIL,
-      payload: error.message,
+      payload: error.response.data.message,
     });
   }
 };
