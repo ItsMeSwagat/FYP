@@ -24,10 +24,30 @@ const CheckoutProcess = ({ activeProcess }) => {
     },
   ];
 
+  const stepStyle = {
+    padding: 2,
+    "& .Mui-active": {
+      "&.MuiStepIcon-root": {
+        color: "#141414",
+      },
+      "& .MuiStepConnector-line": {
+        borderColor: "#141414"
+      }
+    },
+    "& .Mui-completed": {
+      "&.MuiStepIcon-root": {
+        color: "#eddb8e",
+      },
+      "& .MuiStepConnector-line": {
+        borderColor: "#eddb8e"
+      }
+    },
+  };
+
   return (
     <Fragment>
       <div className=" px-[8rem] pt-[2rem]">
-        <Stepper activeStep={activeProcess} alternativeLabel>
+        <Stepper sx={stepStyle} activeStep={activeProcess} alternativeLabel>
           {process.map((item, i) => (
             <Step
               key={i}
