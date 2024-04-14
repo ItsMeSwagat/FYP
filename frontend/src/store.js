@@ -12,7 +12,12 @@ import { cartReducer } from "./reducers/cartReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { voucherReducer } from "./reducers/applyVoucherReducer";
-import { createOrderReducer, userOrdersReducer } from "./reducers/orderReducer";
+import {
+  createOrderReducer,
+  orderDetailsReducer,
+  userOrdersReducer,
+} from "./reducers/orderReducer";
+import { createReviewReducer } from "./reducers/reviewReducer";
 
 const rootReducer = combineReducers({
   products: productReducer,
@@ -24,6 +29,8 @@ const rootReducer = combineReducers({
   voucher: voucherReducer,
   newOrder: createOrderReducer,
   userOrder: userOrdersReducer,
+  orderDetail: orderDetailsReducer,
+  createReview: createReviewReducer,
 });
 
 const persistConfig = {
