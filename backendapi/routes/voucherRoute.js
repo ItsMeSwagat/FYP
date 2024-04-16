@@ -7,13 +7,13 @@ const {
 const voucherController = require("../controller/voucherController");
 
 router.post(
-  "/",
+  "/create",
   authenticateUser,
   adminAuthenticate("admin"),
   voucherController.createVoucher
 );
 router.get(
-  "/",
+  "/all",
   authenticateUser,
   adminAuthenticate("admin"),
   voucherController.getAllVouchers
@@ -22,7 +22,7 @@ router.get(
   "/:id",
   authenticateUser,
   adminAuthenticate("admin"),
-  voucherController.getVoucher
+  voucherController.getVoucherDetails
 );
 router.put(
   "/:id",
