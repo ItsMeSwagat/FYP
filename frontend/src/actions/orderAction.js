@@ -9,6 +9,15 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
+  ADMIN_UPDATE_ORDER_REQUEST,
+  ADMIN_UPDATE_ORDER_SUCCESS,
+  ADMIN_UPDATE_ORDER_FAIL,
+  ADMIN_DELETE_ORDER_REQUEST,
+  ADMIN_DELETE_ORDER_SUCCESS,
+  ADMIN_DELETE_ORDER_FAIL,
 } from "../constants/orderConstants";
 import axios from "axios";
 
@@ -62,6 +71,61 @@ export const getOrderDetail = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ORDER_DETAILS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const getAllOrders = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_ORDERS_REQUEST });
+
+    const { data } = await axios.get("/api/v1/admin/orders");
+
+    dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
+  } catch (error) {
+    dispatch({
+      type: ALL_ORDERS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const updateOrder = (id, order) => async (dispatch) => {
+  try {
+    dispatch({ type: ADMIN_UPDATE_ORDER_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.put(
+      `/api/v1/admin/order/${id}`,
+      order,
+      config
+    );
+
+    dispatch({ type: ADMIN_UPDATE_ORDER_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_UPDATE_ORDER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+
+export const deleteOrder = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: ADMIN_DELETE_ORDER_REQUEST });
+
+    const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
+
+    dispatch({ type: ADMIN_DELETE_ORDER_SUCCESS, payload: data.success });
+  } catch (error) {
+    dispatch({
+      type: ADMIN_DELETE_ORDER_FAIL,
       payload: error.response.data.message,
     });
   }
