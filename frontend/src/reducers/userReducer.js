@@ -11,6 +11,12 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   CLEAR_ERRORS,
+  ADMIN_ALL_USERS_REQUEST,
+  ADMIN_ALL_USERS_SUCCESS,
+  ADMIN_ALL_USERS_FAIL,
+  ADMIN_USER_DETAILS_REQUEST,
+  ADMIN_USER_DETAILS_SUCCESS,
+  ADMIN_USER_DETAILS_FAIL,
 } from "../constants/userConstants";
 
 export const userReducer = (state = { user: {} }, action) => {
@@ -57,6 +63,70 @@ export const userReducer = (state = { user: {} }, action) => {
       };
 
     case LOGOUT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const adminAllUsersReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case ADMIN_ALL_USERS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADMIN_ALL_USERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        users: action.payload,
+      };
+
+    case ADMIN_ALL_USERS_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const adminUserDetailsReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case ADMIN_USER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADMIN_USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload,
+      };
+
+    case ADMIN_USER_DETAILS_FAIL:
       return {
         ...state,
         loading: false,
