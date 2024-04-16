@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 import {
-  productReducer,
+  productsReducer,
   productDetailsReducer,
+  createProductReducer,
+  productReducer,
 } from "./reducers/productReducer";
-import { userReducer } from "./reducers/userReducer";
+import { adminAllUsersReducer, adminUserDetailsReducer, userReducer } from "./reducers/userReducer";
 import { profileReducer } from "./reducers/profileReducer";
 import { forgotPasswordReducer } from "./reducers/forgotPasswordReducer";
 import { thunk } from "redux-thunk";
@@ -14,23 +16,33 @@ import storage from "redux-persist/lib/storage";
 import { voucherReducer } from "./reducers/applyVoucherReducer";
 import {
   createOrderReducer,
+  getAllOrdersReducer,
   orderDetailsReducer,
+  orderReducer,
   userOrdersReducer,
 } from "./reducers/orderReducer";
-import { createReviewReducer } from "./reducers/reviewReducer";
+import { adminProductReviewsReducer, adminReviewReducer, createReviewReducer } from "./reducers/reviewReducer";
 
 const rootReducer = combineReducers({
-  products: productReducer,
+  products: productsReducer,
   productDetails: productDetailsReducer,
+  product: productReducer,
   user: userReducer,
   profile: profileReducer,
-  forgotPassword: forgotPasswordReducer,
-  cart: cartReducer,
-  voucher: voucherReducer,
   newOrder: createOrderReducer,
   userOrder: userOrdersReducer,
   orderDetail: orderDetailsReducer,
   createReview: createReviewReducer,
+  forgotPassword: forgotPasswordReducer,
+  cart: cartReducer,
+  voucher: voucherReducer,
+  newProduct: createProductReducer,
+  allOrders: getAllOrdersReducer,
+  order: orderReducer,
+  userDetails: adminUserDetailsReducer,
+  allUsers: adminAllUsersReducer,
+  adminProductReviews: adminProductReviewsReducer,
+  adminReview: adminReviewReducer
 });
 
 const persistConfig = {
