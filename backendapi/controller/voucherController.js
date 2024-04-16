@@ -4,9 +4,9 @@ const ErrorHandler = require("../utils/errorHandler");
 
 //create voucher
 const createVoucher = catchAsyncErrors(async (req, res) => {
-  const vouchers = await Voucher.create(req.body);
+  const voucher = await Voucher.create(req.body);
 
-  res.status(200).json({ success: true, vouchers });
+  res.status(200).json({ success: true, voucher });
 });
 
 //get all vouchers
@@ -27,7 +27,7 @@ const updateVoucher = catchAsyncErrors(async (req, res) => {
     return next(new ErrorHandler("Voucher not found", 404));
   }
 
-  res.status(200).json({ success: true, updateVoucher });
+  res.status(200).json({ success: true });
 });
 
 //delete vouchers
@@ -39,20 +39,20 @@ const deleteVoucher = catchAsyncErrors(async (req, res) => {
   if (!deleteVoucher) {
     return next(new ErrorHandler("Voucher not found", 404));
   }
-  res.status(200).json({ success: true, deleteVoucher });
+  res.status(200).json({ success: true });
 });
 
 //getVoucher by id
-const getVoucher = catchAsyncErrors(async (req, res) => {
+const getVoucherDetails = catchAsyncErrors(async (req, res) => {
   const { id } = req.params;
 
-  const getVoucher = await Voucher.findById(id);
+  const voucher = await Voucher.findById(id);
 
-  if (!getVoucher) {
+  if (!voucher) {
     return next(new ErrorHandler("Voucher not found", 404));
   }
 
-  res.status(200).json({ success: true, getVoucher });
+  res.status(200).json({ success: true, voucher });
 });
 
 module.exports = {
@@ -60,5 +60,5 @@ module.exports = {
   getAllVouchers,
   updateVoucher,
   deleteVoucher,
-  getVoucher,
+  getVoucherDetails,
 };
