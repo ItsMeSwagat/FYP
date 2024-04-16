@@ -2,6 +2,7 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
 const User = require("../models/userModel");
 const { default: mongoose } = require("mongoose");
+const cloudinary = require("cloudinary");
 
 // Get all users
 const getAllUser = catchAsyncErrors(async (req, res, next) => {
@@ -53,6 +54,10 @@ const deleteUser = catchAsyncErrors(async (req, res, next) => {
       new ErrorHandler(`User does not exist with Id: ${req.params.id}`, 400)
     );
   }
+
+  const imageId = user.avatar.public_id;
+
+  await cloudinary.v2.uploader.destroy(imageId);
 
   await user.deleteOne();
 
