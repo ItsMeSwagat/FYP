@@ -13,7 +13,7 @@ import { thunk } from "redux-thunk";
 import { cartReducer } from "./reducers/cartReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { voucherReducer } from "./reducers/applyVoucherReducer";
+import { adminVoucherReducer, createVoucherReducer, getAllVouchersReducer, voucherDetailsReducer, voucherReducer } from "./reducers/applyVoucherReducer";
 import {
   createOrderReducer,
   getAllOrdersReducer,
@@ -42,7 +42,11 @@ const rootReducer = combineReducers({
   userDetails: adminUserDetailsReducer,
   allUsers: adminAllUsersReducer,
   adminProductReviews: adminProductReviewsReducer,
-  adminReview: adminReviewReducer
+  adminReview: adminReviewReducer,
+  adminVoucher: adminVoucherReducer,
+  createVoucher: createVoucherReducer,
+  allVouchers: getAllVouchersReducer,
+  voucherDetails: voucherDetailsReducer,
 });
 
 const persistConfig = {
