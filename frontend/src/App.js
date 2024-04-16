@@ -26,6 +26,17 @@ import Success from "./user/components/Checkout/Success";
 import Userorder from "./user/components/Order/Userorder";
 import OrderDetail from "./user/components/Order/OrderDetail";
 import AdminDashboard from "./admin/components/Dashboard/AdminDashboard";
+import AllProducts from "./admin/components/Product/AllProducts";
+import CreateProduct from "./admin/components/Product/CreateProduct";
+import UpdateProduct from "./admin/components/Product/UpdateProduct";
+import OrderList from "./admin/components/Order/OrderList";
+import UpdateOrder from "./admin/components/Order/UpdateOrder";
+import AllUsers from "./admin/components/User/AllUsers";
+import UpdateUserRole from "./admin/components/User/UpdateUserRole";
+import AllProductReviews from "./admin/components/Reviews/AllProductReviews";
+import AllVoucher from "./admin/components/Voucher/AllVoucher";
+import CreateVoucher from "./admin/components/Voucher/CreateVoucher";
+import UpdateVoucher from "./admin/components/Voucher/UpdateVoucher";
 
 function App() {
   useEffect(() => {
@@ -45,9 +56,43 @@ function App() {
           />
         </Route>
 
+        {/* Admin Route */}
         <Route element={<AdminLayout />}>
           <Route element={<ProtectedRoute isAdmin={true} />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/products/all" element={<AllProducts />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/product/create" element={<CreateProduct />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/product/:id" element={<UpdateProduct />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/orders/all" element={<OrderList />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/order/:id" element={<UpdateOrder />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/users" element={<AllUsers />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/user/:id" element={<UpdateUserRole />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/allProductReview" element={<AllProductReviews />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/allVouchers" element={<AllVoucher />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/voucher/create" element={<CreateVoucher />} />
+          </Route>
+          <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route path="/admin/voucher/:id" element={<UpdateVoucher />} />
           </Route>
         </Route>
 
