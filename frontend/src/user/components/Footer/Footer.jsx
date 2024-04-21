@@ -12,8 +12,11 @@ const Footer = () => {
             JASs <span className=" text-[#EDDB8D]">Sarees</span>
           </h1>
           <p className=" text-xs lg:text-sm pb-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-            in justo elementum, scelerisque justo lobortis, accumsan nibh.
+            Welcome to our premium handwork saree store where elegance meets
+            tradition. Discover a mesmerizing collection of intricately crafted
+            sarees , each a masterpiece of artistry and skill from delicate hand
+            embroidery to exquisite beadwork and timeless motifs where each
+            saree gives premium & luxury feels.
           </p>
           {/* icons */}
           <div className=" flex gap-5 text-[1rem] md:text-[1.5rem] text-[#EDDB8D]">

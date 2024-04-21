@@ -9,7 +9,7 @@ body {
   background-color: #f5f5f5;
 }
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background-color: white;
@@ -42,18 +42,4 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-.MuiStepper-horizontal .MuiStepConnector-line {
-  display: none !important;
-}
-
-.MuiStepConnector-root {
-  height: 1px;
-  background-color: #141414;
-}
-
-.MuiStepConnector-active,
-.MuiStepConnector-completed {
-  background-color: #eddb8d;
 }

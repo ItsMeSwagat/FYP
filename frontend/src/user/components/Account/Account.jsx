@@ -1,19 +1,95 @@
 import React, { Fragment, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
+import { clearErrors, myOrders } from "../../../actions/orderAction";
+import { toast } from "react-toastify";
+import { DataGrid } from "@mui/x-data-grid";
 
 const Account = () => {
+  const dispatch = useDispatch();
   const { isAuthenticated, user, loading } = useSelector((state) => state.user);
+  const {
+    loading: orderLoading,
+    error,
+    orders,
+  } = useSelector((state) => state.userOrder);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading) {
       if (!isAuthenticated) {
-        navigate("/login")
+        navigate("/login");
       }
     }
-  }, [isAuthenticated, navigate, user, loading]);
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(myOrders());
+  }, [isAuthenticated, navigate, user, loading, dispatch, error]);
+
+  const getTop3Orders = () => {
+    if (!orders) return [];
+    return orders.slice(0, 3);
+  };
+
+  const dataColumns = [
+    { field: "id", headerName: "ORDER ID", minWidth: 250, flex: 1 },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      flex: 0.5,
+    },
+    {
+      field: "quantity",
+      headerName: "Quantity",
+      type: "number",
+      minWidth: 150,
+      flex: 0.2,
+    },
+
+    {
+      field: "amount",
+      headerName: "Order Total",
+      type: "number",
+      minWidth: 270,
+      flex: 0.5,
+      valueFormatter: (params) => `Rs ${params.value}`,
+    },
+
+    {
+      field: "actions",
+      flex: 0.3,
+      headerName: "Actions",
+      minWidth: 150,
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <Link
+            to={`/order/details/${params.id}`}
+            className=" bg-[#141414] text-white hover:bg-[#eddb8e] hover:text-black px-2 py-1.5 rounded-md border-2 font-medium"
+          >
+            View Order
+          </Link>
+        );
+      },
+    },
+  ];
+
+  const dataRows = [];
+
+  getTop3Orders().forEach((item, i) => {
+    dataRows.push({
+      quantity: item.orderItems.length,
+      id: item._id,
+      status: item.orderStatus,
+      amount: item.totalOrderPrice,
+    });
+  });
+
   return (
     <Fragment>
       {loading ? (
@@ -72,7 +148,22 @@ const Account = () => {
           {/* Recent Orders */}
           <div className=" w-full min-h-[15rem] bg-white rounded-md border-2 p-4 mb-4">
             <h1 className=" text-xl font-medium">Recent Orders</h1>
-            <div></div>
+            <div>
+              {loading ? (
+                <Loader />
+              ) : (
+                <div className=" py-4">
+                  <DataGrid
+                    rows={dataRows}
+                    columns={dataColumns}
+                    pageSize={3} // Show only 3 rows
+                    disableSelectionOnClick
+                    className=" bg-white border-2 shadow-sm rounded-md"
+                    autoHeight
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

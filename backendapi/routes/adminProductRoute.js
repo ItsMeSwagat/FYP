@@ -31,11 +31,5 @@ router.delete(
   adminAuthenticate("admin"),
   adminProductController.deleteProduct
 );
-router.post(
-  "/topbanner/new",
-  authenticateUser,
-  adminAuthenticate("admin"),
-  topBannerController.createOrUpdateBanner
-);
 
 module.exports = router;

@@ -35,6 +35,7 @@ const ProductCard = ({ product }) => {
   };
 
   const [selectedSize, setSelectedSize] = useState("");
+  
 
   useEffect(() => {
     if (product.sizes && product.sizes.length > 0) {
@@ -44,9 +45,10 @@ const ProductCard = ({ product }) => {
 
   return (
     <Link
-      className=" bg-[#f5f5f5] w-[15rem] h-[25rem] flex flex-col justify-between items-center hover:shadow-xl rounded-[10px] overflow-hidden flex-shrink-0 border-2 mb-4 "
+      className=" relative bg-[#f5f5f5] w-[15rem] h-[25rem] flex flex-col justify-between items-center hover:shadow-xl rounded-[10px] overflow-hidden flex-shrink-0 border-2 mb-4 "
       to={`/product/${product._id}`}
     >
+      <div className=" absolute top-1 right-1 bg-[#eddb8e] px-3 py-1 rounded-lg text-sm">{product.discountPercent}% Off</div>
       <img
         src={product.images[0].url}
         alt={product.name}
@@ -62,7 +64,7 @@ const ProductCard = ({ product }) => {
 
         <button
           onClick={AddCart}
-          className=" z-50 bg-[#Eddb8e] flex justify-center items-center gap-2 s rounded-[10px] px-[3rem] py-1.5 hover:bg-black hover:text-white"
+          className=" bg-[#Eddb8e] flex justify-center items-center gap-2 s rounded-[10px] px-[3rem] py-1.5 hover:bg-black hover:text-white"
         >
           Add to Cart
           <FaShoppingCart />

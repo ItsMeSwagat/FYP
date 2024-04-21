@@ -18,6 +18,9 @@ import {
   ADMIN_DELETE_ORDER_REQUEST,
   ADMIN_DELETE_ORDER_SUCCESS,
   ADMIN_DELETE_ORDER_FAIL,
+  CANCEL_ORDER_REQUEST,
+  CANCEL_ORDER_SUCCESS,
+  CANCEL_ORDER_FAIL,
 } from "../constants/orderConstants";
 import axios from "axios";
 
@@ -115,7 +118,6 @@ export const updateOrder = (id, order) => async (dispatch) => {
   }
 };
 
-
 export const deleteOrder = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_DELETE_ORDER_REQUEST });
@@ -126,6 +128,24 @@ export const deleteOrder = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_DELETE_ORDER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const cancelOrder = (orderId) => async (dispatch) => {
+  try {
+    dispatch({ type: CANCEL_ORDER_REQUEST });
+
+    const { data } = await axios.put(`/api/v1/order/${orderId}/cancel`);
+
+    dispatch({
+      type: CANCEL_ORDER_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CANCEL_ORDER_FAIL,
       payload: error.response.data.message,
     });
   }

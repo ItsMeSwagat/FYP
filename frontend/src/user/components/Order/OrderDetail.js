@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Loader/Loader";
 import { ToastContainer, toast } from "react-toastify";
-import { Link, useParams } from "react-router-dom";
-import { clearErrors, getOrderDetail } from "../../../actions/orderAction";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  cancelOrder,
+  clearErrors,
+  getOrderDetail,
+} from "../../../actions/orderAction";
 import {
   Stepper,
   Step,
@@ -23,9 +27,11 @@ const OrderDetail = () => {
   const { id } = useParams();
 
   const { order, loading, error } = useSelector((state) => state.orderDetail);
+  const { success: cancelSuccess } = useSelector((state) => state.order);
   const { error: reviewError, success } = useSelector(
     (state) => state.createReview
   );
+  const navigate = useNavigate();
 
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
@@ -44,8 +50,12 @@ const OrderDetail = () => {
       toast.success("Review Submitted Successfully");
       dispatch({ type: CREATE_REVIEW_RESET });
     }
+    if (cancelSuccess) {
+      toast.success(" Order cancelled Successfully");
+      navigate("/orders/user");
+    }
     dispatch(getOrderDetail(id));
-  }, [dispatch, id, error, reviewError, success]);
+  }, [dispatch, id, error, reviewError, success, cancelSuccess, navigate]);
 
   const orderStatusSteps = [
     "Placed",
@@ -62,6 +72,7 @@ const OrderDetail = () => {
     if (order.orderStatus === "Delivered") {
       toast.error("Cannot cancel the order. It is already Delivered.");
     } else {
+      dispatch(cancelOrder(id));
     }
   };
 
@@ -115,7 +126,6 @@ const OrderDetail = () => {
         <Loader />
       ) : (
         <>
-          <ToastContainer />
           <div className=" px-[8rem] py-[3rem] min-h-[60vh] flex flex-col gap-4">
             <div className=" w-full flex gap-5">
               {/* shipping Details */}
@@ -156,54 +166,63 @@ const OrderDetail = () => {
 
             {/* order tracking */}
             <div className=" bg-white p-5 border-2 rounded-md flex flex-col">
-              <Stepper
-                className=""
-                alternativeLabel
-                sx={stepStyle}
-                activeStep={orderStatusSteps.indexOf(order.orderStatus)}
-              >
-                {orderStatusSteps.map((label, index) => (
-                  <Step className="" key={label}>
-                    <StepLabel>{label}</StepLabel>
-                    <div>
-                      {index ===
-                        orderStatusSteps.indexOf(order.orderStatus) && (
-                        <div className=" py-1">
-                          {index === 0 && (
-                            <p>The Order has been Placed Successfully.</p>
-                          )}
+              {order.orderStatus !== "Cancelled" ? (
+                <Stepper
+                  className=""
+                  alternativeLabel
+                  sx={stepStyle}
+                  activeStep={orderStatusSteps.indexOf(order.orderStatus)}
+                >
+                  {orderStatusSteps.map((label, index) => (
+                    <Step className="" key={label}>
+                      <StepLabel>{label}</StepLabel>
+                      <div>
+                        {index ===
+                          orderStatusSteps.indexOf(order.orderStatus) && (
+                          <div className=" py-1">
+                            {index === 0 && (
+                              <p>The Order has been Placed Successfully.</p>
+                            )}
 
-                          {index === 1 && (
-                            <p className=" text-center">
-                              The Order is Being Processed.
-                            </p>
-                          )}
+                            {index === 1 && (
+                              <p className=" text-center">
+                                The Order is Being Processed.
+                              </p>
+                            )}
 
-                          {index === 2 && (
-                            <p className=" text-center">
-                              The Order is confirmed and is being ready to be
-                              shipped.
-                            </p>
-                          )}
-                          {index === 3 && (
-                            <p className=" text-center">
-                              The Order has been shipped.
-                            </p>
-                          )}
-                          {index === 4 && (
-                            <p className=" text-center">
-                              The Order is Delivered Successfully.
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </Step>
-                ))}
-              </Stepper>
+                            {index === 2 && (
+                              <p className=" text-center">
+                                The Order is confirmed and is being ready to be
+                                shipped.
+                              </p>
+                            )}
+                            {index === 3 && (
+                              <p className=" text-center">
+                                The Order has been shipped.
+                              </p>
+                            )}
+                            {index === 4 && (
+                              <p className=" text-center">
+                                The Order is Delivered Successfully.
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </Step>
+                  ))}
+                </Stepper>
+              ) : (
+                <div>
+                  <h1>Order has been Cancelled.
+                    <p>Your Payment will be Refunded with 3 Days.</p>
+                  </h1>
+                </div>
+              )}
               <div className=" flex justify-end">
                 {order.orderStatus !== "Shipped" &&
-                  order.orderStatus !== "Delivered" && (
+                  order.orderStatus !== "Delivered" &&
+                  order.orderStatus !== "Cancelled" && (
                     <button
                       onClick={handleCancelOrder}
                       className="  bg-[#141414] text-white rounded-md border-2 px-4 py-1.5 hover:bg-[#eddb8e] hover:text-black font-medium"

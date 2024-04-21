@@ -98,9 +98,6 @@ const ProductDetails = () => {
                   >
                     Add to Cart
                   </button>
-                  <button className=" bg-[#141414] w-full h-[3rem] rounded-[10px] text-white text-lg font-medium">
-                    Buy Now
-                  </button>
                 </div>
               </div>
 
@@ -199,14 +196,16 @@ const ProductDetails = () => {
             {/* Reviews */}
             <div className=" my-[2rem]">
               {product.reviews && product.reviews[0] ? (
-                <div className=" flex overflow-x-auto">
+                <div className=" flex overflow-x-auto bg-white border-2  p-4 rounded-md">
                   {product.reviews &&
                     product.reviews.map((review) => (
                       <ReviewCard key={review._id} review={review} />
                     ))}
                 </div>
               ) : (
-                <p className="noReviews">No Reviews Yet</p>
+                <div className=" bg-white border-2  p-4 rounded-md">
+                  <p className=" text-xl font-medium">No Reviews.....</p>
+                </div>
               )}
             </div>
           </div>

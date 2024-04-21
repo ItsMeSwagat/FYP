@@ -29,12 +29,6 @@ const createReview = catchAsyncErrors(async (req, res, next) => {
     product.numOfReviews = product.reviews.length;
   }
 
-  //   let avg = 0;
-  //   product.ratings =
-  //     product.reviews.forEach((rev) => {
-  //       avg += rev.rating;
-  //     }) / product.reviews.length;
-
   let totalRating = 0;
 
   product.reviews.forEach((rev) => {

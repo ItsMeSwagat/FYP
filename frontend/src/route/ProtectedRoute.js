@@ -8,15 +8,15 @@ const verifyCookies = () => {
 };
 
 export const ProtectedRoute = ({ isAdmin }) => {
-  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const hasToken = verifyCookies();
 
   const allowAccess = hasToken;
 
-  if (user && user.role === "admin") {
-    <Navigate to={`/admin/dashboard`} />;
-  }
+  // if (isAdmin === false && user && user.role === "admin") {
+  //   <Navigate to={`/admin/dashboard`} />;
+  // }
 
   if (isAdmin === true && user && user.role !== "admin") {
     return <Navigate to="/" />;

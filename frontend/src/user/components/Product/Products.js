@@ -7,7 +7,17 @@ import Loader from "../Loader/Loader";
 import ProductCard from "./ProductCard";
 import { useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
-import { Slider } from "@mui/material";
+import { FormControlLabel, Radio, Slider } from "@mui/material";
+
+const categories = [
+  "Shiffon Saree",
+  "Silk Saree",
+  "Paithani Saree",
+  "Banarasi Saree",
+  "Chanderi Saree",
+  "Sambalpuri Saree",
+  "Organza Saree",
+];
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -23,6 +33,8 @@ const Products = () => {
   const { keyword } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 50000]);
+  const [category, setCategory] = useState("");
+  const [filtersActive, setFiltersActive] = useState(false);
 
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
@@ -30,6 +42,7 @@ const Products = () => {
 
   const priceHandler = (e, newPrice) => {
     setPrice(newPrice);
+    setFiltersActive(true);
   };
 
   let count = filteredProductsCount;
@@ -39,8 +52,8 @@ const Products = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-    dispatch(getProduct(keyword, currentPage, price));
-  }, [dispatch, keyword, currentPage, price, error]);
+    dispatch(getProduct(keyword, currentPage, price, category));
+  }, [dispatch, keyword, currentPage, price, error, category]);
 
   return (
     <Fragment>
@@ -84,6 +97,28 @@ const Products = () => {
                   <p className=" font-semibold text-xl text-[#141414]">
                     Category
                   </p>
+                  <div className=" flex flex-col">
+                    {categories.map((cat) => (
+                      <FormControlLabel
+                        key={cat}
+                        value={cat}
+                        control={
+                          <Radio
+                            className="category-link"
+                            // Set checked property based on active category
+                            checked={category === cat}
+                            onClick={() => setCategory(cat)}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#eddb8e",
+                              },
+                            }}
+                          />
+                        }
+                        label={cat}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -102,7 +137,11 @@ const Products = () => {
                   <Pagination
                     activePage={currentPage}
                     itemsCountPerPage={resultPerPage}
-                    totalItemsCount={productsCount}
+                    totalItemsCount={
+                      filtersActive || keyword
+                        ? filteredProductsCount
+                        : productsCount
+                    }
                     onChange={setCurrentPageNo}
                     nextPageText="Next"
                     prevPageText="Prev"

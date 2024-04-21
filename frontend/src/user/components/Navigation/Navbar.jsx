@@ -7,10 +7,11 @@ import { useSelector } from "react-redux";
 import { MdAccountBox } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import ProfileDropdown from "../Dropdown/ProfileDropdown";
+import { MdDashboard } from "react-icons/md";
 
 const Navbar = () => {
   const location = useLocation();
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const { cart } = useSelector((state) => state.cart);
 
   const [openProfile, setOpenProfile] = useState(false);
@@ -76,13 +77,15 @@ const Navbar = () => {
             <div className=" flex gap-4">
               <Link
                 onClick={handleProfileClick}
-                className=" bg-[#EDDB8D] px-2 py-[1.5] rounded-[5px] font-medium flex items-center hover:bg-black hover:text-[#eddb8e]"
+                className=" bg-[#EDDB8D] px-2 py-1.5 rounded-[5px] font-medium flex items-center hover:bg-black hover:text-[#eddb8e]"
               >
                 <MdAccountBox size={20} className="" />
               </Link>
-              <Link className=" bg-black text-white font-medium px-2 py-1.5 rounded-[5px] hover:bg-[#eddb8e] hover:text-black">
-                <FaHeart size={20} />
-              </Link>
+              {user && user.role === "admin" && (
+                <Link to={`/admin/dashboard`} className=" bg-black text-white font-medium px-2 py-1.5 rounded-[5px] hover:bg-[#eddb8e] hover:text-black">
+                  <MdDashboard size={20} />
+                </Link>
+              )}
             </div>
           </div>
         )}

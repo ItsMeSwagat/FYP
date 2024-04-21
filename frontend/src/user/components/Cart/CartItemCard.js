@@ -32,7 +32,13 @@ const CartItemCard = ({ item, dispatch }) => {
           >
             {item.product.name}
           </Link>
-          <p>Color: {item.product.color}</p>
+          <div className=" flex items-center gap-2">
+            Color:{" "}
+            <div
+              className="w-[1rem] h-[1rem] rounded-full"
+              style={{ backgroundColor: item.product.color }}
+            ></div>
+          </div>
           <MdDelete
             onClick={removeItem}
             size={20}

@@ -20,6 +20,9 @@ import {
   ADMIN_DELETE_ORDER_FAIL,
   ADMIN_UPDATE_ORDER_RESET,
   ADMIN_DELETE_ORDER_RESET,
+  CANCEL_ORDER_REQUEST,
+  CANCEL_ORDER_SUCCESS,
+  CANCEL_ORDER_FAIL,
 } from "../constants/orderConstants";
 
 export const createOrderReducer = (state = {}, action) => {
@@ -141,11 +144,18 @@ export const getAllOrdersReducer = (state = { orders: [] }, action) => {
 
 export const orderReducer = (state = {}, action) => {
   switch (action.type) {
+    case CANCEL_ORDER_REQUEST:
     case ADMIN_UPDATE_ORDER_REQUEST:
     case ADMIN_DELETE_ORDER_REQUEST:
       return {
         ...state,
         loading: true,
+      };
+
+    case CANCEL_ORDER_SUCCESS:
+      return {
+        loading: false,
+        success: true,
       };
 
     case ADMIN_UPDATE_ORDER_SUCCESS:
@@ -164,6 +174,7 @@ export const orderReducer = (state = {}, action) => {
 
     case ADMIN_UPDATE_ORDER_FAIL:
     case ADMIN_DELETE_ORDER_FAIL:
+    case CANCEL_ORDER_FAIL:
       return {
         ...state,
         loading: false,

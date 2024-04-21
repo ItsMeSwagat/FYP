@@ -1,7 +1,6 @@
 import React from "react";
 import { AiFillProfile } from "react-icons/ai";
 import { BiSolidShoppingBagAlt } from "react-icons/bi";
-import { FaHeart } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,14 +14,14 @@ const ProfileDropdown = ({ setOpenProfile }) => {
 
   function logout() {
     dispatch(Logout());
-    navigate("/login")
+    navigate("/login");
   }
 
   const handleCloseDropdown = () => {
     setOpenProfile(false);
   };
   return (
-    <div className=" bg-white z-10 absolute top-[7.5rem] right-[9.5rem] w-[12rem] flex flex-col pl-3 py-2 rounded-md border-2 dropdownProfile">
+    <div className=" fixed bg-white z-10 top-[7.5rem] right-[9.5rem] w-[12rem] flex flex-col pl-3 py-2 rounded-md border-2 dropdownProfile">
       <ul className=" flex flex-col gap-5 text-[0.9]">
         <Link to={`/account`}>
           <li
@@ -39,19 +38,14 @@ const ProfileDropdown = ({ setOpenProfile }) => {
             Manage your Account
           </li>
         </Link>
-        <li
-          onClick={handleCloseDropdown}
-          className=" flex items-center gap-2 hover:text-[#eddb8e] cursor-pointer"
-        >
-          <BiSolidShoppingBagAlt size={20} /> My Orders
-        </li>
-        <li
-          onClick={handleCloseDropdown}
-          className=" flex items-center gap-2 hover:text-[#eddb8e] cursor-pointer"
-        >
-          <FaHeart size={20} />
-          Wishlist
-        </li>
+        <Link to={`/orders/user`}>
+          <li
+            onClick={handleCloseDropdown}
+            className=" flex items-center gap-2 hover:text-[#eddb8e] cursor-pointer"
+          >
+            <BiSolidShoppingBagAlt size={20} /> My Orders
+          </li>
+        </Link>
         <Link onClick={logout}>
           <li
             onClick={handleCloseDropdown}

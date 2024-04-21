@@ -10,6 +10,9 @@ const voucherSchema = new mongoose.Schema({
   expiry: {
     type: Date,
     required: true,
+    set: function (expiryDate) {
+      return new Date(expiryDate).toISOString();
+    },
   },
   discount: {
     type: Number,

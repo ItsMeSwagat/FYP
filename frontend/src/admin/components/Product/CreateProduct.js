@@ -22,7 +22,15 @@ const CreateProduct = () => {
   const [imagesPreview, setImagesPreview] = useState([]);
   const [sizes, setSizes] = useState([{ name: "", stock: "" }]);
 
-  const categories = ["Shiffon Saree", "Silk Saree", "Banarasi Saree"];
+  const categories = [
+    "Shiffon Saree",
+    "Silk Saree",
+    "Paithani Saree",
+    "Banarasi Saree",
+    "Chanderi Saree",
+    "Sambalpuri Saree",
+    "Organza Saree",
+  ];
 
   useEffect(() => {
     if (error) {

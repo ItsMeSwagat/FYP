@@ -37,6 +37,7 @@ import AllProductReviews from "./admin/components/Reviews/AllProductReviews";
 import AllVoucher from "./admin/components/Voucher/AllVoucher";
 import CreateVoucher from "./admin/components/Voucher/CreateVoucher";
 import UpdateVoucher from "./admin/components/Voucher/UpdateVoucher";
+import OrderFail from "./user/components/Order/OrderFail";
 
 function App() {
   useEffect(() => {
@@ -83,7 +84,10 @@ function App() {
             <Route path="/admin/user/:id" element={<UpdateUserRole />} />
           </Route>
           <Route element={<ProtectedRoute isAdmin={true} />}>
-            <Route path="/admin/allProductReview" element={<AllProductReviews />} />
+            <Route
+              path="/admin/allProductReview"
+              element={<AllProductReviews />}
+            />
           </Route>
           <Route element={<ProtectedRoute isAdmin={true} />}>
             <Route path="/admin/allVouchers" element={<AllVoucher />} />
@@ -112,6 +116,7 @@ function App() {
             <Route path="/confirmorder" element={<ConfirmOrder />} />
             <Route path="/payment/process" element={<Payment />} />
             <Route path="/payment/success" element={<Success />} />
+            <Route path="/payment/Fail" element={<OrderFail />} />
             <Route path="/orders/user" element={<Userorder />} />
             <Route path="/order/details/:id" element={<OrderDetail />} />
           </Route>
