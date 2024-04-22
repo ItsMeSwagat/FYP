@@ -9,13 +9,20 @@ const cartController = require("./cartController");
 
 //REGISTER USER
 const registerUser = catchAsyncErrors(async (req, res, next) => {
-   // Upload user avatar to Cloudinary
+  // Upload user avatar to Cloudinary
   const cloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
     folder: "avatars",
     width: 200,
     crop: "scale",
   });
-  const { name, email, password } = req.body;  // Extract user details from request body
+  // Extract user details from request body
+  const { name, email, password } = req.body;
+
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    return next(new ErrorHandler("Email Already exists!!", 400));
+  }
 
   // Create user with provided details and uploaded avatar
   const user = await User.create({
@@ -29,9 +36,9 @@ const registerUser = catchAsyncErrors(async (req, res, next) => {
   });
 
   // Create cart for the newly registered user
-   await cartController.createCart(user);
+  await cartController.createCart(user);
 
-  sendToken(user, 201, res);  // Generate and send JWT token for user authentication
+  sendToken(user, 201, res); // Generate and send JWT token for user authentication
 });
 
 //LOGIN USER
@@ -39,8 +46,7 @@ const loginUser = catchAsyncErrors(async (req, res, next) => {
   // Extract email and password from request body
   const { email, password } = req.body;
 
-
-// Validate presence of email and password
+  // Validate presence of email and password
   if (!email || !password) {
     return next(new ErrorHandler("Please Enter Email & Password", 400));
   }
@@ -71,7 +77,6 @@ const logoutUser = catchAsyncErrors(async (req, res, next) => {
   //   httpOnly: true,
   // });
 
-  
   res.clearCookie("usertoken");
 
   req.user = null; // Set user object in request to null
@@ -87,7 +92,7 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // Find user by email
   const user = await User.findOne({ email: req.body.email });
 
-   // If user not found, return error
+  // If user not found, return error
   if (!user) {
     return next(new ErrorHandler("User not found", 404));
   }
@@ -103,10 +108,10 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   // Construct reset password URL
   const resetPasswordUrl = `${process.env.BASE_URL}/password/reset/${resetToken}`;
- 
+
   // Construct email message and URL
   const message = `Please Click Below to reset your Password: \n\n If your have not requested this mail then, Please ignore it`;
-  const url = `${resetPasswordUrl}`
+  const url = `${resetPasswordUrl}`;
 
   // Send reset password email with URL to user
   try {
@@ -122,7 +127,7 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
       message: `Email sent to ${user.email} successfully`,
     });
   } catch (error) {
-     // If email sending fails, reset user's reset password token and expire time
+    // If email sending fails, reset user's reset password token and expire time
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
@@ -140,7 +145,8 @@ const resetPassword = catchAsyncErrors(async (req, res, next) => {
     .update(req.params.resettoken)
     .digest("hex");
 
-  const user = await User.findOne({ // Find user by reset password token and ensure it's not expired
+  const user = await User.findOne({
+    // Find user by reset password token and ensure it's not expired
     resetPasswordToken,
     resetPasswordExpire: { $gt: Date.now() },
   });

@@ -45,24 +45,20 @@ const updateProfile = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
   if (req.body.avatar) {
-    try {
-      if (user.avatar) {
-        const imageId = user.avatar.public_id;
-        await cloudinary.v2.uploader.destroy(imageId);
-      }
-
-      const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-        folder: "avatars",
-        width: 200,
-        crop: "scale",
-      });
-      newUserData.avatar = {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
-      };
-    } catch (error) {
-      console.error("Error handling avatar:", error);
+    if (user.avatar) {
+      const imageId = user.avatar.public_id;
+      await cloudinary.v2.uploader.destroy(imageId);
     }
+
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 200,
+      crop: "scale",
+    });
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
   }
 
   user.set(newUserData);

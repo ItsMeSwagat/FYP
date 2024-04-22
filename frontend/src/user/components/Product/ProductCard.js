@@ -29,9 +29,7 @@ const ProductCard = ({ product }) => {
       navigate("/login");
     }
     const data = { productId: product._id, size: selectedSize };
-    console.log(data);
     dispatch(addToCart(data));
-    toast.success("Product Added to Cart");
   };
 
   const [selectedSize, setSelectedSize] = useState("");

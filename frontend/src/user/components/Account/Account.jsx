@@ -104,7 +104,7 @@ const Account = () => {
                 <img
                   src={user.avatar.url}
                   alt="img"
-                  className=" object-cover object-center"
+                  className=" w-full h-full object-cover"
                 />
               </div>
               <div className=" flex flex-col gap-2 text-lg">
