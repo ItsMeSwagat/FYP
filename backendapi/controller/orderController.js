@@ -6,7 +6,7 @@ const { initiateKhalti } = require("./khaltiPaymentController");
 
 // CREATE ORDER
 const createNewOrder = catchAsyncErrors(async (req, res, next) => {
-   // Extract order details from request body
+  // Extract order details from request body
   const {
     shippingDetails,
     orderItems,
@@ -15,7 +15,11 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
     totalOrderPrice,
   } = req.body;
 
-   // Create a new order document with the provided details
+  if (totalOrderPrice > 1000) {
+    return next(new ErrorHandler("Price cannot be greater than Rs 1000", 400));
+  }
+
+  // Create a new order document with the provided details
   const order = await Order.create({
     orderItems,
     shippingDetails,
@@ -26,7 +30,35 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
     user: req.user._id,
   });
 
-   // Construct payment data for Khalti payment initiation
+  // Reduce the stock of each product based on the quantity ordered
+  for (const orderItem of orderItems) {
+    const product = await Product.findById(orderItem.product);
+
+    if (!product) {
+      return next(
+        new ErrorHandler(`Product not found for ID: ${orderItem.product}`, 404)
+      );
+    }
+
+    const size = product.sizes.find((s) => s.name === orderItem.size);
+
+    if (!size) {
+      return next(
+        new ErrorHandler(
+          `Size not found for product ID: ${orderItem.product}`,
+          404
+        )
+      );
+    }
+
+    // Update the stock of the product and size
+    size.stock -= orderItem.quantity;
+    product.stock -= orderItem.quantity;
+
+    await product.save({ validateBeforeSave: false });
+  }
+
+  // Construct payment data for Khalti payment initiation
   const paymentData = {
     return_url: process.env.RETURN_URL,
     website_url: process.env.WEBSITE_URL,
@@ -43,7 +75,6 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
   initiateKhalti(paymentData, req, res);
 });
 
-
 // UPDATE ORDER AFTER PAYMENT
 const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.findById(req.payment_id); // Find order by payment ID
@@ -55,16 +86,9 @@ const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
   order.paymentInfo.id = req.payment_id;
   order.paymentInfo.status = req.status;
 
-  if (req.status !== "Completed") {
-    // If payment status is not "complete", delete the order
-    await order.deleteOne();
-    res.redirect("http://localhost:3000/payment/Fail")
-  }
-
   await order.save();
   res.redirect("http://localhost:3000/payment/success");
 });
-
 
 // GET USERS ORDER
 const userOrders = catchAsyncErrors(async (req, res, next) => {
@@ -76,10 +100,9 @@ const userOrders = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 // GET ORDER DETAILS
 const getOrderDetails = catchAsyncErrors(async (req, res, next) => {
-   // Find order by ID and populate user and order items
+  // Find order by ID and populate user and order items
   const order = await Order.findById(req.params.id)
     .populate("user", "name email")
     .populate({
@@ -87,7 +110,7 @@ const getOrderDetails = catchAsyncErrors(async (req, res, next) => {
       model: "Product",
     });
 
-    // If order not found, return error
+  // If order not found, return error
   if (!order) {
     return next(new ErrorHandler("Order not found with this Id", 404));
   }
@@ -98,16 +121,15 @@ const getOrderDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 // CANCEL ORDER
 const cancelOrder = catchAsyncErrors(async (req, res, next) => {
   // Extract order ID from request parameters
   const orderId = req.params.id;
 
-   // Find order by ID and user
+  // Find order by ID and user
   const order = await Order.findOne({ _id: orderId, user: req.user._id });
 
-   // If order not found, return error
+  // If order not found, return error
   if (!order) {
     return next(new ErrorHandler("Order not found with this ID", 404));
   }
@@ -115,6 +137,10 @@ const cancelOrder = catchAsyncErrors(async (req, res, next) => {
   // If order status is "Shipped", return error
   if (order.orderStatus === "Shipped") {
     return next(new ErrorHandler("Order already Shipped", 400));
+  }
+
+  if (order.orderStatus === "Delivered") {
+    return next(new ErrorHandler("Order already Delivered", 400));
   }
 
   // If order status is "Cancelled", return error
@@ -135,7 +161,6 @@ const cancelOrder = catchAsyncErrors(async (req, res, next) => {
     message: "Order cancelled successfully",
   });
 });
-
 
 // UPDATE STOCK
 async function updateStock(id, quantity, sizeName) {

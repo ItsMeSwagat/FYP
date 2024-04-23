@@ -15,6 +15,10 @@ const CartItemCard = ({ item, dispatch }) => {
   const removeItem = () => {
     dispatch(removeCartItem(item?._id));
   };
+
+  const sizeStock = item.product.sizes.find((size) => size.name === item.size)?.stock;
+  const isStockReached = sizeStock <= item.quantity;
+
   return (
     <>
       <div className=" flex gap-3 px-2 py-4">
@@ -64,6 +68,7 @@ const CartItemCard = ({ item, dispatch }) => {
           />
           <button
             onClick={() => updateItem(1)}
+            disabled={isStockReached}
             className=" bg-[#eddb8e] w-8 h-8  text-center text-lg font-bold "
           >
             +

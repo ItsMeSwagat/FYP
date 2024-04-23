@@ -54,7 +54,6 @@ const updateProduct = catchAsyncErrors(async (req, res) => {
   }
 
   if (images !== undefined) {
-    
     for (let i = 0; i < product.images.length; i++) {
       await cloudinary.v2.uploader.destroy(product.images[i].public_id);
     }

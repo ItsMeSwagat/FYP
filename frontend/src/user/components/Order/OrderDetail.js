@@ -21,6 +21,7 @@ import {
 import { MdOutlineRateReview } from "react-icons/md";
 import { createReview } from "../../../actions/reviewAction";
 import { CREATE_REVIEW_RESET } from "../../../constants/reviewConstants";
+import { CANCEL_ORDER_RESET } from "../../../constants/orderConstants";
 
 const OrderDetail = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const OrderDetail = () => {
     }
     if (reviewError) {
       toast.error(reviewError);
+      dispatch(clearErrors());
     }
     if (success) {
       toast.success("Review Submitted Successfully");
@@ -53,6 +55,7 @@ const OrderDetail = () => {
     if (cancelSuccess) {
       toast.success(" Order cancelled Successfully");
       navigate("/orders/user");
+      dispatch({ type: CANCEL_ORDER_RESET });
     }
     dispatch(getOrderDetail(id));
   }, [dispatch, id, error, reviewError, success, cancelSuccess, navigate]);
@@ -214,7 +217,8 @@ const OrderDetail = () => {
                 </Stepper>
               ) : (
                 <div>
-                  <h1>Order has been Cancelled.
+                  <h1>
+                    Order has been Cancelled.
                     <p>Your Payment will be Refunded with 3 Days.</p>
                   </h1>
                 </div>
@@ -224,7 +228,7 @@ const OrderDetail = () => {
                   order.orderStatus !== "Delivered" &&
                   order.orderStatus !== "Cancelled" && (
                     <button
-                      onClick={handleCancelOrder}
+                      onClick={() => handleCancelOrder()}
                       className="  bg-[#141414] text-white rounded-md border-2 px-4 py-1.5 hover:bg-[#eddb8e] hover:text-black font-medium"
                     >
                       Cancel Order

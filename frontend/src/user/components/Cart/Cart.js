@@ -110,7 +110,7 @@ const Cart = () => {
           <div className="flex gap-5 justify-end mt-5">
             {cart.cart.cart?.voucher ? (
               <div className=" w-[15rem] flex flex-col gap-3">
-                <p>Voucher: {cart.cart.cart?.voucher}</p>
+                <p className=" uppercase">Voucher: {cart.cart.cart?.voucher}</p>
                 <button
                   className=" bg-[#141414] text-white py-2 hover:bg-[#eddb8e] hover:text-black font-medium rounded-md"
                   onClick={handleRemoveVoucher}
@@ -145,7 +145,7 @@ const Cart = () => {
                 <p>Discount:</p>
                 <p className=" text-green-400">-Rs{cart.cart.cart?.discount}</p>
               </div>
-              {cart.cart.cart?.voucherDiscount && cart.cart.cart?.voucherDiscount !== 0 && (
+              {cart.cart.cart?.voucherDiscount > 0 && (
                 <div className="flex justify-between">
                   <p>Voucher Discount:</p>
                   <p className="text-green-400">

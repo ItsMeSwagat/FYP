@@ -50,6 +50,7 @@ const ShippingDetails = () => {
             <form
               className=" w-[50%] h-full m-4 flex flex-col gap-3"
               encType="multipart/form-data"
+              onSubmit={ShippingDetailsHandler}
             >
               <div className=" flex flex-col gap-2">
                 <label className=" text-lg">Enter Name</label>
@@ -119,7 +120,6 @@ const ShippingDetails = () => {
                   className=" cursor-pointer w-full bg-[#141414] text-white font-semibold text-xl py-1.5 rounded-[10px] hover:bg-[#eddb8e] hover:text-black"
                   type="submit"
                   value="Continue"
-                  onClick={ShippingDetailsHandler}
                 />
               </div>
             </form>

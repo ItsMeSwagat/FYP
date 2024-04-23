@@ -23,6 +23,7 @@ import {
   CANCEL_ORDER_REQUEST,
   CANCEL_ORDER_SUCCESS,
   CANCEL_ORDER_FAIL,
+  CANCEL_ORDER_RESET,
 } from "../constants/orderConstants";
 
 export const createOrderReducer = (state = {}, action) => {
@@ -187,6 +188,12 @@ export const orderReducer = (state = {}, action) => {
       };
 
     case ADMIN_DELETE_ORDER_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+
+    case CANCEL_ORDER_RESET:
       return {
         ...state,
         isDeleted: false,
