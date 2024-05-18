@@ -16,7 +16,7 @@ const EditProfile = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState();
+  const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState("/profileimg.png");
 
   const updateProfileSubmit = (e) => {
