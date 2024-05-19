@@ -12,11 +12,28 @@ export const ProtectedRoute = ({ isAdmin }) => {
 
   const hasToken = verifyCookies();
 
-  const allowAccess = hasToken
+  // const allowAccess = hasToken;
 
-  if (isAdmin === true && user && user.role !== "admin") {
+  // if (isAdmin === true && user && user.role !== "admin") {
+  //   return <Navigate to="/" />;
+  // }
+
+  // return allowAccess ? <Outlet /> : <Navigate to={`/login`} />;
+
+  const allowAccess = hasToken && user;
+
+  if (!allowAccess) {
+    // If user is not authenticated, redirect to login
+    return <Navigate to="/login" />;
+  }
+
+  if (isAdmin && user.role !== "admin") {
     return <Navigate to="/" />;
   }
 
-  return allowAccess ? <Outlet /> : <Navigate to={`/login`} />;
+  if (!isAdmin && user.role === "admin") {
+    return <Navigate to="/admin/dashboard" />;
+  }
+
+  return <Outlet />;
 };

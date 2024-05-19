@@ -38,6 +38,7 @@ import AllVoucher from "./admin/components/Voucher/AllVoucher";
 import CreateVoucher from "./admin/components/Voucher/CreateVoucher";
 import UpdateVoucher from "./admin/components/Voucher/UpdateVoucher";
 import OrderFail from "./user/components/Order/OrderFail";
+import AdminProtectedRoute from "./route/AdminProtectedRoute";
 
 function App() {
   useEffect(() => {
@@ -101,13 +102,18 @@ function App() {
         </Route>
 
         <Route path="/" element={<Layout />}>
-          <Route path="" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route path="/products/:keyword" element={<Products />} />
-          <Route path="/search" element={<Search />} />
+          <Route element={<AdminProtectedRoute />} errorElement={<ErrorPage />}>
+            <Route path="" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/products/:keyword" element={<Products />} />
+            <Route path="/search" element={<Search />} />
+          </Route>
 
-          <Route element={<ProtectedRoute />} errorElement={<ErrorPage />}>
+          <Route
+            element={<ProtectedRoute isAdmin={false} />}
+            errorElement={<ErrorPage />}
+          >
             <Route path="/account" element={<Account />} />
             <Route path="/customer/update" element={<EditProfile />} />
             <Route path="/password/update" element={<ChangePassword />} />
