@@ -39,10 +39,12 @@ import CreateVoucher from "./admin/components/Voucher/CreateVoucher";
 import UpdateVoucher from "./admin/components/Voucher/UpdateVoucher";
 import OrderFail from "./user/components/Order/OrderFail";
 import AdminProtectedRoute from "./route/AdminProtectedRoute";
+import { getUserCart } from "./actions/cartAction";
 
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
+    store.dispatch(getUserCart());
   }, []);
 
   return (
