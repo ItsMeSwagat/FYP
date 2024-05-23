@@ -57,8 +57,10 @@ const updateProduct = catchAsyncErrors(async (req, res) => {
 
   if (typeof req.body.images === "string") {
     images.push(req.body.images);
-  } else {
+  } else if (Array.isArray(req.body.images)) {
     images = req.body.images;
+  } else {
+    return next(new ErrorHandler("Images must be a string or an array", 400));
   }
 
   if (images !== undefined) {

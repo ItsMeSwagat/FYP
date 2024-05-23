@@ -130,13 +130,11 @@ const ProductDetails = () => {
                 </div>
 
                 <div className=" flex gap-4 py-3 text-lg font-medium border-b-2">
-                  <div className=" flex flex-col gap-1">
+                  <div className=" flex items-center gap-1">
                     Status:
                     <p
                       className={
-                        product.stock === 0
-                          ? " text-red-500"
-                          : " text-green-500"
+                        product.stock === 0 ? " bg-red-400 px-2 py-0.5 rounded-md" : " bg-green-400 px-2 py-0.5 rounded-md"
                       }
                     >
                       {product.stock === 0 ? "Out of Stock" : "In Stock"}
