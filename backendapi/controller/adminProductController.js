@@ -7,10 +7,18 @@ const cloudinary = require("cloudinary");
 const createProduct = catchAsyncErrors(async (req, res) => {
   let images = [];
 
+  // if (typeof req.body.images === "string") {
+  //   images.push(req.body.images);
+  // } else {
+  //   images = req.body.images;
+  // }
+
   if (typeof req.body.images === "string") {
     images.push(req.body.images);
-  } else {
+  } else if (Array.isArray(req.body.images)) {
     images = req.body.images;
+  } else {
+    return next(new ErrorHandler("Images must be a string or an array", 400));
   }
 
   const imagesLinks = [];
