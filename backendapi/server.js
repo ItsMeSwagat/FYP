@@ -19,14 +19,12 @@ connectDB();
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET
-})
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 const server = app.listen(process.env.PORT, () => {
   console.log(`Clothing store server is working at ${process.env.PORT}`);
 });
-
-
 
 // unhandled promise Rejection
 process.on("unhandledRejection", (err) => {

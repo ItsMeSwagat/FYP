@@ -70,14 +70,15 @@ const EditProfile = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className=" min-h-[60vh] px-[8rem] py-[2rem] flex justify-center items-center">
+        <div className=" min-h-[60vh] mx-[1rem] py-[2rem] flex justify-center items-center">
           <form
             encType="multipart/form-data"
             onSubmit={updateProfileSubmit}
-            className=" w-[30rem] h-[25rem] flex flex-col justify-around items-center bg-white rounded-md p-4 border-2"
+            className=" w-full md:w-[30rem] h-[25rem] flex flex-col justify-around items-center bg-white rounded-md p-4 border-2"
           >
             {/* Name */}
             <div className=" w-full pb-2">
+              <h1 className=" text-2xl lg:text-3xl font-bold pb-2">EDIT PROFILE</h1>
               <p className=" font-semibold pb-1">Name</p>
               <input
                 type="text"

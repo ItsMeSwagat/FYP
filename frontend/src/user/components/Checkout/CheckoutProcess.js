@@ -46,7 +46,7 @@ const CheckoutProcess = ({ activeProcess }) => {
 
   return (
     <Fragment>
-      <div className=" px-[8rem] pt-[2rem]">
+      <div className=" px-[1rem] md:px-[2rem] xl:px-[8rem] pt-[2rem]">
         <Stepper sx={stepStyle} activeStep={activeProcess} alternativeLabel>
           {process.map((item, i) => (
             <Step

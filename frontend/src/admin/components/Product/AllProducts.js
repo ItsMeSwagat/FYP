@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import {
   clearErrors,
   getAllProductAdmin,
-  deleteProduct
+  deleteProduct,
 } from "../../../actions/productAction";
 import Loader from "../../../user/components/Loader/Loader";
 import { ADMIN_DELETE_PRODUCT_RESET } from "../../../constants/productConstants";
@@ -15,7 +15,9 @@ const AllProducts = () => {
   const dispatch = useDispatch();
 
   const { loading, error, products } = useSelector((state) => state.products);
-  const {error: deleteError, isDeleted} = useSelector((state) => state.product);
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.product
+  );
 
   useEffect(() => {
     if (error) {
@@ -27,16 +29,16 @@ const AllProducts = () => {
       dispatch(clearErrors());
     }
 
-    if(isDeleted){
-      toast.success("Product Deleted Successfully")
-      dispatch({type: ADMIN_DELETE_PRODUCT_RESET})
+    if (isDeleted) {
+      toast.success("Product Deleted Successfully");
+      dispatch({ type: ADMIN_DELETE_PRODUCT_RESET });
     }
     dispatch(getAllProductAdmin());
   }, [dispatch, error, deleteError, isDeleted]);
 
   const deleteProductHandler = (id) => {
     dispatch(deleteProduct(id));
-  }
+  };
 
   const columnData = [
     { field: "id", headerName: "Product ID", minWidth: 300, flex: 0.5 },
@@ -51,15 +53,24 @@ const AllProducts = () => {
       field: "stock",
       headerName: "Stock",
       type: "number",
-      minWidth: 100,
+      minWidth: 150,
       flex: 0.3,
+      renderCell: (params) => {
+        return params.value === 0 ? (
+          <span className=" bg-red-400 p-2 rounded-md font-medium">Out Of Stock</span>
+        ) : params.value < 10 ? (
+          <span className=" bg-yellow-400 p-2 rounded-md font-medium">Low In Stock</span>
+        ) : (
+          params.value
+        );
+      },
     },
 
     {
       field: "price",
       headerName: "Price",
       type: "number",
-      minWidth: 270,
+      minWidth: 200,
       flex: 0.5,
       valueFormatter: (params) => `Rs ${params.value}`,
     },
@@ -81,7 +92,10 @@ const AllProducts = () => {
               EDIT
             </Link>
 
-            <button onClick={() => deleteProductHandler(params.id)} className=" bg-[#141414] text-white hover:bg-[#eddb8e] hover:text-black px-2 py-1.5 rounded-md border-2 font-medium">
+            <button
+              onClick={() => deleteProductHandler(params.id)}
+              className=" bg-[#141414] text-white hover:bg-[#eddb8e] hover:text-black px-2 py-1.5 rounded-md border-2 font-medium"
+            >
               DELETE
             </button>
           </Fragment>

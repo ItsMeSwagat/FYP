@@ -2,7 +2,13 @@ const Order = require("../models/orderModel");
 const Product = require("../models/productModel");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorHandler");
-const { initiateKhalti } = require("./khaltiPaymentController");
+const {
+  initiateKhalti,
+  handleKhaltiCallback,
+  verifyKhaltiPayment,
+} = require("./khaltiPaymentController");
+const User = require("../models/userModel");
+const sendEmail = require("../utils/sendEmail");
 
 // CREATE ORDER
 const createNewOrder = catchAsyncErrors(async (req, res, next) => {
@@ -76,18 +82,78 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
 });
 
 // UPDATE ORDER AFTER PAYMENT
+// const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
+//   const { pidx, purchase_order_id, transaction_id, message } = req.query;
+
+//   const callBackData = { pidx, purchase_order_id, transaction_id, message };
+
+//   handleKhaltiCallback(callBackData, req, res, next);
+//   const order = await Order.findById(req.payment_id); // Find order by payment ID
+
+//   // If order not found, return error
+//   if (!order) {
+//     return next(new ErrorHandler("Order not Found", 404));
+//   }
+
+//   if (req.status === "Completed") {
+//     order.paymentInfo.id = req.payment_id;
+//     order.paymentInfo.status = req.status;
+
+//     await order.save();
+//     res.redirect("http://localhost:3000/payment/success");
+//   } else if (req.status === "Failed") {
+//     await Order.findByIdAndDelete(req.payment_id);
+//     res.redirect("http://localhost:3000/payment/fail"); // Redirect to a failure page
+//   } else {
+//     return next(new ErrorHandler("Invalid payment status", 400));
+//   }
+// });
+
 const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.findById(req.payment_id); // Find order by payment ID
+  const { pidx, purchase_order_id, transaction_id, message, status } =
+    req.query;
+
+  handleKhaltiCallback(pidx);
+
+  const order = await Order.findById(purchase_order_id); // Find order by payment ID
 
   // If order not found, return error
   if (!order) {
     return next(new ErrorHandler("Order not Found", 404));
   }
-  order.paymentInfo.id = req.payment_id;
-  order.paymentInfo.status = req.status;
+
+  if (status !== "Completed") {
+    await Order.findByIdAndDelete(purchase_order_id);
+    return res.redirect("http://localhost:3000/payment/fail");
+  }
+
+  order.paymentInfo.id = transaction_id;
+  order.paymentInfo.status = status;
 
   await order.save();
-  res.redirect("http://localhost:3000/payment/success");
+
+  // Fetch user details
+  const user = await User.findById(order.user);
+
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  await sendEmail({
+    email: user.email,
+    subject: "Order Placed Successfully",
+    message: `Hello ${order.shippingDetails.name}, Your order has been placed successfully. Thank your for your purchase.`,
+    url: `${process.env.BASE_URL}/order/details/${order._id}`,
+    type: "orderPlaced",
+    name: order.shippingDetails.name,
+    orderId: order._id,
+    shippingPrice: order.shippingPrice,
+    totalPrice: order.totalPrice,
+    totalOrderPrice: order.totalOrderPrice,
+    status: order.orderStatus,
+  });
+
+  return res.redirect("http://localhost:3000/payment/success");
 });
 
 // GET USERS ORDER

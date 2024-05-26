@@ -37,7 +37,7 @@ export const createOrder = (order) => async (dispatch) => {
 
     dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
     const paymentUrl = data?.data?.payment_url;
-    console.log(paymentUrl);
+    
     if (paymentUrl) {
       window.location.href = paymentUrl;
     }

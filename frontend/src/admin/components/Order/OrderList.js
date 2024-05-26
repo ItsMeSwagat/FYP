@@ -73,7 +73,7 @@ const OrderList = () => {
       renderCell: (params) => {
         return (
           <Fragment>
-            {params.row.status !== "Cancelled" && (
+            {params.row.status !== "Cancelled" && params.row.status !== "Delivered" && (
               <Link
                 className=" bg-[#141414] text-white hover:bg-[#eddb8e] hover:text-black px-2 py-1.5 rounded-md border-2 font-medium"
                 to={`/admin/order/${params.id}`}

@@ -34,6 +34,14 @@ const Account = () => {
     return orders.slice(0, 3);
   };
 
+  const getTop5RecentOrders = () => {
+    if (!orders) return [];
+    return orders
+      .slice()
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      .slice(0, 3);
+  };
+
   const dataColumns = [
     { field: "id", headerName: "ORDER ID", minWidth: 250, flex: 1 },
     {
@@ -81,7 +89,7 @@ const Account = () => {
 
   const dataRows = [];
 
-  getTop3Orders().forEach((item, i) => {
+  getTop5RecentOrders().forEach((item, i) => {
     dataRows.push({
       quantity: item.orderItems.length,
       id: item._id,
@@ -95,38 +103,40 @@ const Account = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="px-[8rem] w-full min-h-[60vh] flex flex-col justify-center items-center">
+        <div className=" px-[1rem] md:px-[2rem] xl:px-[8rem] w-full min-h-[60vh] flex flex-col justify-center items-center">
           {/* Manage Account */}
           <div className=" flex gap-4 w-full py-4">
-            <div className=" relative w-full h-[10rem] flex items-center justify-between bg-white rounded-md p-4 border-2">
+            <div className=" relative w-full h-full lg:h-[10rem] flex flex-col gap-5 md:flex-row lg:items-center justify-between bg-white rounded-md p-4 border-2">
               <h1 className=" text-xl font-medium">Personal Profile</h1>
-              <div className=" w-[8rem] h-[8rem] rounded-full overflow-hidden">
-                <img
-                  src={user.avatar.url}
-                  alt="img"
-                  className=" w-full h-full object-cover"
-                />
-              </div>
-              <div className=" flex flex-col gap-2 text-lg">
-                <p>{user.name}</p>
-                <p>{user.email}</p>
-                <p className=" font-medium">
-                  Joined At:{" "}
-                  <span className=" font-normal">
-                    {String(user.createdAt).substr(0, 10)}
-                  </span>
-                </p>
+              <div className=" w-full flex items-center gap-4">
+                <div className=" w-[5rem] h-[5rem] lg:w-[8rem] lg:h-[8rem] rounded-full overflow-hidden">
+                  <img
+                    src={user.avatar.url}
+                    alt="img"
+                    className=" w-full h-full object-cover"
+                  />
+                </div>
+                <div className=" flex flex-col gap-2 lg:text-lg">
+                  <p>{user.name}</p>
+                  <p>{user.email}</p>
+                  <p className=" font-medium">
+                    Joined At:{" "}
+                    <span className=" font-normal">
+                      {String(user.createdAt).substr(0, 10)}
+                    </span>
+                  </p>
+                </div>
               </div>
               <div className=" flex flex-col gap-2">
                 <Link
                   to={`/customer/update`}
-                  className="bg-[#141414] w-[12rem] px-5 py-2 font-medium hover:bg-[#eddb8e] text-white hover:text-black"
+                  className="bg-[#141414] md:w-[12rem] px-5 py-2 font-medium hover:bg-[#eddb8e] text-white hover:text-black"
                 >
                   Edit Profile
                 </Link>
                 <Link
                   to={`/password/update`}
-                  className="bg-[#141414] w-[12rem] px-5 py-2 font-medium hover:bg-[#eddb8e] text-white hover:text-black"
+                  className="bg-[#141414] md:w-[12rem] px-5 py-2 font-medium hover:bg-[#eddb8e] text-white hover:text-black"
                 >
                   Change Password
                 </Link>

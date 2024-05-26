@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckoutProcess from "./CheckoutProcess";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -36,14 +36,28 @@ const ConfirmOrder = () => {
     navigate("/payment/process");
   };
 
+  const isEmptyCart =
+    !cart?.cart?.cartItems || cart?.cart?.cartItems?.length === 0;
+  const isEmptyShippingDetails =
+    !shippingDetails.name ||
+    !shippingDetails.address ||
+    !shippingDetails.city ||
+    !shippingDetails.state ||
+    !shippingDetails.phoneNo;
+
+  if (isEmptyCart || isEmptyShippingDetails) {
+    navigate("/"); // Navigate to home page
+    return null;
+  }
+
   return (
     <>
       <CheckoutProcess activeProcess={1} />
-      <div className=" px-[8rem] py-[1rem] min-h-[60vh">
+      <div className=" px-[1rem] md:px-[2rem] lg:px-[2rem] xl:px-[8rem] py-[1rem] min-h-[60vh">
         <div className=" w-full grid gap-5 bg-white p-4 rounded-md shadow-md border-2">
           {/* shipping Details */}
-          <div className=" bg-[#f5f5f5] border-2 rounded-md p-4">
-            <h1 className=" text-lg font-medium">Shipping Address</h1>
+          <div className=" bg-[#f5f5f5] border-2 rounded-md p-4 text-sm md:text-base">
+            <h1 className=" text-lg font-medium pb-2">Shipping Address</h1>
             <div className=" flex gap-3">
               <label>Name:</label>
               <p>{shippingDetails.name}</p>
@@ -70,7 +84,7 @@ const ConfirmOrder = () => {
                   DeliveryType === "pickup"
                     ? " bg-[#eddb8e] text-black"
                     : "bg-[#141414] text-white"
-                }  rounded-md font-medium p-4`}
+                }  rounded-md font-medium p-2 md:p-4 text-xs md:text-base`}
               >
                 PickUp Parcel
                 <p>Delivery Charge: Rs 100</p>
@@ -81,7 +95,7 @@ const ConfirmOrder = () => {
                   DeliveryType === "home"
                     ? " bg-[#eddb8e] text-black"
                     : " bg-[#141414]  text-white"
-                }   rounded-md font-medium p-4`}
+                }   rounded-md font-medium p-2 md:p-4 text-xs md:text-base`}
               >
                 Home Delivery
                 <p>Delivery Charge: Rs 200</p>
@@ -90,26 +104,29 @@ const ConfirmOrder = () => {
           </div>
 
           {/* cartitems */}
-          <div className=" w-full bg-[#f5f5f5] border-2 rounded-md p-4 grid grid-flow-col justify-between">
+          <div className=" w-full bg-[#f5f5f5] border-2 rounded-md p-4 grid lg:grid-flow-col gap-4 lg:gap-0 lg:justify-between">
             <div className=" flex flex-col gap-3">
               <h1 className=" text-lg font-medium pb-2">Order Items</h1>
               {cart.cart?.cartItems &&
                 cart.cart?.cartItems.map((item, index) => (
                   <div
                     key={index}
-                    className=" w-[35rem] flex justify-between items-center bg-white border-2 rounded-md p-2"
+                    className=" w-full lg:w-[35rem] flex justify-between items-center bg-white border-2 rounded-md p-2"
                   >
-                    <div className=" w-[5rem] h-[5rem]">
+                    <div className=" w-[3rem] h-[3rem] md:w-[5rem] md:h-[5rem]">
                       <img
                         src={item.product.images[0].url}
                         alt={item.product.name}
                         className="w-full h-full object-scale-down"
                       />
                     </div>
-                    <Link to={`/product/${item.product._id}`}>
+                    <Link
+                      to={`/product/${item.product._id}`}
+                      className=" text-xs md:text-base"
+                    >
                       {item.product.name}
                     </Link>
-                    <p>
+                    <p className=" text-xs md:text-base">
                       {item.quantity} X Rs{item.product.price} =
                       <span> Rs{item.price}</span>
                     </p>
@@ -118,9 +135,9 @@ const ConfirmOrder = () => {
             </div>
 
             {/* order totals */}
-            <div className="">
+            <div className=" w-full">
               <h1 className=" text-lg font-medium pb-2">Order Summery</h1>
-              <div className=" bg-white w-[20rem] min-h-[5rem] flex flex-col gap-5 justify-around p-4 rounded-md border-2">
+              <div className=" bg-white w-full lg:w-[20rem] min-h-[5rem] flex flex-col gap-5 justify-around p-4 rounded-md border-2">
                 <div className=" flex justify-between">
                   <p>Sub Total:</p>
                   <p>Rs{cart.cart?.totalPrice}</p>

@@ -46,24 +46,57 @@ const createProduct = catchAsyncErrors(async (req, res) => {
 });
 
 //admin update product
-const updateProduct = catchAsyncErrors(async (req, res) => {
+const updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await Product.findById(req.params.id);
 
   if (!product) {
     return next(new ErrorHandler("Product not found", 404));
   }
 
-  let images = [];
+  // let images = [];
 
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else if (Array.isArray(req.body.images)) {
-    images = req.body.images;
-  } else {
-    return next(new ErrorHandler("Images must be a string or an array", 400));
-  }
+  // if (typeof req.body.images === "string") {
+  //   images.push(req.body.images);
+  // } else if (Array.isArray(req.body.images)) {
+  //   images = req.body.images;
+  // } else {
+  //   return next(new ErrorHandler("Images must be a string or an array", 400));
+  // }
 
-  if (images !== undefined) {
+  // if (images !== undefined) {
+  //   for (let i = 0; i < product.images.length; i++) {
+  //     await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+  //   }
+
+  //   const imagesLinks = [];
+
+  //   for (let i = 0; i < images.length; i++) {
+  //     const result = await cloudinary.v2.uploader.upload(images[i], {
+  //       folder: "products",
+  //     });
+
+  //     imagesLinks.push({
+  //       public_id: result.public_id,
+  //       url: result.secure_url,
+  //     });
+  //   }
+
+  //   req.body.images = imagesLinks;
+  // }
+
+  // Check if images are included in the request
+  if (req.body.images) {
+    let images = [];
+
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else if (Array.isArray(req.body.images)) {
+      images = req.body.images;
+    } else {
+      return next(new ErrorHandler("Images must be a string or an array", 400));
+    }
+
+    // Process images only if they are provided
     for (let i = 0; i < product.images.length; i++) {
       await cloudinary.v2.uploader.destroy(product.images[i].public_id);
     }
@@ -81,6 +114,7 @@ const updateProduct = catchAsyncErrors(async (req, res) => {
       });
     }
 
+    // Update the request body with the new imagesLinks
     req.body.images = imagesLinks;
   }
 

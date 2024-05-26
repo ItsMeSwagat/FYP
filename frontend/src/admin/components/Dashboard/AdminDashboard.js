@@ -55,8 +55,14 @@ const AdminDashboard = () => {
   let monthlyRevenue = new Array(12).fill(0);
   let yearlyRevenue = {};
 
-  orders &&
-    orders.forEach((item) => {
+  const filteredOrders = orders?.filter(
+    (order) => order.orderStatus !== "Cancelled" // Replace "Cancelled" with your actual cancelled status
+  );
+
+  console.log(filteredOrders);
+
+  filteredOrders &&
+    filteredOrders.forEach((item) => {
       totalRevenue += item.totalOrderPrice;
       const orderDate = new Date(item.createdAt);
       if (orderDate.getFullYear() === selectedYear) {

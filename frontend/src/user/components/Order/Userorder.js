@@ -82,7 +82,7 @@ const UserOrder = () => {
         <Loader />
       ) : (
         <Fragment>
-          <div className=" min-h-[60vh] lg:px-[4rem] xl:px-[8rem] py-[3rem]">
+          <div className=" min-h-[50vh] px-[1rem] md:px-[2rem] lg:px-[2rem] xl:px-[8rem] py-[3rem]">
             <DataGrid
               rows={dataRows}
               columns={dataColumns}

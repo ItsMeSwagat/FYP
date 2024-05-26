@@ -40,6 +40,7 @@ import UpdateVoucher from "./admin/components/Voucher/UpdateVoucher";
 import OrderFail from "./user/components/Order/OrderFail";
 import AdminProtectedRoute from "./route/AdminProtectedRoute";
 import { getUserCart } from "./actions/cartAction";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   useEffect(() => {

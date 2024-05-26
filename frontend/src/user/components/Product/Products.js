@@ -26,7 +26,7 @@ const Products = () => {
     loading,
     error,
     productsCount,
-    resultPerPage,
+    resultPerPage: perPage,
     filteredProductsCount,
   } = useSelector((state) => state.products);
 
@@ -35,6 +35,7 @@ const Products = () => {
   const [price, setPrice] = useState([0, 50000]);
   const [category, setCategory] = useState("");
   const [filtersActive, setFiltersActive] = useState(false);
+  const [resultPerPage, setResultPerPage] = useState(8);
 
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
@@ -52,8 +53,8 @@ const Products = () => {
       toast.error(error);
       dispatch(clearErrors());
     }
-    dispatch(getProduct(keyword, currentPage, price, category));
-  }, [dispatch, keyword, currentPage, price, error, category]);
+    dispatch(getProduct(keyword, currentPage, resultPerPage, price, category));
+  }, [dispatch, keyword, currentPage, price, error, category, resultPerPage]);
 
   return (
     <Fragment>
@@ -62,9 +63,9 @@ const Products = () => {
       ) : (
         <Fragment>
           <ToastContainer />
-          <div className=" flex justify-center min-h-screen">
+          <div className=" flex flex-col lg:flex-row justify-center min-h-screen">
             {!keyword && (
-              <div className=" w-1/4 px-8 py-4 flex flex-col gap-5">
+              <div className=" w-full lg:w-1/4 px-8 py-4 flex flex-col gap-5">
                 <div className=" flex flex-col gap-1">
                   <p className=" font-semibold text-xl text-[#141414]">Price</p>
                   <div className=" flex justify-between">
@@ -97,14 +98,14 @@ const Products = () => {
                   <p className=" font-semibold text-xl text-[#141414]">
                     Category
                   </p>
-                  <div className=" flex flex-col">
+                  <div className=" grid grid-cols-3 md:grid-cols-5 lg:flex lg:flex-col py-2">
                     {categories.map((cat) => (
                       <FormControlLabel
                         key={cat}
                         value={cat}
                         control={
                           <Radio
-                            className="category-link"
+                            className=""
                             // Set checked property based on active category
                             checked={category === cat}
                             onClick={() => setCategory(cat)}
@@ -124,19 +125,19 @@ const Products = () => {
             )}
 
             {/* products */}
-            <div className=" w-[70%] flex flex-col justify-center items-center">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 py-4">
+            <div className=" w-full lg:w-[70%] h-full flex flex-col justify-center items-center">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 py-4">
                 {products &&
                   products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
               </div>
 
-              {resultPerPage < count && (
+              {perPage < count && (
                 <div className=" flex justify-center items-center my-4">
                   <Pagination
                     activePage={currentPage}
-                    itemsCountPerPage={resultPerPage}
+                    itemsCountPerPage={perPage}
                     totalItemsCount={
                       filtersActive || keyword
                         ? filteredProductsCount

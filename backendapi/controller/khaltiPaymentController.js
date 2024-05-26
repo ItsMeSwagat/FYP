@@ -46,7 +46,7 @@ const initiateKhalti = catchAsyncErrors(async (paymentData, req, res) => {
     Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
     "Content-Type": "application/json",
   };
-  console.log(headers);
+
   const response = await axios.post(
     "https://a.khalti.com/api/v2/epayment/initiate/",
     paymentData,
@@ -62,13 +62,43 @@ const initiateKhalti = catchAsyncErrors(async (paymentData, req, res) => {
   });
 });
 
-const handleKhaltiCallback = catchAsyncErrors(async (req, res, next) => {
-  const { pidx, purchase_order_id, transaction_id, message } = req.query;
+// const handleKhaltiCallback = catchAsyncErrors(
+//   async (callBackData, req, res, next) => {
+//     const { pidx, purchase_order_id, transaction_id, message } = req.query;
 
-  if (message) {
-    throw new ErrorHandler("Error Processing Khalti", 404);
-  }
+//     if (message) {
+//       throw new ErrorHandler("Error Processing Khalti", 404);
+//     }
 
+//     const headers = {
+//       Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
+//       "Content-Type": "application/json",
+//     };
+
+//     const response = await axios.post(
+//       "https://a.khalti.com/api/v2/epayment/lookup/",
+//       { pidx },
+//       { headers }
+//     );
+
+//     const data = response.data;
+//     console.log("lookup-data", data);
+
+//     if (data?.status !== "Completed") {
+//       req.payment_id = purchase_order_id;
+//       req.status = "Failed";
+//     } else {
+//       req.payment_id = purchase_order_id;
+//       req.status = data.status;
+//     }
+
+//     console.log("status", req.status);
+
+//     next();
+//   }
+// );
+
+const handleKhaltiCallback = catchAsyncErrors(async (pidx) => {
   const headers = {
     Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
     "Content-Type": "application/json",
@@ -80,9 +110,7 @@ const handleKhaltiCallback = catchAsyncErrors(async (req, res, next) => {
     { headers }
   );
 
-  req.payment_id = purchase_order_id;
-  req.status = response.data.status;
-  next();
+  return response.data;
 });
 
 module.exports = {

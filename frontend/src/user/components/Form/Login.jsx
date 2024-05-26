@@ -47,7 +47,7 @@ const Login = () => {
       ) : (
         <Fragment>
           <div className=" fixed w-full h-screen top-0 left-0 flex justify-center items-center backdrop-blur-md">
-            <div className=" relative w-[25rem] h-[32rem] flex flex-col bg-[#fff] rounded-[8px] px-[1rem] py-[2rem] border-2 shadow-xl ">
+            <div className=" relative w-[20rem] md:w-[25rem]  flex flex-col bg-[#fff] rounded-[8px] px-[1rem] py-[2rem] border-2 shadow-xl ">
               <h1 className=" text-3xl font-bold">
                 WELCOME <span className=" text-[#eddb8e]">BACK</span>
               </h1>
@@ -98,17 +98,17 @@ const Login = () => {
                   className=" bg-[#141414] text-white font-semibold text-xl py-1.5 rounded-[10px] hover:bg-[#eddb8e] hover:text-black"
                 />
               </form>
-              <div className="flex items-center justify-center space-x-4 pb-4">
+              {/* <div className="flex items-center justify-center space-x-4 pb-4">
                 <div className="w-[30%] border-b border-black "></div>
-                {/* The line */}
+                
                 <span className=" font-semibold "> Or login with</span>
-                {/* The text */}
+                
                 <div className="w-[30%] border-b border-black "></div>
-                {/* The line */}
-              </div>
+              
+              </div> */}
 
               {/* social login */}
-              <div className=" flex gap-4">
+              {/* <div className=" flex gap-4">
                 <button className=" w-[50%] h-10 flex justify-center items-center gap-2 bg-white rounded-[10px] border-2 border-[#DB4437] text-[#DB4437] font-semibold hover:bg-[#DB4437] hover:text-white">
                   <FcGoogle size={20} />
                   Google
@@ -117,7 +117,7 @@ const Login = () => {
                   <FaFacebookSquare size={20} />
                   Facebook
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </Fragment>

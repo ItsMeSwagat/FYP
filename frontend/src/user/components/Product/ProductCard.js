@@ -29,6 +29,7 @@ const ProductCard = ({ product }) => {
     }
     const data = { productId: product._id, size: selectedSize };
     dispatch(addToCart(data));
+    navigate("/cart")
   };
 
   const [selectedSize, setSelectedSize] = useState("");
@@ -41,28 +42,28 @@ const ProductCard = ({ product }) => {
 
   return (
     <Link
-      className=" relative bg-[#f5f5f5] w-[15rem] h-[25rem] flex flex-col justify-between items-center hover:shadow-xl rounded-[10px] overflow-hidden flex-shrink-0 border-2 mb-4 "
+      className=" relative bg-[#f5f5f5] w-[10rem] h-[17rem] md:w-[12rem] md:h-[20rem] lg:w-[15rem] lg:h-[25rem] flex flex-col justify-between items-center hover:shadow-xl rounded-[10px] overflow-hidden flex-shrink-0 border-2 mb-4 "
       to={`/product/${product._id}`}
     >
-      <div className=" absolute top-1 right-1 bg-[#eddb8e] px-3 py-1 rounded-lg text-sm">
+      <div className=" absolute top-1 right-1 bg-[#eddb8e] px-2 py-0.5 lg:px-3 lg:py-1 rounded-lg text-xs  lg:text-sm">
         {product.discountPercent}% Off
       </div>
       <img
         src={product.images[0].url}
         alt={product.name}
-        className=" w-full h-[65%] object-cover object-top"
+        className=" w-full h-[65%] object-scale-down"
       />
       <div className=" h-[35%] w-full flex flex-col gap-1 items-center py-2 border-t-2 border-black">
-        <p className=" font-medium">{trimmedName}</p>
-        <div className=" flex items-center">
+        <p className=" font-medium text-xs ">{trimmedName}</p>
+        <div className=" hidden  md:flex items-center">
           <Rating {...options} />{" "}
-          <span className=" text-sm"> ({product.numOfReviews} Reviews)</span>
+          <span className=" text-xs"> ({product.numOfReviews} Reviews)</span>
         </div>
-        <p className=" font-medium">Rs{product.price}</p>
+        <p className=" text-xs lg:text-base font-medium">Rs{product.price}</p>
 
         <button
           onClick={AddCart}
-          className=" bg-[#Eddb8e] flex justify-center items-center gap-2 s rounded-[10px] px-[3rem] py-1.5 hover:bg-black hover:text-white"
+          className=" text-xs md:text-sm lg:text-base bg-[#Eddb8e] flex justify-center items-center gap-2 rounded-[10px] px-5 py-2 lg:px-[3rem] lg:py-1.5 hover:bg-black hover:text-white"
         >
           Add to Cart
           <FaShoppingCart />

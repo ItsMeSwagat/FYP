@@ -21,7 +21,7 @@ const ProfileDropdown = ({ setOpenProfile }) => {
     setOpenProfile(false);
   };
   return (
-    <div className=" fixed bg-white z-10 top-[7.5rem] right-[9.5rem] w-[12rem] flex flex-col pl-3 py-2 rounded-md border-2 dropdownProfile">
+    <div className=" fixed bg-white z-10 right-[2.5rem] top-[7.5rem] md:right-[3.5rem]  lg:right-[3.5rem]  xl:right-[9.5rem] w-[12rem] flex flex-col pl-3 py-2 rounded-md border-2 dropdownProfile">
       <ul className=" flex flex-col gap-5 text-[0.9]">
         <Link to={`/account`}>
           <li

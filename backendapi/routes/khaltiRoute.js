@@ -6,11 +6,6 @@ const {
 const { updateOrderAfterPayment } = require("../controller/orderController");
 const router = express.Router();
 
-router.get(
-  "/call-back",
-  authenticateUser,
-  handleKhaltiCallback,
-  updateOrderAfterPayment
-);
+router.get("/call-back", authenticateUser, updateOrderAfterPayment);
 
 module.exports = router;

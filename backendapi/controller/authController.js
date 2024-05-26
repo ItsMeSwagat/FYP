@@ -120,6 +120,7 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
       subject: `Jass Sarees Reset password`,
       message,
       url,
+      type: "resetPassword",
     });
 
     res.status(200).json({

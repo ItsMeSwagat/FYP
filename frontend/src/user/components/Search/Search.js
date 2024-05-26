@@ -18,7 +18,7 @@ const Search = () => {
     <Fragment>
       <div className=" flex gap-4 text-lg font-semibold">
         {/* search bar */}
-        <form onSubmit={searchHandler} className=" hidden md:flex items-center border-2 border-black w-[20rem] xl:w-[30rem] h-[3rem] rounded-[10px] overflow-hidden">
+        <form onSubmit={searchHandler} className=" flex items-center border-2 border-black w-[20rem] xl:w-[30rem] h-[3rem] rounded-[10px] overflow-hidden">
           <input
             type="text"
             name=""

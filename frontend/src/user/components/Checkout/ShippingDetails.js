@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Country, State, City } from "country-state-city";
@@ -10,6 +10,9 @@ const ShippingDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { shippingDetails } = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => ({
+    cart: state.cart.cart,
+  }));
 
   const [address, setAddress] = useState("");
   const [name, setName] = useState("");
@@ -39,16 +42,24 @@ const ShippingDetails = () => {
     navigate("/confirmorder");
   };
 
+  const isEmptyCart =
+    !cart?.cart?.cartItems || cart?.cart?.cartItems?.length === 0;
+
+  if (isEmptyCart) {
+    navigate("/"); // Navigate to home page
+    return null;
+  }
+
   return (
     <>
       <CheckoutProcess activeProcess={0} />
-      <div className=" px-[8rem] py-[1rem] min-h-[60vh] flex flex-col justify-center items-center">
-        <div className=" w-[80%] h-full bg-white border-2 shadow-lg rounded-lg flex flex-col justify-center items-center p-4">
+      <div className=" px-[1rem] md:px-[2rem] lg:px-[2rem] xl:px-[8rem] py-[1rem] min-h-[60vh] flex flex-col justify-center items-center">
+        <div className=" w-full md:w-[80%] h-full bg-white border-2 shadow-lg rounded-lg flex flex-col justify-center items-center p-4">
           {/* <h1 className=" text-4xl font-medium">Shipping Details</h1> */}
 
-          <div className=" w-full flex justify-around">
+          <div className=" w-full flex flex-col md:flex-row justify-around">
             <form
-              className=" w-[50%] h-full m-4 flex flex-col gap-3"
+              className="  md:w-[50%] h-full m-4 flex flex-col gap-3"
               encType="multipart/form-data"
               onSubmit={ShippingDetailsHandler}
             >
@@ -125,13 +136,13 @@ const ShippingDetails = () => {
             </form>
 
             <div className=" m-4">
-              <h1 className=" text-2xl font-medium">
+              <h1 className=" text-lg md:text-2xl font-medium">
                 {" "}
                 Previous Shipping Detail
               </h1>
               {shippingDetails && Object.keys(shippingDetails).length > 0 && (
                 <div className=" py-4">
-                  <div className=" bg-[#f5f5f5] border-2 text-sm flex flex-col gap-2 p-2 rounded-md">
+                  <div className=" bg-[#f5f5f5] border-2 text-xs md:text-sm flex flex-col gap-2 p-2 rounded-md">
                     <p>{prevname}</p>
                     <p>{prevstate}</p>
                     <p>{prevcity}</p>

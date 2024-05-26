@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../Loader/Loader";
-import {clearErrors, updatePassword} from '../../../actions/profileAction';
+import { clearErrors, updatePassword } from "../../../actions/profileAction";
 import { UPDATE_PASSWORD_RESET } from "../../../constants/userConstants";
 
 const ChangePassword = () => {
@@ -15,7 +15,6 @@ const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
 
   const changePasswordSubmit = (e) => {
     e.preventDefault();
@@ -48,7 +47,7 @@ const ChangePassword = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className=" min-h-[60vh] px-[8rem] py-[2rem] flex justify-center items-center">
+        <div className=" min-h-[60vh] px-[1rem] md:px-[2rem] xl:px-[8rem] py-[2rem] flex justify-center items-center">
           <ToastContainer />
           <form
             encType="multipart/form-data"
@@ -56,6 +55,9 @@ const ChangePassword = () => {
             className=" w-[30rem] h-[25rem] flex flex-col justify-around items-center bg-white rounded-md p-4 border-2"
           >
             <div className=" w-full pb-2">
+              <h1 className=" text-2xl lg:text-3xl font-bold pb-2">
+                CHANGE PASSWORD
+              </h1>
               <p className=" font-semibold pb-1">Old Password</p>
               <input
                 type="password"

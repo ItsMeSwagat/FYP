@@ -20,18 +20,18 @@ export const ProtectedRoute = ({ isAdmin }) => {
 
   // return allowAccess ? <Outlet /> : <Navigate to={`/login`} />;
 
-  const allowAccess = hasToken && user;
+  const allowAccess = hasToken;
 
   if (!allowAccess) {
     // If user is not authenticated, redirect to login
     return <Navigate to="/login" />;
   }
 
-  if (isAdmin && user.role !== "admin") {
+  if (isAdmin && user?.role !== "admin") {
     return <Navigate to="/" />;
   }
 
-  if (!isAdmin && user.role === "admin") {
+  if (!isAdmin && user?.role === "admin") {
     return <Navigate to="/admin/dashboard" />;
   }
 

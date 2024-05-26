@@ -308,7 +308,7 @@ const CreateProduct = () => {
 
             <div>
               <input
-                className=" cursor-pointer w-full mt-2 py-1.5 bg-[#141414] text-white rounded-md font-medium"
+                className=" cursor-pointer w-full mt-2 py-1.5 bg-[#141414] text-white hover:bg-[#eddb8e] hover:text-black rounded-md font-medium"
                 type="submit"
                 value="Add Product"
                 disabled={loading ? true : false}

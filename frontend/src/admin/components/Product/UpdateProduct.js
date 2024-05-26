@@ -368,7 +368,7 @@ const UpdateProduct = () => {
 
               <div>
                 <input
-                  className=" cursor-pointer w-full mt-2 py-1.5 bg-[#141414] text-white rounded-md font-medium"
+                  className=" cursor-pointer w-full mt-2 py-1.5 bg-[#141414] hover:bg-[#eddb8e] hover:text-black text-white rounded-md font-medium"
                   type="submit"
                   value="Update Product"
                   disabled={loading ? true : false}

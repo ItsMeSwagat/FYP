@@ -40,6 +40,7 @@ const ProductDetails = () => {
     }
     const data = { productId: id, size: selectedSize };
     dispatch(addToCart(data));
+    navigate("/cart");
   };
 
   useEffect(() => {
@@ -71,9 +72,9 @@ const ProductDetails = () => {
       ) : (
         <Fragment>
           <ToastContainer />
-          <div className=" min-h-[80vh] mx-[8rem] my-[1rem]">
-            <div className=" bg-white w-full flex border-2 rounded-md">
-              <div className=" w-[50%] flex flex-col justify-center items-center">
+          <div className=" min-h-[80vh] mx-[1rem] md:mx-[2rem] xl:mx-[8rem] my-[1rem]">
+            <div className=" bg-white w-full flex flex-col lg:flex-row border-2 rounded-md">
+              <div className=" w-full lg:w-[50%] flex flex-col  justify-center items-center">
                 <Carousel className=" w-[80%] m-4">
                   {product.images &&
                     product.images.map((item, i) => (
@@ -102,7 +103,7 @@ const ProductDetails = () => {
               </div>
 
               {/* Product Details */}
-              <div className=" w-[50%] px-[2rem]">
+              <div className=" w-full lg:w-[50%] px-[2rem]">
                 <div className=" py-3 border-b-2">
                   <p className=" text-[#eddb8e] font-medium text-sm capitalize">
                     #PRODUCT {product._id}
@@ -134,7 +135,9 @@ const ProductDetails = () => {
                     Status:
                     <p
                       className={
-                        product.stock === 0 ? " bg-red-400 px-2 py-0.5 rounded-md" : " bg-green-400 px-2 py-0.5 rounded-md"
+                        product.stock === 0
+                          ? " bg-red-400 px-2 py-0.5 rounded-md"
+                          : " bg-green-400 px-2 py-0.5 rounded-md"
                       }
                     >
                       {product.stock === 0 ? "Out of Stock" : "In Stock"}
