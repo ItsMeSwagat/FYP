@@ -15,9 +15,27 @@ const Payment = () => {
   const navigate = useNavigate();
 
   const { loading, error } = useSelector((state) => state.newOrder);
-  const orderData = JSON.parse(sessionStorage.getItem("orderData"));
+  const orderData =
+    sessionStorage.getItem("orderData") &&
+    JSON.parse(sessionStorage.getItem("orderData"));
 
-  const { subtotal, shippingCharge, OrderTotal } = orderData;
+  
+
+  const isEmptyCart =
+    !cart?.cart?.cartItems || cart?.cart?.cartItems?.length === 0;
+  const isEmptyShippingDetails =
+    !shippingDetails.name ||
+    !shippingDetails.address ||
+    !shippingDetails.city ||
+    !shippingDetails.state ||
+    !shippingDetails.phoneNo;
+  const isEmptyOrderData = !orderData?.OrderTotal;
+
+  if (isEmptyCart || isEmptyShippingDetails || isEmptyOrderData) {
+    navigate("/"); // Navigate to home page
+  }
+
+  const { subtotal, shippingCharge, OrderTotal } = orderData || {};
 
   const handlePayment = async () => {
     const order = {
@@ -28,6 +46,7 @@ const Payment = () => {
       totalOrderPrice: orderData.OrderTotal,
     };
     dispatch(createOrder(order));
+    sessionStorage.removeItem("orderData");
   };
 
   useEffect(() => {
@@ -36,21 +55,6 @@ const Payment = () => {
       dispatch(clearErrors());
     }
   }, [dispatch, error]);
-
-  const isEmptyCart =
-    !cart?.cart?.cartItems || cart?.cart?.cartItems?.length === 0;
-  const isEmptyShippingDetails =
-    !shippingDetails.name ||
-    !shippingDetails.address ||
-    !shippingDetails.city ||
-    !shippingDetails.state ||
-    !shippingDetails.phoneNo;
-  const isEmptyOrderData = !orderData;
-
-  if (isEmptyCart || isEmptyShippingDetails || isEmptyOrderData) {
-    navigate("/"); // Navigate to home page
-    return null; // Prevent unnecessary rendering
-  }
 
   return (
     <>

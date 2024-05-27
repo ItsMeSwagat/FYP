@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaFacebookMessenger } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -20,9 +20,15 @@ const Footer = () => {
           </p>
           {/* icons */}
           <div className=" flex gap-5 text-[1rem] md:text-[1.5rem] text-[#EDDB8D]">
-            <FaFacebook />
-            <FaInstagram />
-            <FaFacebookMessenger />
+            <Link to={`https://www.facebook.com/creation.jass`}>
+              <FaFacebook />
+            </Link>
+            <Link to={`https://www.instagram.com/jass_sarees/`}>
+              <FaInstagram />
+            </Link>
+            <Link>
+              <FaFacebookMessenger />
+            </Link>
           </div>
         </div>
 
@@ -31,10 +37,11 @@ const Footer = () => {
             <h1 className="  text-[#EDDB8D] font-medium text-sm xl:text-lg">
               CUSTOMER SERVICE
             </h1>
-            <Link>Track Your Order</Link>
-            <Link>Shipping & Returns</Link>
-            <Link>Terms & Services</Link>
-            <Link>Privacy Policy</Link>
+            <Link to={`https://www.aramex.com/ae/en/track/shipments`}>
+              Track Your Order
+            </Link>
+            <Link to={`/termsservices`}>Terms & Services</Link>
+            <Link to={`/privacypolicy`}>Privacy Policy</Link>
           </div>
           <div className=" flex flex-col gap-5 text-xs xl:text-sm">
             <h1 className="  text-[#EDDB8D] font-medium text-sm xl:text-lg">
@@ -50,10 +57,8 @@ const Footer = () => {
             <h1 className="  text-[#EDDB8D] font-medium text-sm xl:text-lg">
               ABOUT US
             </h1>
-            <Link>Our Producers</Link>
-            <Link>Sitemap</Link>
-            <Link>FAQ</Link>
-            <Link>About Us</Link>
+            <Link to={`/faq`}>FAQ</Link>
+            <Link to={`/aboutus`}>About Us</Link>
           </div>
         </div>
       </div>

@@ -110,6 +110,8 @@ const handleKhaltiCallback = catchAsyncErrors(async (pidx) => {
     { headers }
   );
 
+  console.log(response.data);
+
   return response.data;
 });
 

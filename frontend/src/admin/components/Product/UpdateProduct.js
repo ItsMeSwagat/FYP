@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import {
   clearErrors,
   getProductDetails,
@@ -131,6 +131,15 @@ const UpdateProduct = () => {
   const updateProductSubmitHandler = (e) => {
     e.preventDefault();
 
+    const totalSizeStock = sizes.reduce(
+      (total, size) => total + Number(size.stock),
+      0
+    );
+    if (totalSizeStock !== Number(productStock)) {
+      toast.error("Total stock of sizes must equal product stock");
+      return;
+    }
+
     const myForm = new FormData();
 
     myForm.set("name", productName);
@@ -159,6 +168,7 @@ const UpdateProduct = () => {
         <Loader />
       ) : (
         <div className=" my-3">
+          <ToastContainer />
           <div className=" flex flex-col gap-2 bg-white rounded-md border-2 p-4">
             <h1 className=" text-3xl text-center font-bold">UPDATE PRODUCT</h1>
             <form

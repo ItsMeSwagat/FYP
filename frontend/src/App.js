@@ -41,6 +41,10 @@ import OrderFail from "./user/components/Order/OrderFail";
 import AdminProtectedRoute from "./route/AdminProtectedRoute";
 import { getUserCart } from "./actions/cartAction";
 import { ToastContainer } from "react-toastify";
+import AboutUs from "./user/components/Footer/AboutUs";
+import Faq from "./user/components/Footer/Faq";
+import TermsServices from "./user/components/Footer/TermsServices";
+import PrivacyPolicy from "./user/components/Footer/PrivacyPolicy";
 
 function App() {
   useEffect(() => {
@@ -111,6 +115,10 @@ function App() {
             <Route path="/product/:id" element={<ProductDetails />} />
             <Route path="/products/:keyword" element={<Products />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/termsservices" element={<TermsServices />} />
+            <Route path="/privacypolicy" element={<PrivacyPolicy />} />
           </Route>
 
           <Route

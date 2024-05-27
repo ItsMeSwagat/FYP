@@ -83,7 +83,7 @@ const ProductDetails = () => {
                           key={item.url}
                           src={item.url}
                           alt={item.name}
-                          className=" w-full h-full object-scale-down object-center"
+                          className=" w-full h-full object-scale-down md:object-cover object-center"
                         />
                       </div>
                     ))}

@@ -109,51 +109,120 @@ const createNewOrder = catchAsyncErrors(async (req, res, next) => {
 //   }
 // });
 
+// const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
+//   const { pidx, purchase_order_id, transaction_id, message, status } =
+//     req.query;
+
+//   handleKhaltiCallback(pidx);
+
+//   const order = await Order.findById(purchase_order_id); // Find order by payment ID
+
+//   // If order not found, return error
+//   if (!order) {
+//     return next(new ErrorHandler("Order not Found", 404));
+//   }
+
+//   if (status !== "Completed") {
+//     console.error(`Received unexpected payment status: ${status}`);
+
+//     // Return the stock for each product in the order
+//     for (const orderItem of order.orderItems) {
+//       await updateStock(orderItem.product, orderItem.quantity, orderItem.size);
+//     }
+
+//     await Order.findByIdAndDelete(purchase_order_id);
+//     return res.redirect("http://localhost:3000/payment/fail");
+//   }
+
+//   order.paymentInfo.id = transaction_id;
+//   order.paymentInfo.status = status;
+
+//   await order.save();
+
+//   // Fetch user details
+//   const user = await User.findById(order.user);
+
+//   if (!user) {
+//     return next(new ErrorHandler("User not found", 404));
+//   }
+
+//   await sendEmail({
+//     email: user.email,
+//     subject: "Order Placed Successfully",
+//     message: `Hello ${order.shippingDetails.name}, Your order has been placed successfully. Thank your for your purchase.`,
+//     url: `${process.env.BASE_URL}/order/details/${order._id}`,
+//     type: "orderPlaced",
+//     name: order.shippingDetails.name,
+//     orderId: order._id,
+//     shippingPrice: order.shippingPrice,
+//     totalPrice: order.totalPrice,
+//     totalOrderPrice: order.totalOrderPrice,
+//     status: order.orderStatus,
+//   });
+
+//   return res.redirect("http://localhost:3000/payment/success");
+// });
+
 const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
   const { pidx, purchase_order_id, transaction_id, message, status } =
     req.query;
 
-  handleKhaltiCallback(pidx);
+  try {
+    await handleKhaltiCallback(pidx);
 
-  const order = await Order.findById(purchase_order_id); // Find order by payment ID
+    const order = await Order.findById(purchase_order_id); // Find order by payment ID
 
-  // If order not found, return error
-  if (!order) {
-    return next(new ErrorHandler("Order not Found", 404));
+    // If order not found, return error
+    if (!order) {
+      return next(new ErrorHandler("Order not Found", 404));
+    }
+
+    if (status !== "Completed") {
+      console.error(`Received unexpected payment status: ${status}`);
+
+      // Return the stock for each product in the order
+      for (const orderItem of order.orderItems) {
+        await updateStock(
+          orderItem.product,
+          orderItem.quantity,
+          orderItem.size
+        );
+      }
+
+      await Order.findByIdAndDelete(purchase_order_id);
+      return res.redirect("http://localhost:3000/payment/fail");
+    }
+
+    order.paymentInfo.id = transaction_id;
+    order.paymentInfo.status = status;
+
+    await order.save();
+
+    // Fetch user details
+    const user = await User.findById(order.user);
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    await sendEmail({
+      email: user.email,
+      subject: "Order Placed Successfully",
+      message: `Hello ${order.shippingDetails.name}, Your order has been placed successfully. Thank you for your purchase.`,
+      url: `${process.env.BASE_URL}/order/details/${order._id}`,
+      type: "orderPlaced",
+      name: order.shippingDetails.name,
+      orderId: order._id,
+      shippingPrice: order.shippingPrice,
+      totalPrice: order.totalPrice,
+      totalOrderPrice: order.totalOrderPrice,
+      status: order.orderStatus,
+    });
+
+    return res.redirect("http://localhost:3000/payment/success");
+  } catch (error) {
+    return next(new ErrorHandler("Internal Server Error", 500));
   }
-
-  if (status !== "Completed") {
-    await Order.findByIdAndDelete(purchase_order_id);
-    return res.redirect("http://localhost:3000/payment/fail");
-  }
-
-  order.paymentInfo.id = transaction_id;
-  order.paymentInfo.status = status;
-
-  await order.save();
-
-  // Fetch user details
-  const user = await User.findById(order.user);
-
-  if (!user) {
-    return next(new ErrorHandler("User not found", 404));
-  }
-
-  await sendEmail({
-    email: user.email,
-    subject: "Order Placed Successfully",
-    message: `Hello ${order.shippingDetails.name}, Your order has been placed successfully. Thank your for your purchase.`,
-    url: `${process.env.BASE_URL}/order/details/${order._id}`,
-    type: "orderPlaced",
-    name: order.shippingDetails.name,
-    orderId: order._id,
-    shippingPrice: order.shippingPrice,
-    totalPrice: order.totalPrice,
-    totalOrderPrice: order.totalOrderPrice,
-    status: order.orderStatus,
-  });
-
-  return res.redirect("http://localhost:3000/payment/success");
 });
 
 // GET USERS ORDER

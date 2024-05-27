@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { clearErrors, createProduct } from "../../../actions/productAction";
 import { useNavigate } from "react-router-dom";
 import { CREATE_PRODUCT_RESET } from "../../../constants/productConstants";
@@ -88,6 +88,15 @@ const CreateProduct = () => {
   const productSubmitHandler = (e) => {
     e.preventDefault();
 
+    const totalSizeStock = sizes.reduce(
+      (total, size) => total + Number(size.stock),
+      0
+    );
+    if (totalSizeStock !== Number(productStock)) {
+      toast.error("Total stock of sizes must equal product stock");
+      return;
+    }
+
     const myForm = new FormData();
 
     myForm.set("name", productName);
@@ -112,6 +121,7 @@ const CreateProduct = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className=" my-3">
         <div className=" flex flex-col gap-2 bg-white rounded-md border-2 p-4">
           <h1 className=" text-3xl text-center font-bold">ADD PRODUCT</h1>
@@ -190,6 +200,7 @@ const CreateProduct = () => {
             <div className=" bg-[#f5f5f5] flex flex-col gap-1 p-2 rounded-md border-2 ">
               <select
                 className=" p-1 border-2 outline-none"
+                required
                 onChange={(e) => setProductCategory(e.target.value)}
               >
                 <option value="">Choose Category</option>

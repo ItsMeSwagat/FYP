@@ -59,8 +59,6 @@ const AdminDashboard = () => {
     (order) => order.orderStatus !== "Cancelled" // Replace "Cancelled" with your actual cancelled status
   );
 
-  console.log(filteredOrders);
-
   filteredOrders &&
     filteredOrders.forEach((item) => {
       totalRevenue += item.totalOrderPrice;
