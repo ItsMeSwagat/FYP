@@ -1,24 +1,22 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const expressFileUpload = require("express-fileupload");
-
 const errorMiddleware = require("./middleware/error");
-
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     credentials: true,
-//   })
-// );
+const path = require("path");
 
 app.use(
   express.json({
     limit: "50mb",
   })
 );
+
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  //config
+  dotenv.config();
+}
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,6 +57,11 @@ app.use("/api/v1/admin", adminOrderRouter);
 
 const khaltiRouter = require("./routes/khaltiRoute");
 app.use("/api/v1/khalti", khaltiRouter);
+
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+});
 
 app.use(errorMiddleware);
 

@@ -107,7 +107,9 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // )}/api/v1/auth/password/reset/${resetToken}`;
 
   // Construct reset password URL
-  const resetPasswordUrl = `${process.env.BASE_URL}/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/password/reset/${resetToken}`;
 
   // Construct email message and URL
   const message = `Please Click Below to reset your Password: \n\n If your have not requested this mail then, Please ignore it`;
