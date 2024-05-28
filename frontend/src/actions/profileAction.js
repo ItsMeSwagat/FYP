@@ -25,7 +25,7 @@ export const updateProfile = (userData) => async (dispatch) => {
     const { data } = await axios.put(
       `/api/v1/user/customer/update`,
       userData,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
@@ -47,7 +47,7 @@ export const updatePassword = (userData) => async (dispatch) => {
     const { data } = await axios.put(
       `/api/v1/user/password/change`,
       userData,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: UPDATE_PASSWORD_SUCCESS, payload: data.success });
@@ -69,7 +69,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     const { data } = await axios.post(
       `/api/v1/auth/password/forgot`,
       email,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: FORGOT_PASSWORD_SUCCESS, payload: data.message });
@@ -91,7 +91,7 @@ export const resetPassword = (token, password) => async (dispatch) => {
     const { data } = await axios.put(
       `/api/v1/auth/password/reset/${token}`,
       password,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: RESET_PASSWORD_SUCCESS, payload: data.success });

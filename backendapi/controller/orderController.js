@@ -189,8 +189,14 @@ const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
         );
       }
 
+      order.paymentInfo.id = pidx;
+      order.paymentInfo.status = "Not Paid";
+
       await Order.findByIdAndDelete(purchase_order_id);
-      return res.redirect("http://localhost:3000/payment/fail");
+      return res.status(400).json({
+        success: false,
+        redirectURL: "http://localhost:3000/payment/fail",
+      });
     }
 
     order.paymentInfo.id = transaction_id;

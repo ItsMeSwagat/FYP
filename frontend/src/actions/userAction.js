@@ -37,7 +37,7 @@ export const login = (email, password) => async (dispatch) => {
     const { data } = await axios.post(
       `/api/v1/auth/login`,
       { email, password },
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
@@ -56,7 +56,7 @@ export const register = (userData) => async (dispatch) => {
     const { data } = await axios.post(
       `/api/v1/auth/register`,
       userData,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
@@ -73,7 +73,9 @@ export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/user/customer`);
+    const { data } = await axios.get(
+      `/api/v1/user/customer`
+    );
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {
@@ -101,22 +103,32 @@ export const Logout = () => async (dispatch) => {
 export const adminGetAllUsers = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_ALL_USERS_REQUEST });
-    const { data } = await axios.get(`/api/v1/admin/users`);
+    const { data } = await axios.get(
+      `/api/v1/admin/users`
+    );
 
     dispatch({ type: ADMIN_ALL_USERS_SUCCESS, payload: data.users });
   } catch (error) {
-    dispatch({ type: ADMIN_ALL_USERS_FAIL, payload: error.response.data.message });
+    dispatch({
+      type: ADMIN_ALL_USERS_FAIL,
+      payload: error.response.data.message,
+    });
   }
 };
 
 export const adminGetUserDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_USER_DETAILS_REQUEST });
-    const { data } = await axios.get(`/api/v1/admin/user/${id}`);
+    const { data } = await axios.get(
+      `/api/v1/admin/user/${id}`
+    );
 
     dispatch({ type: ADMIN_USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: ADMIN_USER_DETAILS_FAIL, payload: error.response.data.message });
+    dispatch({
+      type: ADMIN_USER_DETAILS_FAIL,
+      payload: error.response.data.message,
+    });
   }
 };
 
@@ -129,7 +141,7 @@ export const adminUpdateUser = (id, userData) => async (dispatch) => {
     const { data } = await axios.put(
       `/api/v1/admin/user/role/${id}`,
       userData,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: ADMIN_UPDATE_USER_SUCCESS, payload: data.success });
@@ -146,7 +158,9 @@ export const adminDeleteUser = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_DELETE_USER_REQUEST });
 
-    const { data } = await axios.delete(`/api/v1/admin/user/${id}`);
+    const { data } = await axios.delete(
+      `/api/v1/admin/user/${id}`
+    );
 
     dispatch({ type: ADMIN_DELETE_USER_SUCCESS, payload: data });
   } catch (error) {

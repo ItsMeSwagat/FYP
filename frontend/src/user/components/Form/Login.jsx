@@ -4,7 +4,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../../actions/userAction";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader/Loader";
 

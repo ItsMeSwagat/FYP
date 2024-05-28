@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import { clearErrors, myOrders } from "../../../actions/orderAction";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { DataGrid } from "@mui/x-data-grid";
 
 const Account = () => {
@@ -105,6 +105,7 @@ const Account = () => {
       ) : (
         <div className=" px-[1rem] md:px-[2rem] xl:px-[8rem] w-full min-h-[60vh] flex flex-col justify-center items-center">
           {/* Manage Account */}
+
           <div className=" flex gap-4 w-full py-4">
             <div className=" relative w-full h-full lg:h-[10rem] flex flex-col gap-5 md:flex-row lg:items-center justify-between bg-white rounded-md p-4 border-2">
               <h1 className=" text-xl font-medium">Personal Profile</h1>
@@ -161,6 +162,12 @@ const Account = () => {
             <div>
               {loading ? (
                 <Loader />
+              ) : dataRows.length === 0 ? (
+                <div className=" flex justify-center items-center pt-5">
+                  <p className="text-center bg-white p-4 font-medium text-lg border-2 rounded-md">
+                    No Orders Available
+                  </p>
+                </div>
               ) : (
                 <div className=" py-4">
                   <DataGrid

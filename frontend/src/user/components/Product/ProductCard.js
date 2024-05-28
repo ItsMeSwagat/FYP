@@ -29,7 +29,7 @@ const ProductCard = ({ product }) => {
     }
     const data = { productId: product._id, size: selectedSize };
     dispatch(addToCart(data));
-    navigate("/cart")
+    navigate("/cart");
   };
 
   const [selectedSize, setSelectedSize] = useState("");
@@ -61,13 +61,23 @@ const ProductCard = ({ product }) => {
         </div>
         <p className=" text-xs lg:text-base font-medium">Rs{product.price}</p>
 
-        <button
-          onClick={AddCart}
-          className=" text-xs md:text-sm lg:text-base bg-[#Eddb8e] flex justify-center items-center gap-2 rounded-[10px] px-5 py-2 lg:px-[3rem] lg:py-1.5 hover:bg-black hover:text-white"
-        >
-          Add to Cart
-          <FaShoppingCart />
-        </button>
+        {product.stock > 0 ? (
+          <button
+            onClick={AddCart}
+            className="text-xs md:text-sm lg:text-base bg-[#Eddb8e] flex justify-center items-center gap-2 rounded-[10px] px-5 py-2 lg:px-[3rem] lg:py-1.5 hover:bg-black hover:text-white"
+          >
+            Add to Cart
+            <FaShoppingCart />
+          </button>
+        ) : (
+          <button
+            disabled
+            className="text-xs md:text-sm lg:text-base bg-gray-400 text-white flex justify-center items-center gap-2 rounded-[10px] px-5 py-2 lg:px-[3rem] lg:py-1.5 cursor-not-allowed"
+          >
+            Out of Stock
+            <FaShoppingCart />
+          </button>
+        )}
       </div>
     </Link>
   );

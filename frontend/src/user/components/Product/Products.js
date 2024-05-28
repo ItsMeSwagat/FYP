@@ -66,7 +66,7 @@ const Products = () => {
           <div className=" flex flex-col lg:flex-row justify-center min-h-screen">
             {!keyword && (
               <div className=" w-full lg:w-1/4 px-8 py-4 flex flex-col gap-5">
-                <div className=" flex flex-col gap-1">
+                <div className=" bg-white p-4 rounded-md border-2 flex flex-col gap-1">
                   <p className=" font-semibold text-xl text-[#141414]">Price</p>
                   <div className=" flex justify-between">
                     <span>Rs 0</span>
@@ -94,7 +94,7 @@ const Products = () => {
                   />
                 </div>
 
-                <div>
+                <div className="bg-white p-4 rounded-md border-2">
                   <p className=" font-semibold text-xl text-[#141414]">
                     Category
                   </p>

@@ -53,7 +53,13 @@ export const myOrders = () => async (dispatch) => {
   try {
     dispatch({ type: USER_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/api/v1/order/user");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get("/api/v1/order/user", {config, withCredentials: true});
 
     dispatch({ type: USER_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {

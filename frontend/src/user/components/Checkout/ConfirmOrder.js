@@ -146,7 +146,7 @@ const ConfirmOrder = () => {
                   <p>Discount:</p>
                   <p className=" text-green-400">-Rs{cart.cart?.discount}</p>
                 </div>
-                {cart.cart?.voucherDiscount !== 0 && (
+                {cart.cart?.voucherDiscount > 0 && (
                   <div className="flex justify-between">
                     <p>Voucher Discount:</p>
                     <p className="text-green-400">

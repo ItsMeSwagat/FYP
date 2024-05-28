@@ -50,7 +50,6 @@ const Home = () => {
         <Loader />
       ) : (
         <div className=" mx-[1rem] md:mx-[2rem] lg:mx-[4rem] xl:mx-[8rem]">
-          <ToastContainer />
           {/* banner */}
           <div className=" relative w-full h-[10rem] md:h-[12rem] lg:h-[15rem] xl:h-[20rem] flex justify-between items-center gap-4 mt-[2rem] ">
             <div className=" w-full md:w-[60%] h-[100%] bg-black rounded-[10px] overflow-hidden object-scale-down">
@@ -96,7 +95,9 @@ const Home = () => {
 
           {/* Featured products */}
           <div className=" w-full bg-white mb-[2rem] py-[1rem] rounded-[15px] lg:px-4">
-            <h1 className=" text-xl md:text-2xl xl:text-3xl font-semibold pl-4">Just For You</h1>
+            <h1 className=" text-xl md:text-2xl xl:text-3xl font-semibold pl-4">
+              Just For You
+            </h1>
             <div className=" flex flex-col justify-center items-center">
               <div className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 md:gap-4 py-4">
                 {products &&

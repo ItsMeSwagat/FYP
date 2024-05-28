@@ -40,7 +40,6 @@ import UpdateVoucher from "./admin/components/Voucher/UpdateVoucher";
 import OrderFail from "./user/components/Order/OrderFail";
 import AdminProtectedRoute from "./route/AdminProtectedRoute";
 import { getUserCart } from "./actions/cartAction";
-import { ToastContainer } from "react-toastify";
 import AboutUs from "./user/components/Footer/AboutUs";
 import Faq from "./user/components/Footer/Faq";
 import TermsServices from "./user/components/Footer/TermsServices";
@@ -49,7 +48,7 @@ import PrivacyPolicy from "./user/components/Footer/PrivacyPolicy";
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
-    store.dispatch(getUserCart());
+    // store.dispatch(getUserCart());
   }, []);
 
   return (

@@ -80,6 +80,10 @@ const UserOrder = () => {
     <>
       {loading ? (
         <Loader />
+      ) : dataRows.length === 0 ? (
+        <div className=" min-h-[50vh] flex justify-center items-center">
+          <p className="text-center bg-white p-4 font-medium text-lg border-2 rounded-md">No Orders Available</p>
+        </div>
       ) : (
         <Fragment>
           <div className=" min-h-[50vh] px-[1rem] md:px-[2rem] lg:px-[2rem] xl:px-[8rem] py-[3rem]">

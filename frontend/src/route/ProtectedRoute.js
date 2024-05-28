@@ -8,7 +8,7 @@ const verifyCookies = () => {
 };
 
 export const ProtectedRoute = ({ isAdmin }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const hasToken = verifyCookies();
 
@@ -22,7 +22,7 @@ export const ProtectedRoute = ({ isAdmin }) => {
 
   const allowAccess = hasToken;
 
-  if (!allowAccess) {
+  if (allowAccess) {
     // If user is not authenticated, redirect to login
     return <Navigate to="/login" />;
   }
