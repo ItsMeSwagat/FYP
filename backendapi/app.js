@@ -18,8 +18,8 @@ app.use(
   cors({
     origin: "https://jass-phi.vercel.app",
     methods: "GET,PUT,POST,DELETE",
-    allowedHeaders: "Content-Type,Authorization",
-    credentials: true, // If you're sending cookies in the request
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
