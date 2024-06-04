@@ -66,5 +66,5 @@
   "devDependencies": {
     "tailwindcss": "^3.4.1"
   },
-  "proxy": "http://localhost:6161"
+  "proxy": "https://fyp-five-khaki.vercel.app"
 }
