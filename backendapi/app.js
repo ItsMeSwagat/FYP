@@ -16,7 +16,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "https://jass-flame.vercel.app",
+    origin: "*",
     methods: "GET,PUT,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
