@@ -16,7 +16,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "https://jass-cuh5cfvvn-itsmeswagats-projects.vercel.app",
+    origin: "https://jass-phi.vercel.app",
     methods: "GET,PUT,POST,DELETE",
     allowedHeaders: "Content-Type,Authorization",
     credentials: true, // If you're sending cookies in the request
