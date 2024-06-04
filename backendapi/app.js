@@ -6,10 +6,20 @@ const bodyParser = require("body-parser");
 const expressFileUpload = require("express-fileupload");
 const errorMiddleware = require("./middleware/error");
 const path = require("path");
+const cors = require("cors");
 
 app.use(
   express.json({
     limit: "50mb",
+  })
+);
+
+app.use(
+  cors({
+    origin: "https://jass-cuh5cfvvn-itsmeswagats-projects.vercel.app",
+    methods: "GET,PUT,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true, // If you're sending cookies in the request
   })
 );
 
