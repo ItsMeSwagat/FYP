@@ -35,7 +35,7 @@ export const login = (email, password) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      `/api/v1/auth/login`,
+      `https://fyp-five-khaki.vercel.app/api/v1/auth/login`,
       { email, password },
       { config, withCredentials: true }
     );
@@ -74,7 +74,7 @@ export const loadUser = () => async (dispatch) => {
     dispatch({ type: LOAD_USER_REQUEST });
 
     const { data } = await axios.get(
-      `/api/v1/user/customer`
+      `https://fyp-five-khaki.vercel.app/api/v1/user/customer`
     );
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
@@ -86,7 +86,7 @@ export const loadUser = () => async (dispatch) => {
 // Logout User
 export const Logout = () => async (dispatch) => {
   try {
-    await axios.get(`/api/v1/auth/logout`);
+    await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/auth/logout`);
 
     dispatch({ type: LOGOUT_SUCCESS });
 
@@ -104,7 +104,7 @@ export const adminGetAllUsers = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_ALL_USERS_REQUEST });
     const { data } = await axios.get(
-      `/api/v1/admin/users`
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/users`
     );
 
     dispatch({ type: ADMIN_ALL_USERS_SUCCESS, payload: data.users });
@@ -120,7 +120,7 @@ export const adminGetUserDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_USER_DETAILS_REQUEST });
     const { data } = await axios.get(
-      `/api/v1/admin/user/${id}`
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/${id}`
     );
 
     dispatch({ type: ADMIN_USER_DETAILS_SUCCESS, payload: data.user });
@@ -139,7 +139,7 @@ export const adminUpdateUser = (id, userData) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.put(
-      `/api/v1/admin/user/role/${id}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/role/${id}`,
       userData,
       { config, withCredentials: true }
     );
@@ -159,7 +159,7 @@ export const adminDeleteUser = (id) => async (dispatch) => {
     dispatch({ type: ADMIN_DELETE_USER_REQUEST });
 
     const { data } = await axios.delete(
-      `/api/v1/admin/user/${id}`
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/${id}`
     );
 
     dispatch({ type: ADMIN_DELETE_USER_SUCCESS, payload: data });

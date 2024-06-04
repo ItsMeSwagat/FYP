@@ -33,7 +33,7 @@ export const createOrder = (order) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    const { data } = await axios.post("/api/v1/order/new", order, config);
+    const { data } = await axios.post("https://fyp-five-khaki.vercel.app/api/v1/order/new", order, config);
 
     dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
     const paymentUrl = data?.data?.payment_url;
@@ -59,7 +59,7 @@ export const myOrders = () => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.get("/api/v1/order/user", {config, withCredentials: true});
+    const { data } = await axios.get("https://fyp-five-khaki.vercel.app/api/v1/order/user", {config, withCredentials: true});
 
     dispatch({ type: USER_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
@@ -74,7 +74,7 @@ export const getOrderDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: ORDER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/order/details/${id}`);
+    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/order/details/${id}`);
 
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.order });
   } catch (error) {
@@ -89,7 +89,7 @@ export const getAllOrders = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/api/v1/admin/orders");
+    const { data } = await axios.get("https://fyp-five-khaki.vercel.app/api/v1/admin/orders");
 
     dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
@@ -110,7 +110,7 @@ export const updateOrder = (id, order) => async (dispatch) => {
       },
     };
     const { data } = await axios.put(
-      `/api/v1/admin/order/${id}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/order/${id}`,
       order,
       config
     );
@@ -128,7 +128,7 @@ export const deleteOrder = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_DELETE_ORDER_REQUEST });
 
-    const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
+    const { data } = await axios.delete(`https://fyp-five-khaki.vercel.app/api/v1/admin/order/${id}`);
 
     dispatch({ type: ADMIN_DELETE_ORDER_SUCCESS, payload: data.success });
   } catch (error) {
@@ -143,7 +143,7 @@ export const cancelOrder = (orderId) => async (dispatch) => {
   try {
     dispatch({ type: CANCEL_ORDER_REQUEST });
 
-    const { data } = await axios.put(`/api/v1/order/${orderId}/cancel`);
+    const { data } = await axios.put(`https://fyp-five-khaki.vercel.app/api/v1/order/${orderId}/cancel`);
 
     dispatch({
       type: CANCEL_ORDER_SUCCESS,

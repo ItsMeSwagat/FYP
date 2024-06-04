@@ -35,7 +35,7 @@ export const getProduct =
     try {
       dispatch({ type: ALL_PRODUCT_REQUEST });
 
-      let api = `/api/v1/products?keyword=${keyword}&page=${currentPage}&limit=${resultPerPage}`;
+      let api = `https://fyp-five-khaki.vercel.app/api/v1/products?keyword=${keyword}&page=${currentPage}&limit=${resultPerPage}`;
 
       if (price && Array.isArray(price) && price.length === 2) {
         api += `&price[gte]=${price[0]}&price[lte]=${price[1]}`;
@@ -60,7 +60,7 @@ export const getAllProductAdmin = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_PRODUCT_REQUEST });
 
-    const { data } = await axios.get("/api/v1/admin/products");
+    const { data } = await axios.get("https://fyp-five-khaki.vercel.app/api/v1/admin/products");
 
     dispatch({
       type: ADMIN_PRODUCT_SUCCESS,
@@ -78,7 +78,7 @@ export const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/product/${id}`);
+    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/product/${id}`);
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
@@ -101,7 +101,7 @@ export const createProduct = (productData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      `/api/v1/admin/product/create`,
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/product/create`,
       productData,
       config
     );
@@ -127,7 +127,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     };
 
     const { data } = await axios.put(
-      `/api/v1/admin/product/${id}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/product/${id}`,
       productData,
       config
     );
@@ -148,7 +148,7 @@ export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_DELETE_PRODUCT_REQUEST });
 
-    const { data } = await axios.delete(`/api/v1/admin/product/${id}`);
+    const { data } = await axios.delete(`https://fyp-five-khaki.vercel.app/api/v1/admin/product/${id}`);
 
     dispatch({
       type: ADMIN_DELETE_PRODUCT_SUCCESS,

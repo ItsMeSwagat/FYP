@@ -23,7 +23,7 @@ export const updateProfile = (userData) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.put(
-      `/api/v1/user/customer/update`,
+      `https://fyp-five-khaki.vercel.app/api/v1/user/customer/update`,
       userData,
       { config, withCredentials: true }
     );
@@ -45,7 +45,7 @@ export const updatePassword = (userData) => async (dispatch) => {
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     const { data } = await axios.put(
-      `/api/v1/user/password/change`,
+      `https://fyp-five-khaki.vercel.app/api/v1/user/password/change`,
       userData,
       { config, withCredentials: true }
     );
@@ -67,7 +67,7 @@ export const forgotPassword = (email) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      `/api/v1/auth/password/forgot`,
+      `https://fyp-five-khaki.vercel.app/api/v1/auth/password/forgot`,
       email,
       { config, withCredentials: true }
     );
@@ -89,7 +89,7 @@ export const resetPassword = (token, password) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.put(
-      `/api/v1/auth/password/reset/${token}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/auth/password/reset/${token}`,
       password,
       { config, withCredentials: true }
     );

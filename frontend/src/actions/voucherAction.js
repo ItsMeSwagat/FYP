@@ -56,7 +56,7 @@ export const removeVoucher = (voucherCode) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "/api/v1/cart/removeVoucher",
+      "https://fyp-five-khaki.vercel.app/api/v1/cart/removeVoucher",
       { voucherCode },
       config
     );
@@ -78,7 +78,7 @@ export const createVoucher = (voucherData) => async (dispatch) => {
     dispatch({ type: CREATE_VOUCHER_REQUEST });
 
     const { data } = await axios.post(
-      "/api/v1/admin/voucher/create",
+      "https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/create",
       voucherData
     );
 
@@ -99,7 +99,7 @@ export const updateVoucher = (voucherId, updateData) => async (dispatch) => {
     dispatch({ type: UPDATE_VOUCHER_REQUEST });
 
     const { data } = await axios.put(
-      `/api/v1/admin/voucher/${voucherId}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${voucherId}`,
       updateData
     );
 
@@ -119,7 +119,7 @@ export const deleteVoucher = (voucherId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_VOUCHER_REQUEST });
 
-    const { data } = await axios.delete(`/api/v1/admin/voucher/${voucherId}`);
+    const { data } = await axios.delete(`https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${voucherId}`);
 
     dispatch({
       type: DELETE_VOUCHER_SUCCESS,
@@ -137,7 +137,7 @@ export const getAllVouchers = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_VOUCHERS_REQUEST });
 
-    const { data } = await axios.get("/api/v1/admin/voucher/all");
+    const { data } = await axios.get("https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/all");
 
     dispatch({
       type: GET_ALL_VOUCHERS_SUCCESS,
@@ -155,7 +155,7 @@ export const getVoucherDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: VOUCHER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/admin/voucher/${id}`);
+    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${id}`);
 
     dispatch({
       type: VOUCHER_DETAILS_SUCCESS,

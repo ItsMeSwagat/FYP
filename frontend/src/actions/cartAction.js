@@ -25,7 +25,7 @@ export const addToCart = (reqData) => async (dispatch) => {
   try {
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.put("/api/v1/cart/add", reqData, config);
+    const { data } = await axios.put("https://fyp-five-khaki.vercel.app/api/v1/cart/add", reqData, config);
 
     console.log(data.success);
     dispatch({ type: ADD_TO_CART_SUCCESS, payload: data.success });
@@ -44,7 +44,7 @@ export const removeCartItem = (cartItemId) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.delete(
-      `/api/v1/cart_items/${cartItemId}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/cart_items/${cartItemId}`,
       config
     );
     dispatch({ type: REMOVE_CART_SUCCESS, payload: cartItemId });
@@ -60,7 +60,7 @@ export const updateCartItem = (reqData) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.put(
-      `/api/v1/cart_items/${reqData.cartItemId}`,
+      `https://fyp-five-khaki.vercel.app/api/v1/cart_items/${reqData.cartItemId}`,
       reqData.data,
       config
     );
@@ -76,7 +76,7 @@ export const getUserCart = () => async (dispatch) => {
   try {
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.get(`/api/v1/cart/`, config);
+    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/cart/`, config);
     dispatch({ type: GET_USER_CART_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -90,7 +90,7 @@ export const clearCart = () => async (dispatch) => {
   try {
     dispatch({ type: CLEAR_CART_REQUEST });
 
-    await axios.delete("/api/v1/cart/clear");
+    await axios.delete("https://fyp-five-khaki.vercel.app/api/v1/cart/clear");
 
     dispatch({ type: CLEAR_CART_SUCCESS });
   } catch (error) {
