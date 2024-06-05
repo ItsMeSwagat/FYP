@@ -7,7 +7,9 @@ const sendToken = (user, statusCode, res) => {
   const options = {
     maxAge: process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    sameSite: 'None', // prevents client-side JS from reading the cookie
+    secure: process.env.NODE_ENV === "PRODUCTION",
+    sameSite: 'None',
+     // prevents client-side JS from reading the cookie
   };
 
   res.status(statusCode).cookie("usertoken", token, options).json({
