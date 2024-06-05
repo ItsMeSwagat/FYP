@@ -160,8 +160,7 @@ export const cancelOrder = (orderId) => async (dispatch) => {
     dispatch({ type: CANCEL_ORDER_REQUEST });
 
     const { data } = await axios.put(
-      `https://fyp-five-khaki.vercel.app/api/v1/order/${orderId}/cancel`,
-      { withCredentials: true }
+      `https://fyp-five-khaki.vercel.app/api/v1/order/${orderId}/cancel`
     );
 
     dispatch({
