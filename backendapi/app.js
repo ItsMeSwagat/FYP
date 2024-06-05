@@ -10,7 +10,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://jasssarees.vercel.app",
     methods: "GET,PUT,POST,DELETE",
     credentials: true,
     preflightContinue: false,
