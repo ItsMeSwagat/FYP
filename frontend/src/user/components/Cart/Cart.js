@@ -15,6 +15,7 @@ import { getUserCart, clearErrors } from "../../../actions/cartAction";
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.user);
   const { cart, loading, voucher } = useSelector((store) => store);
 
   const { error: cartError } = useSelector((state) => state.cart);
@@ -22,7 +23,12 @@ const Cart = () => {
   const [voucherCode, setVoucherCode] = useState("");
 
   useEffect(() => {
-    dispatch(getUserCart());
+    if (!isAuthenticated) {
+      navigate("/login");
+    } else {
+      dispatch(getUserCart());
+    }
+
     if (cartError) {
       toast.error(cartError);
       dispatch(clearErrors());
@@ -33,6 +39,7 @@ const Cart = () => {
     }
   }, [
     dispatch,
+    isAuthenticated,
     cart.update,
     cart.delete,
     voucher.removed,
