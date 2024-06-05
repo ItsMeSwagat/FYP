@@ -31,7 +31,7 @@ export const applyVoucher = (voucherCode) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      "/api/v1/cart/applyvoucher",
+      "https://fyp-five-khaki.vercel.app/api/v1/cart/applyvoucher",
       { voucherCode },
       config
     );
