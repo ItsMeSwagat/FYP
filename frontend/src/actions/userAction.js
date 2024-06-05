@@ -54,7 +54,7 @@ export const register = (userData) => async (dispatch) => {
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
     const { data } = await axios.post(
-      `/api/v1/auth/register`,
+      `https://fyp-five-khaki.vercel.app/api/v1/auth/register`,
       userData,
       { config, withCredentials: true }
     );
