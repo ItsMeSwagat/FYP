@@ -9,17 +9,18 @@ const path = require("path");
 const cors = require("cors");
 
 app.use(
-  express.json({
-    limit: "50mb",
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,PUT,POST,DELETE",
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
 app.use(
-  cors({
-    origin: "*",
-    methods: "GET,PUT,POST,DELETE",
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
+  express.json({
+    limit: "50mb",
   })
 );
 
