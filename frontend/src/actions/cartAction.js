@@ -25,7 +25,11 @@ export const addToCart = (reqData) => async (dispatch) => {
   try {
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.put("https://fyp-five-khaki.vercel.app/api/v1/cart/add", reqData, config);
+    const { data } = await axios.put(
+      "https://fyp-five-khaki.vercel.app/api/v1/cart/add",
+      reqData,
+      { config, withCredentials: true }
+    );
 
     console.log(data.success);
     dispatch({ type: ADD_TO_CART_SUCCESS, payload: data.success });
@@ -45,7 +49,7 @@ export const removeCartItem = (cartItemId) => async (dispatch) => {
 
     const { data } = await axios.delete(
       `https://fyp-five-khaki.vercel.app/api/v1/cart_items/${cartItemId}`,
-      config
+      { config, withCredentials: true }
     );
     dispatch({ type: REMOVE_CART_SUCCESS, payload: cartItemId });
   } catch (error) {
@@ -62,7 +66,7 @@ export const updateCartItem = (reqData) => async (dispatch) => {
     const { data } = await axios.put(
       `https://fyp-five-khaki.vercel.app/api/v1/cart_items/${reqData.cartItemId}`,
       reqData.data,
-      config
+      { config, withCredentials: true }
     );
     dispatch({ type: UPDATE_CART_SUCCESS, payload: data });
   } catch (error) {
@@ -76,7 +80,10 @@ export const getUserCart = () => async (dispatch) => {
   try {
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/cart/`, config);
+    const { data } = await axios.get(
+      `https://fyp-five-khaki.vercel.app/api/v1/cart/`,
+      { config, withCredentials: true }
+    );
     dispatch({ type: GET_USER_CART_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -90,7 +97,9 @@ export const clearCart = () => async (dispatch) => {
   try {
     dispatch({ type: CLEAR_CART_REQUEST });
 
-    await axios.delete("https://fyp-five-khaki.vercel.app/api/v1/cart/clear");
+    await axios.delete("https://fyp-five-khaki.vercel.app/api/v1/cart/clear", {
+      withCredentials: true,
+    });
 
     dispatch({ type: CLEAR_CART_SUCCESS });
   } catch (error) {

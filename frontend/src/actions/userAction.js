@@ -74,7 +74,8 @@ export const loadUser = () => async (dispatch) => {
     dispatch({ type: LOAD_USER_REQUEST });
 
     const { data } = await axios.get(
-      `https://fyp-five-khaki.vercel.app/api/v1/user/customer`
+      `https://fyp-five-khaki.vercel.app/api/v1/user/customer`,
+      { withCredentials: true }
     );
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
@@ -86,7 +87,9 @@ export const loadUser = () => async (dispatch) => {
 // Logout User
 export const Logout = () => async (dispatch) => {
   try {
-    await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/auth/logout`);
+    await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/auth/logout`, {
+      withCredentials: true,
+    });
 
     dispatch({ type: LOGOUT_SUCCESS });
 
@@ -104,7 +107,8 @@ export const adminGetAllUsers = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_ALL_USERS_REQUEST });
     const { data } = await axios.get(
-      `https://fyp-five-khaki.vercel.app/api/v1/admin/users`
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/users`,
+      { withCredentials: true }
     );
 
     dispatch({ type: ADMIN_ALL_USERS_SUCCESS, payload: data.users });
@@ -120,7 +124,8 @@ export const adminGetUserDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_USER_DETAILS_REQUEST });
     const { data } = await axios.get(
-      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/${id}`
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/${id}`,
+      { withCredentials: true }
     );
 
     dispatch({ type: ADMIN_USER_DETAILS_SUCCESS, payload: data.user });
@@ -159,7 +164,8 @@ export const adminDeleteUser = (id) => async (dispatch) => {
     dispatch({ type: ADMIN_DELETE_USER_REQUEST });
 
     const { data } = await axios.delete(
-      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/${id}`
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/user/${id}`,
+      { withCredentials: true }
     );
 
     dispatch({ type: ADMIN_DELETE_USER_SUCCESS, payload: data });

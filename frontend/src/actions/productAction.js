@@ -45,7 +45,7 @@ export const getProduct =
         api += `&category=${category}`;
       }
 
-      const { data } = await axios.get(api);
+      const { data } = await axios.get(api, { withCredentials: true });
 
       dispatch({ type: ALL_PRODUCT_SUCCESS, payload: data });
     } catch (error) {
@@ -60,7 +60,10 @@ export const getAllProductAdmin = () => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_PRODUCT_REQUEST });
 
-    const { data } = await axios.get("https://fyp-five-khaki.vercel.app/api/v1/admin/products");
+    const { data } = await axios.get(
+      "https://fyp-five-khaki.vercel.app/api/v1/admin/products",
+      { withCredentials: true }
+    );
 
     dispatch({
       type: ADMIN_PRODUCT_SUCCESS,
@@ -78,7 +81,10 @@ export const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/product/${id}`);
+    const { data } = await axios.get(
+      `https://fyp-five-khaki.vercel.app/api/v1/product/${id}`,
+      { withCredentials: true }
+    );
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
@@ -103,7 +109,7 @@ export const createProduct = (productData) => async (dispatch) => {
     const { data } = await axios.post(
       `https://fyp-five-khaki.vercel.app/api/v1/admin/product/create`,
       productData,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({
@@ -129,7 +135,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
     const { data } = await axios.put(
       `https://fyp-five-khaki.vercel.app/api/v1/admin/product/${id}`,
       productData,
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({
@@ -148,7 +154,10 @@ export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_DELETE_PRODUCT_REQUEST });
 
-    const { data } = await axios.delete(`https://fyp-five-khaki.vercel.app/api/v1/admin/product/${id}`);
+    const { data } = await axios.delete(
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/product/${id}`,
+      { withCredentials: true }
+    );
 
     dispatch({
       type: ADMIN_DELETE_PRODUCT_SUCCESS,

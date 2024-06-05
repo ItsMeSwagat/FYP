@@ -33,7 +33,7 @@ export const applyVoucher = (voucherCode) => async (dispatch) => {
     const { data } = await axios.post(
       "https://fyp-five-khaki.vercel.app/api/v1/cart/applyvoucher",
       { voucherCode },
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({ type: APPLY_VOUCHER_SUCCESS, payload: data });
@@ -58,7 +58,7 @@ export const removeVoucher = (voucherCode) => async (dispatch) => {
     const { data } = await axios.post(
       "https://fyp-five-khaki.vercel.app/api/v1/cart/removeVoucher",
       { voucherCode },
-      config
+      { config, withCredentials: true }
     );
 
     dispatch({
@@ -79,7 +79,8 @@ export const createVoucher = (voucherData) => async (dispatch) => {
 
     const { data } = await axios.post(
       "https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/create",
-      voucherData
+      voucherData,
+      { withCredentials: true }
     );
 
     dispatch({
@@ -100,7 +101,8 @@ export const updateVoucher = (voucherId, updateData) => async (dispatch) => {
 
     const { data } = await axios.put(
       `https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${voucherId}`,
-      updateData
+      updateData,
+      { withCredentials: true }
     );
 
     dispatch({
@@ -119,7 +121,10 @@ export const deleteVoucher = (voucherId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_VOUCHER_REQUEST });
 
-    const { data } = await axios.delete(`https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${voucherId}`);
+    const { data } = await axios.delete(
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${voucherId}`,
+      { withCredentials: true }
+    );
 
     dispatch({
       type: DELETE_VOUCHER_SUCCESS,
@@ -137,7 +142,10 @@ export const getAllVouchers = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_VOUCHERS_REQUEST });
 
-    const { data } = await axios.get("https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/all");
+    const { data } = await axios.get(
+      "https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/all",
+      { withCredentials: true }
+    );
 
     dispatch({
       type: GET_ALL_VOUCHERS_SUCCESS,
@@ -155,7 +163,10 @@ export const getVoucherDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: VOUCHER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${id}`);
+    const { data } = await axios.get(
+      `https://fyp-five-khaki.vercel.app/api/v1/admin/voucher/${id}`,
+      { withCredentials: true }
+    );
 
     dispatch({
       type: VOUCHER_DETAILS_SUCCESS,

@@ -77,7 +77,11 @@ const logoutUser = catchAsyncErrors(async (req, res, next) => {
   //   httpOnly: true,
   // });
 
-  res.clearCookie("usertoken");
+  res.clearCookie("usertoken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "PRODUCTION", // Use secure cookies in production
+    sameSite: "None", // SameSite attribute should match the setting used when the cookie was created
+  });
 
   req.user = null; // Set user object in request to null
 

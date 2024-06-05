@@ -112,18 +112,18 @@ const Account = () => {
               <div className=" w-full flex items-center gap-4">
                 <div className=" w-[5rem] h-[5rem] lg:w-[8rem] lg:h-[8rem] rounded-full overflow-hidden">
                   <img
-                    src={user.avatar.url}
+                    src={user?.avatar.url}
                     alt="img"
                     className=" w-full h-full object-cover"
                   />
                 </div>
                 <div className=" flex flex-col gap-2 lg:text-lg">
-                  <p>{user.name}</p>
-                  <p>{user.email}</p>
+                  <p>{user?.name}</p>
+                  <p>{user?.email}</p>
                   <p className=" font-medium">
                     Joined At:{" "}
                     <span className=" font-normal">
-                      {String(user.createdAt).substr(0, 10)}
+                      {String(user?.createdAt).substr(0, 10)}
                     </span>
                   </p>
                 </div>

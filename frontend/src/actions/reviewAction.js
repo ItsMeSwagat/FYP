@@ -20,7 +20,11 @@ export const createReview = (reviewData) => async (dispatch) => {
       headers: { "Content-Type": "application/json" },
     };
 
-    const { data } = await axios.put(`https://fyp-five-khaki.vercel.app/api/v1/review`, reviewData, config);
+    const { data } = await axios.put(
+      `https://fyp-five-khaki.vercel.app/api/v1/review`,
+      reviewData,
+      { config, withCredentials: true }
+    );
 
     dispatch({
       type: CREATE_REVIEW_SUCCESS,
@@ -38,7 +42,10 @@ export const adminGetAllReviews = (id) => async (dispatch) => {
   try {
     dispatch({ type: ADMIN_ALL_REVIEW_REQUEST });
 
-    const { data } = await axios.get(`https://fyp-five-khaki.vercel.app/api/v1/reviews?id=${id}`);
+    const { data } = await axios.get(
+      `https://fyp-five-khaki.vercel.app/api/v1/reviews?id=${id}`,
+      { withCredentials: true }
+    );
 
     dispatch({
       type: ADMIN_ALL_REVIEW_SUCCESS,
@@ -57,7 +64,8 @@ export const adminDeleteReview = (reviewId, productId) => async (dispatch) => {
     dispatch({ type: ADMIN_DELETE_REVIEW_REQUEST });
 
     const { data } = await axios.delete(
-      `https://fyp-five-khaki.vercel.app/api/v1/reviews?id=${reviewId}&productId=${productId}`
+      `https://fyp-five-khaki.vercel.app/api/v1/reviews?id=${reviewId}&productId=${productId}`,
+      { withCredentials: true }
     );
 
     dispatch({
