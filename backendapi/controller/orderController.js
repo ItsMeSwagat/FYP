@@ -195,7 +195,7 @@ const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
       await Order.findByIdAndDelete(purchase_order_id);
       return res.status(400).json({
         success: false,
-        redirectURL: "http://localhost:3000/payment/fail",
+        redirectURL: "https://jasssarees.vercel.app/payment/fail",
       });
     }
 
@@ -225,7 +225,7 @@ const updateOrderAfterPayment = catchAsyncErrors(async (req, res, next) => {
       status: order.orderStatus,
     });
 
-    return res.redirect("http://localhost:3000/payment/success");
+    return res.redirect("https://jasssarees.vercel.app/payment/success");
   } catch (error) {
     return next(new ErrorHandler("Internal Server Error", 500));
   }
